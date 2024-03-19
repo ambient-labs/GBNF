@@ -1,0 +1,36 @@
+on:
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        description: "Path to package"
+        type: string
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: pip
+          cache-dependency-path: ${{ inputs.package}}/dev-deps/python3.11/lint.txt
+
+      - run: python3 -m venv .venv/dev && source .venv/dev/bin/activate
+        working-directory: ${{ inputs.package }}
+
+      - run: pip install -U pip setuptools wheel 
+        working-directory: ${{ inputs.package }}
+
+      - name: Install dependencies
+        run: pip install -r dev-deps/python3.11/lint.txt
+        working-directory: ${{ inputs.package }}
+
+
+      - run: ruff check .

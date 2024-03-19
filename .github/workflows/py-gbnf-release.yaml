@@ -1,0 +1,17 @@
+name: "Cut Release for gbnf (Python)"
+
+on:
+  push:
+    tags:
+      - "py/gbnf-v*"
+
+jobs:
+  tagged-release:
+    name: "Cut Release for gbnf (Python)"
+    uses: ./.github/workflows/py-shared-release.yaml
+
+    with:
+      package: "./packages/gbnf/python"
+      files: |
+        packages/gbnf/python/dist/gbnf-*.tar.gz
+        packages/gbnf/python/dist/gbnf-*.whl

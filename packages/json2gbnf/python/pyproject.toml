@@ -1,0 +1,13 @@
+[project]
+name = "json2gbnf"
+version = "0.0.4"
+# Notes
+authors = [{ name = "Ambient Labs", email = "maintainers@gbnf.dev" }]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+"pythonmonkey"
+]
+classifiers = [
+]
+

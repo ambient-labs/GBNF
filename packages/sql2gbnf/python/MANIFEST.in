@@ -1,0 +1,2 @@
+include README.md
+recursive-include sql2gbnf/js *.js

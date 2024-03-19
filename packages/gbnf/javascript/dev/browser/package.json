@@ -1,0 +1,24 @@
+{
+  "name": "@gbnf/dev-browser",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wireit"
+  },
+  "wireit": {
+    "dev": {
+      "command": "vite --host --config ./vite.config.ts --port 5175",
+      "dependencies": []
+    }
+  },
+  "keywords": [],
+  "author": "Ambient Labs",
+  "license": "MIT",
+  "dependencies": {
+    "@vanillawc/wc-monaco-editor": "^1.10.15"
+  },
+  "devDependencies": {
+    "vite": "^5.1.4",
+    "wireit": "^0.14.4"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@sql2json/dev-browser",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wireit"
+  },
+  "wireit": {
+    "dev": {
+      "command": "vite --host --config ./vite.config.ts --port 5194",
+      "dependencies": [
+        "../..:build"
+      ]
+    }
+  },
+  "keywords": [],
+  "author": "Ambient Labs",
+  "license": "MIT",
+  "dependencies": {
+    "@dbml/core": "^3.4.3"
+  },
+  "devDependencies": {
+    "vite": "^5.1.4",
+    "vite-plugin-node-polyfills": "^0.21.0",
+    "wireit": "^0.14.4"
+  }
+}

@@ -1,0 +1,14 @@
+name: Publish SQL2GBNF (Javascript) to NPM
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "js/sql2gbnf-v*"
+
+jobs:
+  publish:
+    uses: ./.github/workflows/js-shared-publish.yaml
+    secrets: inherit
+    with:
+      package: "./packages/sql2gbnf/javascript"

@@ -1,0 +1,3 @@
+include LICENSE
+include README.md
+exclude env/bin/*.py

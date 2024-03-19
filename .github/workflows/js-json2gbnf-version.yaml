@@ -1,0 +1,22 @@
+name: Version JSON2GBNF (Javascript)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/js-json2gbnf-version.yaml'
+      - 'packages/json2gbnf/javascript/**/*.ts'
+      - 'packages/json2gbnf/javascript/README.md'
+      - 'packages/json2gbnf/javascript/**/*.gbnf'
+      - '!packages/json2gbnf/javascript/**/*.test.ts'
+      # - '!packages/json2gbnf/javascript/package.json'
+
+jobs:
+  version:
+    uses: ./.github/workflows/js-shared-version.yaml
+    with:
+      package: "./packages/json2gbnf/javascript"
+      tag_prefix: "js/json2gbnf-v"
+    secrets: inherit

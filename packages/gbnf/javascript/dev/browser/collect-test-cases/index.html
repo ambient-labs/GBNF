@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Collect Test Cases: GBNF Dev</title>
+  <link rel="stylesheet" href="../global.css" />
+  <style>
+    form {
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;;
+    }
+
+    select {
+      flex: 1;
+      max-width: none;
+      font-size: 1.0rem;
+      padding: 0 20px;
+    }
+
+    button[type="submit"] {
+      height: auto;
+      min-width: 200px;
+      font-size: 1.0rem;
+    }
+    #grammar-container {
+      max-height: 30%;
+      height: 30%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #actions {
+      display: flex;
+      min-height: 40px;
+      max-height: 80px;
+      gap: 20px;
+    }
+    textarea {
+      padding: 20px;
+      border-radius: 5px;
+      background: #EEE;
+      border: 1px solid rgba(0,0,0,0.1);
+      min-height: 20%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Collect Test Cases</h1>
+  <p>Use this file to query a local <code>llama.cpp</code> endpoint with grammars and get back generated code output.</p>
+  <p>This output can then be used as test cases for the `gbnf` library, to ascertain that its parsing abilities match that of <code>llama.cpp</code>.</p>
+  <form id="form">
+    <div id="actions">
+      <select id="grammar-selector">
+        <option value=""> - </option>
+      </select>
+      <button id="submit" type="submit">Generate Output</button>
+    </div>
+    <label>Grammar</label>
+    <div id="grammar-container">
+      <wc-monaco-editor id="grammar"></wc-monaco-editor>
+    </div>
+    <textarea readonly id="output"></textarea>
+  </form>
+  <hr />
+  <script type="module" src="./index.ts"></script>
+</body>
+</html>

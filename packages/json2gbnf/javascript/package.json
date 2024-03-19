@@ -1,0 +1,148 @@
+{
+  "name": "json2gbnf",
+  "type": "module",
+  "description": "A library for turning JSON schemas into GBNF grammars",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ambient-labs/GBNF.git",
+    "directory": "packages/json2gbnf"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
+  },
+  "scripts": {
+    "copy": "wireit",
+    "copy:gbnf": "wireit",
+    "copy:assets": "wireit",
+    "lint": "wireit",
+    "test:integration": "wireit",
+    "test:unit": "wireit",
+    "test:unit:watch": "wireit",
+    "test:integration:watch": "wireit",
+    "test": "wireit",
+    "build": "wireit",
+    "build:check": "wireit",
+    "build:esm": "wireit",
+    "build:umd": "wireit"
+  },
+  "wireit": {
+    "test:unit:watch": {
+      "command": "vitest --config ./vitest.config.unit.ts --hideSkippedTests"
+    },
+    "test:integration:watch": {
+      "command": "vitest --config ./vitest.config.integration.ts --hideSkippedTests"
+    },
+    "test:integration": {
+      "command": "vitest --config ./vitest.config.integration.ts run",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "test:unit": {
+      "command": "vitest --config ./vitest.config.unit.ts run",
+      "dependencies": [
+        "../../gbnf/javascript:build"
+      ]
+    },
+    "test": {
+      "command": "pnpm test:unit && pnpm test:integration"
+    },
+    "copy": {
+      "command": "pnpm copy:gbnf && pnpm copy:assets"
+    },
+    "copy:gbnf": {
+      "command": "cpx \"./src/**/*.gbnf\" ./dist -v",
+      "files": [
+        "./src/**/*.gbnf"
+      ],
+      "output": [
+        "./dist/**/*.gbnf"
+      ]
+    },
+    "copy:assets": {
+      "command": "cp ../../../LICENSE ./LICENSE ",
+      "files": [
+        "../../../LICENSE"
+      ],
+      "output": [
+        "./LICENSE"
+      ]
+    },
+    "lint": {
+      "command": "eslint -c .eslintrc.cjs src --ext .ts",
+      "dependencies": [
+        "../../gbnf/javascript:build"
+      ]
+    },
+    "build:check": {
+      "command": "ls ./dist && path-exists ./dist/index.js && path-exists ./dist/index.umd.cjs && path-exists ./dist/index.d.ts && path-exists ./LICENSE"
+    },
+    "build:esm": {
+      "command": "vite build -c ./vite.config.esm.ts",
+      "dependencies": [
+        "../../gbnf/javascript:build"
+      ]
+    },
+    "build:umd": {
+      "command": "vite build -c ./vite.config.umd.ts",
+      "dependencies": [
+        "../../gbnf/javascript:build"
+      ]
+    },
+    "build": {
+      "command": "rimraf ./dist && pnpm build:umd && pnpm build:esm && pnpm copy",
+      "dependencies": [
+        "../../gbnf/javascript:build"
+      ],
+      "files": [
+        "./src/**/*.ts",
+        "!./src/**/*.test.ts",
+        "./src/**/*.gbnf",
+        "package.json",
+        "vite.config.ts",
+        "vite.config.umd.ts",
+        "vite.config.esm.ts",
+        "tsconfig.json"
+      ],
+      "output": [
+        "./LICENSE",
+        "./dist/**"
+      ]
+    }
+  },
+  "keywords": [
+    "json",
+    "gbnf",
+    "grammar"
+  ],
+  "author": "Ambient Labs",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "cpx2": "^7.0.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "gbnf": "workspace:*",
+    "path-exists-cli": "^2.0.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5",
+    "vite": "^5.1.4",
+    "vite-plugin-dts": "^3.7.3",
+    "vitest": "^1.3.1",
+    "wireit": "^0.14.4"
+  },
+  "packageManager": "pnpm@9.4.0"
+}

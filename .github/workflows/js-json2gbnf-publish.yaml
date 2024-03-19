@@ -1,0 +1,14 @@
+name: Publish JSON2GBNFjs to NPM
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "js/json2gbnf-v*"
+
+jobs:
+  publish:
+    uses: ./.github/workflows/js-shared-publish.yaml
+    secrets: inherit
+    with:
+      package: "./packages/json2gbnf/javascript"

@@ -1,0 +1,83 @@
+root ::= sql
+
+sql ::= query | statement
+
+statement ::= "ddlstatement" | "dmlstatement"
+
+query ::= selectquery | insertquery | updatequery | deletequery
+
+selectquery ::= "SELECT" " " selectlist ("," " " selectlist)* " " "FROM" " " tablename 
+# selectquery ::= "SELECT" " " selectlist ("," " " selectlist)* " " "FROM" " " tablename [" " "WHERE" " " condition]
+# selectquery ::= "SELECT" " " selectlist " " "FROM" " " tablename [" " "WHERE" " " condition] [" " "ORDERBY" " " columnname] [" " "LIMIT" " " integer]
+
+insertquery ::= "INSERT" " " "INTO" " " tablename " " "(" " " columnlist " " ")" " " "VALUES" " " "(" " " valuelist " " ")"
+
+updatequery ::= "UPDATE" " " "tablename" " " "SET" " " setclause [" " "WHERE" " " condition]
+
+deletequery ::= "DELETE" " " "FROM" " " "tablename" [" " "WHERE" " " condition]
+
+
+selectlist ::= string
+# selectlist ::= "foo" | "bar"
+# tablename ::=  string
+tablename ::=  "baz"
+columnlist ::= string
+valuelist ::=  string
+setclause ::=  string
+condition ::=  string
+columnname ::= string
+ 
+
+string ::= [a-zA-Z_]+
+
+
+integer ::= [0-9]+ ws
+
+ws ::= ([ \t\n]+)
+
+
+# ddl_statement ::= CREATE TABLE table_name (column_definitions) | DROP TABLE table_name
+# 
+# dml_statement ::= select_query | insert_query | update_query | delete_query
+# 
+# select_list ::= column_name [, column_name...]
+# 
+# column_list ::= column_name [, column_name...]
+# 
+# value_list ::= value [, value...]
+# 
+# set_clause ::= column_name = value [, column_name = value...]
+# 
+# condition ::= expression | expression logical_operator expression | (condition) | NOT condition
+# 
+# expression ::= column_name comparison_operator value | column_name IN (value_list) | column_name BETWEEN value AND value
+# 
+# logical_operator ::= AND | OR
+# 
+# comparison_operator ::= = | <> | < | > | <= | >=
+# 
+# table_name ::= [a-zA-Z_][a-zA-Z0-9_]*
+# 
+# column_name ::= [a-zA-Z_][a-zA-Z0-9_]*
+# 
+# value ::= integer | string | date | boolean
+# 
+# integer ::= [0-9]+
+# 
+# string ::= "'" characters "'"
+# 
+# date ::= YYYY-MM-DD
+# 
+# boolean ::= TRUE | FALSE
+# 
+# characters ::= [^']*
+# 
+# column_definitions ::= column_definition [, column_definition...]
+# 
+# column_definition ::= column_name data_type
+# 
+# data_type ::= INT | VARCHAR(length) | DATE | BOOLEAN
+# 
+# length ::= integer
+# 
+# 

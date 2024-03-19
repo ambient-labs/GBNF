@@ -1,0 +1,40 @@
+name: 'Tests // JS / gbnf'
+on:
+  pull_request:
+    paths:
+      - 'packages/gbnf/javascript/**'
+      - '.github/workflows/js-gbnf-test.yaml'
+      - '.github/workflows/js-shared-unit-test.yaml'
+      - '.github/workflows/js-shared-integration-test.yaml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.json'
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  lint:
+    name: "GBNF / Lint"
+    uses: ./.github/workflows/js-shared-lint.yaml
+    with:
+      package: ./packages/gbnf/javascript
+
+  unit-test:
+    name: "GBNF / Unit Test"
+    uses: ./.github/workflows/js-shared-unit-test.yaml
+    with:
+      package: ./packages/gbnf/javascript
+
+  integration-test:
+    name: "GBNF / Integration Test"
+    uses: ./.github/workflows/js-shared-integration-test.yaml
+    with:
+      package: ./packages/gbnf/javascript
+
+  build:
+    name: "GBNF / Build"
+    uses: ./.github/workflows/js-shared-build.yaml
+    with:
+      package: ./packages/gbnf/javascript

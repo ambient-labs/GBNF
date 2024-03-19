@@ -1,0 +1,31 @@
+version = 1
+
+test_patterns = [
+  "packages/**/*.ts",
+  "packages/**/*.py",
+  ]
+
+exclude_patterns = [
+  "packages/**/*.test.ts", 
+  "packages/**/test/**/*.ts", 
+  # "examples/**", 
+  # "scripts/**", 
+  # "test/**", 
+  "dev/**",
+]
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+  [analyzers.meta]
+  environment = [
+    "browser",
+    "nodejs",
+    "vitest"
+  ]
+  dialect = "typescript"
+
+[[analyzers]]
+name = "python"
+enabled = true

@@ -1,0 +1,22 @@
+name: Version SQL2GBNF (Javascript)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/js-sql2gbnf-version.yaml'
+      - 'packages/sql2gbnf/javascript/**/*.ts'
+      - 'packages/sql2gbnf/javascript/README.md'
+      - 'packages/sql2gbnf/javascript/**/*.gbnf'
+      - '!packages/sql2gbnf/javascript/**/*.test.ts'
+      # - '!packages/sql2gbnf/javascript/package.json'
+
+jobs:
+  version:
+    uses: ./.github/workflows/js-shared-version.yaml
+    with:
+      package: "./packages/sql2gbnf/javascript"
+      tag_prefix: "js/sql2gbnf-v"
+    secrets: inherit

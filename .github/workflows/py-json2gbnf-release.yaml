@@ -1,0 +1,17 @@
+name: "Cut Release for JSON2GBNF (Python)"
+
+on:
+
+  push:
+    tags:
+      - "py/json2gbnf-v*"
+
+jobs:
+  release:
+    name: "Cut Release for JSON2GBNF (Python)"
+    uses: ./.github/workflows/py-shared-release.yaml
+    with:
+      package: "./packages/json2gbnf/python"
+      files: |
+        packages/json2gbnf/python/dist/json2gbnf-*.tar.gz
+        packages/json2gbnf/python/dist/json2gbnf-*.whl

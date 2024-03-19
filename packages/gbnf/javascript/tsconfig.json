@@ -1,0 +1,21 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "dist",
+    ".wireit",
+    "env",
+    "./src/**/*.test.ts"
+  ]
+}

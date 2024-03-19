@@ -1,0 +1,14 @@
+name: Publish gbnf (Javascript) to NPM
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "js/gbnf-v*"
+
+jobs:
+  publish:
+    uses: ./.github/workflows/js-shared-publish.yaml
+    with:
+      package: "./packages/gbnf/javascript"
+    secrets: inherit

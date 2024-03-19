@@ -1,0 +1,40 @@
+name: 'Tests // JS / json2gbnf'
+on:
+  pull_request:
+    paths:
+      - 'packages/json2gbnf/javascript/**'
+      - '.github/workflows/js-json2gbnf-test.yaml'
+      - '.github/workflows/js-shared-unit-test.yaml'
+      - '.github/workflows/js-shared-integration-test.yaml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.json'
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  lint:
+    name: "Javascript / JSON2GBNF / Lint"
+    uses: ./.github/workflows/js-shared-lint.yaml
+    with:
+      package: "./packages/json2gbnf/javascript"
+
+  unit-test:
+    name: "Javascript / JSON2GBNF / Unit Test"
+    uses: ./.github/workflows/js-shared-unit-test.yaml
+    with:
+      package: "./packages/json2gbnf/javascript"
+
+  integration-test:
+    name: "Javascript / json2gbnf / Integration Test"
+    uses: ./.github/workflows/js-shared-integration-test.yaml
+    with:
+      package: "./packages/json2gbnf/javascript"
+
+  build:
+    name: "Javascript / JSON2GBNF / Build"
+    uses: ./.github/workflows/js-shared-build.yaml
+    with:
+      package: "./packages/json2gbnf/javascript"

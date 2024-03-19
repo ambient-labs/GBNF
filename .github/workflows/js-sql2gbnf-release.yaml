@@ -1,0 +1,16 @@
+name: "Cut Release for SQL2GBNF (Javascript)"
+
+on:
+  push:
+    tags:
+      - "js/sql2gbnf-v*"
+
+jobs:
+  release:
+    name: "Cut Release for SQL2GBNF (Javascript)"
+    uses: ./.github/workflows/js-shared-release.yaml
+
+    with:
+      package: "./packages/sql2gbnf/javascript"
+      files: |
+        packages/sql2gbnf/javascript/sql2gbnf-*.tgz

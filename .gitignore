@@ -1,0 +1,14 @@
+.DS_Store
+node_modules
+.wireit
+.parcel-cache
+.mypy-cache
+.env
+.ipynb_checkpoints
+build
+*.egg-info
+dist
+coverage
+__pycache__
+.pnpm-debug.log
+vite.config.*.timestamp-*

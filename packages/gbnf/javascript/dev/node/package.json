@@ -1,0 +1,42 @@
+{
+  "name": "@dev/node",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "wireit",
+    "build": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "command": "tsc -p ./tsconfig.json",
+      "dependencies": [
+        "../../:build"
+      ],
+      "files": [
+        "src/**/*.ts",
+        "package.json",
+        "tsconfig.json",
+        "../../tsconfig.json"
+      ],
+      "output": [
+        "dist"
+      ]
+    },
+    "dev": {
+      "command": "node dist/index.js",
+      "dependencies": [
+        "build"
+      ]
+    }
+  },
+  "dependencies": {
+    "@xenova/transformers": "^2.16.0",
+    "commander": "^11.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "wireit": "^0.14.0"
+  }
+}

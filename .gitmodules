@@ -1,0 +1,3 @@
+[submodule "test/__fixtures__/models/TinyLLama-v0"]
+	path = test/__fixtures__/models/TinyLLama-v0
+	url = https://huggingface.co/Xenova/TinyLLama-v0

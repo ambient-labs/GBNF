@@ -1,0 +1,113 @@
+{
+  "name": "gbnf",
+  "type": "module",
+  "description": "A library for parsing GBNF grammars",
+  "version": "0.1.18",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ambient-labs/GBNF.git",
+    "directory": "packages/gbnf"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    },
+    "./builder": {
+      "import": "./dist/builder/index.js",
+      "require": "./dist/builder/index.umd.cjs"
+    }
+  },
+  "scripts": {
+    "clean": "wireit",
+    "lint": "wireit",
+    "test": "wireit",
+    "test:unit": "wireit",
+    "test:integration": "wireit",
+    "test:unit:watch": "wireit",
+    "test:integration:watch": "wireit",
+    "build": "wireit",
+    "build:check": "wireit",
+    "build:esm": "wireit",
+    "build:umd": "wireit"
+  },
+  "wireit": {
+    "clean": {
+      "command": "rimraf ./dist"
+    },
+    "test:unit": {
+      "command": "vitest --config ./vitest.config.unit.ts run"
+    },
+    "test": {
+      "command": "pnpm test:unit && pnpm test:integration "
+    },
+    "test:integration": {
+      "command": "vitest --config ./vitest.config.integration.ts run"
+    },
+    "test:unit:watch": {
+      "command": "vitest --config ./vitest.config.unit.ts --hideSkippedTests"
+    },
+    "test:integration:watch": {
+      "command": "vitest --config ./vitest.config.integration.ts --hideSkippedTests"
+    },
+    "lint": {
+      "command": "eslint -c .eslintrc.cjs src --ext .ts"
+    },
+    "build:check": {
+      "command": "path-exists ./dist/index.js && path-exists ./dist/index.umd.cjs && path-exists ./dist/index.d.ts && path-exists ./dist/builder/index.js && path-exists ./dist/builder/index.umd.cjs && path-exists ./dist/builder/index.d.ts && path-exists ./LICENSE"
+    },
+    "build:esm": {
+      "command": "vite build -c ./vite.config.esm.ts"
+    },
+    "build:umd": {
+      "command": "vite build -c ./vite.config.umd.ts"
+    },
+    "build": {
+      "command": "pnpm clean && pnpm build:umd && pnpm build:esm && cp ../../../LICENSE ./LICENSE",
+      "output": [
+        "./LICENSE",
+        "dist/**"
+      ],
+      "files": [
+        "dist/**",
+        "src/**/*.ts",
+        "!src/**/*.test.ts",
+        "package.json",
+        "vite.config.ts",
+        "vite.config.umd.ts",
+        "vite.config.esm.ts",
+        "tsconfig.json"
+      ]
+    }
+  },
+  "keywords": [
+    "gbnf",
+    "grammar",
+    "grammar-parser"
+  ],
+  "author": "Ambient Labs",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@vitest/coverage-istanbul": "^1.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "path-exists-cli": "^2.0.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vite-plugin-dts": "^3.7.3",
+    "vitest": "^1.3.1",
+    "wireit": "^0.14.4"
+  },
+  "packageManager": "pnpm@9.4.0"
+}

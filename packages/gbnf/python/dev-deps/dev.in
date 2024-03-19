@@ -1,0 +1,9 @@
+pip-tools
+twine
+pytest
+pytest-watcher
+pytest-cov
+pytest-mock
+pytest-describe
+nest_asyncio
+ruff

@@ -1,0 +1,18 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "dist",
+    ".wireit",
+    "env",
+    "./src/**/*.test.ts"
+  ]
+}

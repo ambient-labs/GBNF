@@ -1,0 +1,89 @@
+name: PR Monitor
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  check_commit_status:
+    name: 'Check Commit Status'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm Check Runs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // tweak pre-sleep to be approximately how long the shortest job takes
+            // to complete
+            const PRE_SLEEP = 10000;
+            const CHECK_SLEEP = 500;
+            const MAX_DURATION = 1000 * 60 * 5; // 5 minutes
+
+            const EXCLUDED_JOBS = [
+               // important we exclude this specific job
+              'Check Commit Status',
+              "Redirect rules",
+              "Header rules",
+              "Pages changed"
+            ];
+
+            console.log(`Sleeping ${Math.round(PRE_SLEEP / 1000)}s to give other workflows a chance to start`);
+            await sleep(PRE_SLEEP);
+            const start = performance.now();
+            const { owner, repo } = context.repo;
+
+            // Get the SHA of the head commit of the PR
+            const commit_sha = context.payload.pull_request.head.sha; 
+            console.log(`Checking for other workflows for commit: ${commit_sha}`);
+            
+            async function fetchCheckRuns() {
+              const response = await github.rest.checks.listForRef({
+                owner,
+                repo,
+                ref: commit_sha,
+                per_page: 100
+              });
+              return response.data.check_runs;
+            }
+            async function sleep(ms) {
+              return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            let checkRuns = await fetchCheckRuns();
+            console.log('checkRuns', checkRuns)
+            if (checkRuns.filter(run => {
+              return !EXCLUDED_JOBS.includes(run.name);
+            }).length === 0) {
+              core.setFailed('No workflows were found; this is likely a configuration issue.');
+            }
+            let inProgressFound = [];
+            let failureFound = [];
+            do {
+              inProgressFound = [];
+              failureFound = [];
+              for (const { name, status, conclusion, } of checkRuns) {
+                if (!EXCLUDED_JOBS.includes(name)) {
+                  if (status === 'in_progress') {
+                    inProgressFound.push(name);
+                  }
+                  if (conclusion === 'failure') {
+                    failureFound.push(name);
+                  }
+                }
+              }
+              if (inProgressFound.length) {
+                if (performance.now() - start > MAX_DURATION) {
+                  core.setFailed(`Exceeded max duration of ${Math.round(MAX_DURATION / 1000)}`);
+                  break;
+                }
+                const duration = Math.round((performance.now() - start) / 1000);
+                console.log(`Running: ${JSON.stringify(inProgressFound)} | duration: ${duration}s`);
+                await sleep(CHECK_SLEEP);
+                checkRuns = await fetchCheckRuns();
+              }
+            } while (inProgressFound.length);
+            if (failureFound.length) {
+              core.setFailed(`There are failed check runs: ${JSON.stringify(failureFound)}.`);
+            } else {
+              console.log('All workflows completed successfully');
+            }

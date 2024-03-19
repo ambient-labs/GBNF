@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "es2022",
+    "moduleResolution": "NodeNext",
+    "target": "esnext",
+    "types": ["node", "vite/client"]
+  },
+  "include": ["./**/*.ts"]
+}

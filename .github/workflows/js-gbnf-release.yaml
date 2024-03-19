@@ -1,0 +1,16 @@
+name: "Cut Release for gbnf (Javascript)"
+
+on:
+  push:
+    tags:
+      - "js/gbnf-v*"
+
+jobs:
+  release:
+    name: "Cut Release for gbnf (Javascript)"
+    uses: ./.github/workflows/js-shared-release.yaml
+
+    with:
+      package: "./packages/gbnf/javascript"
+      files: |
+        packages/gbnf/javascript/gbnf-*.tgz

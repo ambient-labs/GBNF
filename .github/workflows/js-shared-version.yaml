@@ -1,0 +1,60 @@
+on:
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        description: "Path to package"
+        type: string
+      tag_prefix:
+        required: true
+        description: "Tag Prefix"
+        type: string
+
+jobs:
+  version:
+    runs-on: "ubuntu-latest"
+    if: ${{ ! endsWith(github.event.head_commit.message, '[skip-version]') }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 'Automated Version Bump'
+        id: version-bump
+        uses: 'phips28/gh-action-bump-version@master'
+        with:
+          tag-prefix: ${{ inputs.tag_prefix }}
+          # skip-commit:  'true'
+          skip-push:  'true'
+          # skip-tag:  'true'
+        env:
+          # GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          PACKAGEJSON_DIR:  ${{ inputs.package }}
+          version-type:  'patch'
+
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: 'New Tag'
+        env:
+          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+        run: echo "new tag $NEW_TAG"
+
+      - name: 'Pull, rebase, and push'
+        run: |
+          git remote set-url origin https://${{ secrets.GH_TOKEN}}@github.com/ambient-labs/GBNF.git
+          git pull --rebase
+          git push origin HEAD:main
+          git push origin tag $NEW_TAG
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+
+permissions:
+  contents: read

@@ -1,0 +1,76 @@
+on:
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        description: "Path to package"
+        type: string
+      files:
+        required: true
+        description: "Newline-delimited list of path globs for asset files to upload"
+        type: string
+
+jobs:
+  release:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: pip
+          cache-dependency-path: ${{ inputs.package }}/dev-deps/python3.11/build.txt
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - run: python3 -m venv .venv/dev && source .venv/dev/bin/activate
+        working-directory: ${{ inputs.package }}
+
+      - run: source .venv/dev/bin/activate && pip install -U pip setuptools wheel 
+        working-directory: ${{ inputs.package }}
+
+      - name: Install build dependencies
+        run: source .venv/dev/bin/activate && pip install -r dev-deps/python3.11/build.txt
+        working-directory: ${{ inputs.package }}
+
+      - name: Install dependencies
+        run: source .venv/dev/bin/activate && pip install .
+        working-directory: ${{ inputs.package }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - run: make build_all
+        working-directory: ${{ inputs.package }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          files: ${{ inputs.files }}

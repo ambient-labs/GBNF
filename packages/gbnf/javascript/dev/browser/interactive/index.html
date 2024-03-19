@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Interactive: GBNF Dev</title>
+  <link rel="stylesheet" href="../global.css" />
+  <style>
+    form {
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;;
+    }
+
+    form > * {
+      flex: 1;
+    }
+
+    select {
+      flex: 1;
+      max-width: none;
+      font-size: 1.2rem;
+      padding: 0 20px;
+    }
+
+    button[type="submit"] {
+      height: auto;
+      min-width: 200px;
+      font-size: 1.2rem;
+    }
+
+    #actions {
+      display: flex;
+      min-height: 60px;
+      max-height: 80px;
+      gap: 20px;
+    }
+    pre {
+      padding: 20px;
+      border-radius: 5px;
+      background: #EEE;
+      border: 1px solid rgba(0,0,0,0.1);
+      min-height: 20%;
+    }
+  </style>
+</head>
+<body>
+  <form id="form">
+    <div id="actions">
+      <select id="grammar-selector">
+        <option value=""> - </option>
+      </select>
+      <button id="submit" type="submit">Parse</button>
+    </div>
+    <div>
+    <wc-monaco-editor id="grammar"></wc-monaco-editor>
+    </div>
+    <div>
+    <wc-monaco-editor id="input"></wc-monaco-editor>
+    </div>
+    <pre id="output"></pre>
+
+  </form>
+  <hr />
+  <script type="module" src="./index.ts"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+name: Version GBNF (Javascript)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/js-gbnf-version.yaml'
+      - 'packages/gbnf/javascript/**/*.ts'
+      - 'packages/gbnf/javascript/README.md'
+      - 'packages/gbnf/javascript/**/*.gbnf'
+      - '!packages/gbnf/javascript/**/*.test.ts'
+      # - '!packages/gbnf/javascript/package.json'
+
+jobs:
+  version:
+    uses: ./.github/workflows/js-shared-version.yaml
+    with:
+      package: "./packages/gbnf/javascript"
+      tag_prefix: "js/gbnf-v"
+    secrets: inherit
