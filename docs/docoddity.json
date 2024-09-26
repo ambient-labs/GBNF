@@ -1,0 +1,36 @@
+{
+  "title": "GBNF",
+  "head": [
+    "./style.css"
+  ],
+  "nav": {
+    "left": [
+      {
+        "url": "/demo",
+        "text": "Demo"
+      },
+      {
+        "url": "/docs",
+        "text": "Docs"
+      }
+    ],
+    "right": [
+      {
+        "url": "https://npmjs.com/package/gbnf",
+        "label": "NPM",
+        "text": "NPM",
+        "target": "_blank",
+        "rel": "noopener noreferrer",
+        "ariaLabel": "GBNF NPM package"
+      },
+      {
+        "url": "https://github.com/ambient-labs/gbnf",
+        "label": "Github",
+        "text": "Github",
+        "target": "_blank",
+        "rel": "noopener noreferrer",
+        "ariaLabel": "GBNF Github package"
+      }
+    ]
+  }
+}
