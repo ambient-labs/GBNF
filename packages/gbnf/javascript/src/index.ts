@@ -16,4 +16,4 @@ export {
   GrammarParseError,
 } from './utils/errors.js';
 
-export { GBNFRule, } from "./builder/gbnf-rule.js";
+export * from "./builder/index.js";
