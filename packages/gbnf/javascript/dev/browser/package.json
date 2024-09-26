@@ -15,6 +15,7 @@
   "author": "Ambient Labs",
   "license": "MIT",
   "dependencies": {
+    "gbnf": "workspace:*",
     "@vanillawc/wc-monaco-editor": "^1.10.15"
   },
   "devDependencies": {

@@ -15,3 +15,5 @@ export {
   InputParseError,
   GrammarParseError,
 } from './utils/errors.js';
+
+export type { GBNFRule, } from "./builder/gbnf-rule.js";
