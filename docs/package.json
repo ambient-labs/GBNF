@@ -1,0 +1,17 @@
+{
+  "name": "docs",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "docoddity dev",
+    "build": "docoddity build --output ./build"
+  },
+  "author": "Ambient Labs",
+  "license": "MIT",
+  "dependencies": {
+    "docoddity": "^0.3.2"
+  }
+}

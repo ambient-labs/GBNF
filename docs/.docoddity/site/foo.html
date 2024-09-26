@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <title>Foo | GBNF</title>
+
+        <!-- theme.headTags -->
+            <style data-file="theme" type="text/css">code-editor:not(:defined) { visibility: hidden; }</style>
+    <script data-file="theme" type="importmap">{
+  "imports": {
+    "@vanillawc/wc-codemirror": "https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/index.js",
+    "@vanillawc/": "https://cdn.jsdelivr.net/npm/@vanillawc/",
+    "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@lit/reactive-element/reactive-element.js",
+    "@lit/": "https://cdn.jsdelivr.net/npm/@lit/",
+    "lit-element": "https://cdn.jsdelivr.net/npm/lit-element/index.js",
+    "lit-element/lit-element.js": "https://cdn.jsdelivr.net/npm/lit-element/lit-element.js",
+    "lit-html": "https://cdn.jsdelivr.net/npm/lit-html/lit-html.js",
+    "lit-html/": "https://cdn.jsdelivr.net/npm/lit-html/",
+    "lit": "https://cdn.jsdelivr.net/npm/lit/index.js",
+    "lit/": "https://cdn.jsdelivr.net/npm/lit/",
+    "@shoelace-style/": "https://cdn.jsdelivr.net/npm/@shoelace-style/",
+    "@docsearch/js": "https://cdn.jsdelivr.net/npm/@docsearch/js/dist/esm/index.js"
+  }
+}
+</script>
+    <link data-file="theme" href="/Users/thekevinscott/code/gbnf/node_modules/.pnpm/docoddity@0.3.1_@algolia+client-search@4.24.0_@types+react@18.3.8_search-insights@2.17.2/node_modules/docoddity/dist/themes/default/styles/reset.css" rel="stylesheet">
+    <link data-file="theme" href="/Users/thekevinscott/code/gbnf/node_modules/.pnpm/docoddity@0.3.1_@algolia+client-search@4.24.0_@types+react@18.3.8_search-insights@2.17.2/node_modules/docoddity/dist/themes/default/styles/github-markdown.css" rel="stylesheet">
+    <link data-file="theme" href="/Users/thekevinscott/code/gbnf/node_modules/.pnpm/docoddity@0.3.1_@algolia+client-search@4.24.0_@types+react@18.3.8_search-insights@2.17.2/node_modules/docoddity/dist/themes/default/styles/variables.css" rel="stylesheet">
+    <link data-file="theme" href="/Users/thekevinscott/code/gbnf/node_modules/.pnpm/docoddity@0.3.1_@algolia+client-search@4.24.0_@types+react@18.3.8_search-insights@2.17.2/node_modules/docoddity/dist/themes/default/styles/style.css" rel="stylesheet">
+        <!-- docoddity.headTags -->
+            <link href="/Users/thekevinscott/code/gbnf/docs/style.css" rel="stylesheet">
+      </head>
+      <body>
+        
+  <!-- mobile menu -->
+  
+  <div id="hamburger-menu">
+    <div id="hamburger-menu-overlay"></div>
+    <div id="hamburger-contents">
+      <header>
+        <div id="left">
+          <a class="title" aria-role="title" href="/">GBNF</a>
+          <theme-toggle></theme-toggle>
+
+        </div>
+        <button id="close-hamburger" type="button" aria-label="Close navigation bar">
+          <svg viewBox="0 0 15 15" width="21" height="21"><g stroke-width="1.2"><path d="M.75.75l13.5 13.5M14.25.75L.75 14.25"></path></g></svg>
+        </button>
+      </header>
+
+      <main>
+        
+          <section>
+            <button type="button" id="back-to-main-menu">← Back to main menu</button>
+            
+  <nav id="hamburger-nav">
+    <ul>
+      <li class="open">
+    <div class="inner">
+    <div class="menu-list ">
+      <a href="/foo">foo</a>
+      
+    </div>
+    
+    </div>
+  </li>
+<li class="open">
+    <div class="inner">
+    <div class="menu-list ">
+      <a href="/index">index</a>
+      
+    </div>
+    
+    </div>
+  </li>
+    </ul>
+  </nav>
+
+          </section>
+          
+
+
+        <section>
+          
+    <a 
+      href="/demo" 
+      class="false "
+      
+      
+      
+    >
+      Demo
+      
+    </a>
+    
+
+    <a 
+      href="/docs" 
+      class="false "
+      
+      
+      
+    >
+      Docs
+      
+    </a>
+    
+          <hr />
+          
+    <a 
+      href="https://npmjs.com/package/gbnf" 
+      class="false "
+      _blank
+      noopener noreferrer
+      aria-label="GBNF NPM package"
+    >
+      NPM
+      
+    </a>
+    
+
+    <a 
+      href="https://github.com/ambient-labs/gbnf" 
+      class="false "
+      _blank
+      noopener noreferrer
+      aria-label="GBNF Github package"
+    >
+      Github
+      
+    </a>
+    
+        </section>
+      </main>
+    </div>
+  </div>
+
+
+  <!-- desktop menu -->
+  
+    <header role="banner" class="site-head desktop">
+      <div id="left">
+        <button 
+          id="hamburger"
+          class="mobile"
+          aria-label="Toggle navigation bar" 
+          aria-expanded="false" 
+          type="button"
+        >
+          <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+            <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+          </svg>
+        </button>
+
+        <a aria-role="title" class="mobile" href="/">GBNF</a>
+
+        
+    <a 
+      href="/demo" 
+      class="false "
+      
+      
+      
+    >
+      Demo
+      
+    </a>
+    
+
+    <a 
+      href="/docs" 
+      class="false "
+      
+      
+      
+    >
+      Docs
+      
+    </a>
+    
+      </div>
+
+      <div id="right">
+        
+    <a 
+      href="https://npmjs.com/package/gbnf" 
+      class="false "
+      _blank
+      noopener noreferrer
+      aria-label="GBNF NPM package"
+    >
+      NPM
+      
+    </a>
+    
+
+    <a 
+      href="https://github.com/ambient-labs/gbnf" 
+      class="false "
+      _blank
+      noopener noreferrer
+      aria-label="GBNF Github package"
+    >
+      Github
+      
+    </a>
+    
+        <theme-toggle></theme-toggle>
+        <div class="mobile" id="docsearch"></div>
+      </div>
+    </header>
+  
+
+
+        
+  <main tabindex="-1" id="page">
+    
+  <nav id="left-nav">
+    <ul>
+      <li class="open">
+    <div class="inner">
+    <div class="menu-list ">
+      <a href="/foo">foo</a>
+      
+    </div>
+    
+    </div>
+  </li>
+<li class="open">
+    <div class="inner">
+    <div class="menu-list ">
+      <a href="/index">index</a>
+      
+    </div>
+    
+    </div>
+  </li>
+    </ul>
+  </nav>
+
+    <article id="page-article" class="markdown-body">
+      
+  <aside 
+    id="toc-mobile" x-data="{ open: false }" 
+    :class="{ 'open': open }"
+    class="open" @click.outside="open = false"
+  >
+    <div class="inner">
+      <label>
+        <span>On this page</span> 
+        <button id="toggle-toc" class="toggle" aria-label="Toggle the ToC" type="button" @click="open = ! open"></button>
+      </label>
+      
+  <div class="toc">
+    <ol>
+      
+    </ol>
+  </div>
+
+    </div>
+  </aside>
+
+      <div id="content">
+        <h1>Foo</h1>
+        <p>I am foO!</p>
+
+      </div>
+
+      
+    <div id="pagination">
+      <div class="left"></div>
+      <div class="right">
+  <a class="button" href="/index" aria-role="next">
+    <label>Next</label>
+    <span>index</span>
+  </a>
+</div>
+    </div>
+  
+    </article>
+
+    <aside id="toc-desktop">
+      
+  <div class="toc">
+    <ol>
+      
+    </ol>
+  </div>
+
+    </aside>
+  </main>
+
+        <!-- theme.bodyTags -->
+            <script data-file="theme" type="module" defer=true src="/Users/thekevinscott/code/gbnf/node_modules/.pnpm/docoddity@0.3.1_@algolia+client-search@4.24.0_@types+react@18.3.8_search-insights@2.17.2/node_modules/docoddity/dist/themes/default/scripts/index.ts"></script>
+        <!-- docoddity.bodyTags -->
+        
+      </body>
+    </html>

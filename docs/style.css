@@ -1,0 +1,80 @@
+main#home {
+  --max-width: 800px;
+  --min-width: 800px;
+  min-height: calc(100vh - calc(var(--header-height)* 2));
+  max-height: calc(100vh - calc(var(--header-height)* 1));
+  overflow: hidden;
+  min-width: var(--min-width);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: calc(var(--padding) * 8) calc(var(--padding) * 4) calc(var(--padding) * 4) calc(var(--padding) * 4);
+  display: flex;
+  /* flex-direction: column; */
+  box-sizing: border-box;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center;
+  align-items: center; */
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  text-align: left;
+
+  & #home-hello {
+
+    max-height: 100%;
+    overflow: hidden;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: calc(var(--padding) * 6);
+
+    & #two-col {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: calc(var(--padding) * 6);
+    }
+
+  }
+
+  & h1,
+  & h2,
+  & h3 {
+    /* font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, "system-ui", "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; */
+    color: black;
+    margin: 0;
+  }
+
+  & h1 {
+    font-size: 8rem;
+    font-weight: 600;
+    line-height: 8rem;
+  }
+
+  & h2 {
+    font-size: 2.4rem;
+    /* margin-top: calc(var(--padding)* 2); */
+    font-weight: 200;
+    text-align: left;
+  }
+
+  #left {
+    flex: 1;
+    max-width: 50%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  code-editor {
+    flex: 1;
+    /* margin-top: 1.5rem; */
+    max-width: 50%;
+    --ce-max-width: 100%;
+    --ce-margin: 0;
+  }
+}
