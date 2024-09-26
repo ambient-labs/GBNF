@@ -19,7 +19,7 @@ jobs:
           cache-dependency-path: ${{ inputs.package }}/dev-deps/python3.11/build.txt
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
 
       - run: python3 -m venv .venv/dev && source .venv/dev/bin/activate
         working-directory: ${{ inputs.package }}
@@ -42,7 +42,7 @@ jobs:
       - uses: pnpm/action-setup@v3
         name: Install pnpm
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Get pnpm store directory
