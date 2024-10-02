@@ -1,5 +1,45 @@
+:root {
+  --color-anchor-active: #55b5db;
+  --color-inline-code: #a074c4;
+  --color-main: black;
+
+  --color-code-console-background: rgba(255, 255, 255, 1);
+  --color-code-console-border: rgba(0, 0, 0, 0.05);
+  --color-code-console-warn-background: rgb(255, 246, 213);
+  --color-code-console-warn-color: rgb(232, 110, 47);
+  --color-code-console-error-background: rgb(252, 235, 235);
+  --color-code-console-error-color: rgb(222, 55, 48);
+
+  --color-code-console-number: rgba(8, 66, 160);
+  --color-code-console-string: #ff7c29;
+  --color-code-console-string-single: rgba(0, 0, 0, , 1);
+  --color-code-console-null: rgba(255, 255, 255, 0.4);
+
+  /* --color-nav-bg: #242c38; */
+}
+
+[data-theme='dark'] {
+  /* --color-anchor-active: var(--color-accent-fg); */
+  --color-inline-code: #a074c4;
+  --color-main: rgba(255, 255, 225, 0.8);
+
+  --color-code-console-background: rgba(0, 0, 0, 0.025);
+  --color-code-console-border: rgba(255, 255, 255, 0.05);
+  --color-code-console-error: rgb(254, 217, 213);
+  --color-code-console-error-background: rgb(78, 54, 52);
+  --color-code-console-warn: rgb(253, 243, 170);
+  --color-code-console-warn-background: rgb(65, 61, 38);
+  --color-code-console-number: rgba(194, 195, 255);
+  --color-code-console-string: #ff7c29;
+  --color-code-console-string-single: rgba(255, 255, 255, 1);
+  --color-code-console-null: rgba(255, 255, 255, 0.4);
+
+
+}
+
 main#home {
-  --max-width: 800px;
+  --max-width: 1200px;
+  width: 1200px;
   --min-width: 800px;
   min-height: calc(100vh - calc(var(--header-height)* 2));
   max-height: calc(100vh - calc(var(--header-height)* 1));
@@ -45,14 +85,14 @@ main#home {
   & h2,
   & h3 {
     /* font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, "system-ui", "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; */
-    color: black;
+    color: var(--color-main);
     margin: 0;
   }
 
   & h1 {
-    font-size: 8rem;
+    font-size: 4.4rem;
     font-weight: 600;
-    line-height: 8rem;
+    /* line-height: 8rem; */
   }
 
   & h2 {
@@ -70,11 +110,100 @@ main#home {
     display: flex;
   }
 
-  code-editor {
+  #home-header {
+    display: flex;
+    gap: calc(var(--padding) * 6);
     flex: 1;
+    width: 100%;
+
+    >* {
+      flex: 1;
+    }
+  }
+
+  code-editor {
+    /* margin: calc(var(--padding) * 6) 0; */
+    /* flex: 1; */
     /* margin-top: 1.5rem; */
-    max-width: 50%;
+    /* max-width: 50%; */
+    width: 100%;
+    max-width: 100%;
     --ce-max-width: 100%;
     --ce-margin: 0;
+    --font-size: 24px;
+  }
+
+  ul {
+    li {
+      list-style: disc;
+      list-style-position: inside;
+      font-size: 1.5rem;
+    }
+
+  }
+}
+
+article {
+  & .markdown-body {
+
+    h2 {
+      font-size: 3rem;
+      border-bottom: none;
+      margin: 4rem 0 0 0;
+      padding: 0;
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: "Crimson Text", "Work Sans", "Open Sans", sans-serif;
+
+    }
+
+    pre {
+      font-size: 56%;
+    }
+
+    ol li {
+      list-style: decimal;
+    }
+
+    ul li {
+      list-style: disc;
+    }
+
+    table {
+      font-family: monospace;
+      font-size: 14px;
+      margin: calc(var(--padding) * 4) 0;
+
+      thead th {
+        background: rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+}
+
+[data-theme='dark'] {
+  main {
+    article {
+      & .markdown-body {
+
+        p {
+          color: var(--color-main);
+        }
+
+        .shiki,
+        .shiki span {
+          color: var(--shiki-dark) !important;
+          background-color: var(--shiki-dark-bg) !important;
+          font-style: var(--shiki-dark-font-style) !important;
+          font-weight: var(--shiki-dark-font-weight) !important;
+          text-decoration: var(--shiki-dark-text-decoration) !important;
+        }
+      }
+    }
   }
 }

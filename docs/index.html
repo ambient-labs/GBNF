@@ -1,8 +1,18 @@
+<code-editor-actions></code-editor-actions>
 <main id="home">
+  <div id="home-header">
+    <header>
 
-<h1>GBNF</h1>
-<h2>Parse and create GBNF grammars</h1>
+  <h1>GBNF</h1>
+  <h2>Grammar Parsing and Generation</h2>
+
+    </header>
+<code-editor language="javascript">import GBNF from 'gbnf'
+
+const grammar = GBNF('root ::= "foo" | "bar" | "baz"')
+console.log([...grammar]) // get rules</code-editor>
+
+
+  </div>
+
 </main>
-<script type="module">
-
-</script>

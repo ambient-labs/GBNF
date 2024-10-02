@@ -4,6 +4,8 @@
     "strict": true,
     "target": "esnext",
     "module": "nodenext",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
