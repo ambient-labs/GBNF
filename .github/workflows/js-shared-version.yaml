@@ -46,15 +46,33 @@ jobs:
           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
         run: echo "new tag $NEW_TAG"
 
+      # - name: 'Pull, rebase, and push'
+      #   run: |
+      #     git remote set-url origin https://${{ secrets.GH_TOKEN}}@github.com/ambient-labs/GBNF.git
+      #     git pull --rebase
+      #     git push origin HEAD:main
+      #     git push origin tag $NEW_TAG
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      #     NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+
       - name: 'Pull, rebase, and push'
         run: |
           git remote set-url origin https://${{ secrets.GH_TOKEN}}@github.com/ambient-labs/GBNF.git
-          git pull --rebase
-          git push origin HEAD:main
-          git push origin tag $NEW_TAG
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+          
+          retries=0
+          until [ "$retries" -ge 3 ]
+          do
+            git pull --rebase && git push origin HEAD:main && git push origin tag $NEW_TAG && break
+            retries=$((retries+1))
+            echo "Retrying in 5 seconds..."
+            sleep 5
+          done
+          
+          if [ "$retries" -ge 3 ]; then
+            echo "Failed after 3 retries. Exiting."
+            exit 1
+          fi
 
 permissions:
   contents: read
