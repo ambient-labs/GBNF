@@ -10,7 +10,7 @@ import { RulesBuilder, } from "./rules-builder/index.js";
 import { GBNFRule, } from "./builder/gbnf-rule.js";
 
 export const GBNF = (input: string | GBNFRule, initialString: ValidInput = ''): ParseState => {
-  const grammar = typeof input === 'string' ? input : input.compile();
+  const grammar = typeof input === 'string' ? input : input.toString();
   const { rules, symbolIds, } = new RulesBuilder(grammar);
   if (rules.length === 0) {
     throw new GrammarParseError(grammar, 0, 'No rules were found');

@@ -26,7 +26,7 @@ describe('joinCondition', () => {
     'table1.col1 = table2.col2 AND table1.col1 = table2.col2',
     'table1.col1 = table2.col2 OR table1.col1 = table2.col2',
   ])('it parses schema to grammar with input "%s"', (initial) => {
-    const fullGrammar = rule.compile({
+    const fullGrammar = rule.toString({
       include,
     });
     // console.log(fullGrammar);
@@ -40,7 +40,7 @@ describe('joinCondition', () => {
     ['table1.col1 = table2.col2);', 25],
     [`foo = foo and bar = bar or baz = bz`, 10],
   ])('it raises on bad input %s', (_initial, errorPos) => {
-    const fullGrammar = rule.compile({
+    const fullGrammar = rule.toString({
       include,
     });
     // console.log(fullGrammar);

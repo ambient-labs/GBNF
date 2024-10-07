@@ -40,7 +40,7 @@ describe('joinClause', () => {
     'INNER JOIN table1 ON \\n\\n ',
     'INNER JOIN table1  \\n\\nON ',
   ])('it parses schema to grammar with input "%s"', (initial) => {
-    let parser = GBNF(joinClause.compile({
+    let parser = GBNF(joinClause.toString({
       caseKind: 'any',
       include: verboseInclude,
     }));
@@ -56,7 +56,7 @@ describe('joinClause', () => {
     ['outer left JOIN table1 ON ', 6],
   ])('it raises on bad input %s', (_initial, errorPos) => {
     // console.log(fullGrammar);
-    let parser = GBNF(joinClause.compile({
+    let parser = GBNF(joinClause.toString({
       caseKind: 'any',
       include: verboseInclude,
     }));

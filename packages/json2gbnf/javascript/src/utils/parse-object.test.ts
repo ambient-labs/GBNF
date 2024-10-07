@@ -56,7 +56,7 @@ describe('parseObject', () => {
       throw new Error('Expected rule to be a GBNFRule');
     }
     expect(() => GBNF([
-      rule.compile({
+      rule.toString({
         include,
       }),
       `value ::= ""`,
@@ -183,7 +183,7 @@ describe('parseObject', () => {
       throw new Error('Expected rule to be a GBNFRule');
     }
     expect(() => {
-      const grammar = rule.compile({
+      const grammar = rule.toString({
         include,
       });
       // console.log(grammar);
@@ -239,7 +239,7 @@ describe('parseObject', () => {
     if (typeof rule === 'string') {
       throw new Error('Expected rule to be a GBNFRule');
     }
-    const grammar = rule.compile({
+    const grammar = rule.toString({
       include
     });
     // console.log(grammar);
@@ -269,7 +269,7 @@ describe('parseObject', () => {
       additionalProperties: false,
       required,
     };
-    const rule = parseObject(schema).compile({
+    const rule = parseObject(schema).toString({
       include,
     });
     expect(() => GBNF(rule, initial)).toThrow();
@@ -286,7 +286,7 @@ describe('parseObject', () => {
       },
       additionalProperties: false,
     };
-    const rule = parseObject(schema).compile({
+    const rule = parseObject(schema).toString({
       include,
     });
     expect(() => GBNF(rule, initial)).toThrow();

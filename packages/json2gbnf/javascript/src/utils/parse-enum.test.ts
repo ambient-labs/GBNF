@@ -24,7 +24,7 @@ describe('parseEnum', () => {
   ]))), []);
   test.each(testCases)(`should parse schema '%s' for string '%s'`, (schema, initial) => {
     expect(() => {
-      const grammar = parseEnum(schema).compile();
+      const grammar = parseEnum(schema).toString();
       GBNF(grammar, JSON.stringify(initial));
     }).not.toThrow();
   });

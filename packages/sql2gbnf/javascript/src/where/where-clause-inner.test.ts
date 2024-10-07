@@ -17,7 +17,7 @@ import {
 } from '../__fixtures__/includes.js';
 
 describe('whereClauseInner', () => {
-  const grammar = whereClauseInner.compile({
+  const grammar = whereClauseInner.toString({
     include,
     caseKind: 'any',
   });

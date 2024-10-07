@@ -31,7 +31,7 @@ describe('select', () => {
     'SELECT (SELECT (SELECT (SELECT qux FROM table4) FROM table3) FROM table2) FROM table',
   ])('it parses schema to grammar with input "%s"', (initial) => {
     let parser = GBNF([
-      selectRule.compile({
+      selectRule.toString({
         include,
         caseKind: 'any',
       }),
@@ -48,7 +48,7 @@ describe('select', () => {
     `SELECT * FROM foo WHERE name = 'bar'\\n\\nAnd you like "bar"`,
   ])('it rejects %s for a non-schema', (_initial) => {
     let parser = GBNF([
-      selectRule.compile({
+      selectRule.toString({
         include,
         caseKind: 'any',
       }),

@@ -46,7 +46,7 @@ describe('parseType', () => {
   ])(`it should parse '%s' for '%s'`, (schema, initial) => {
     const rule = parseType(schema as ParseTypeArg);
     expect(() => GBNF([
-      rule.compile({
+      rule.toString({
         include,
       }),
       `value ::= [0-9]`,

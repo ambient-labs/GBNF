@@ -37,7 +37,7 @@ describe('JSON2GBNF', () => {
   });
 
   test('it returns blank grammar if passed false', () => {
-    expect(JSON2GBNF(false)).toEqual(_`""`.compile());
+    expect(JSON2GBNF(false)).toEqual(_`""`.toString());
   });
 
   test('it throws an error if schema is an object with an unsupported schema version', () => {
