@@ -20,5 +20,5 @@ export const parseEnum = (
       return _`${quoteRule} ${JSON.stringify(value)} ${quoteRule}`;
     }
     return _`"${JSON.stringify(value)}"`;
-  })}`.separate(' | ');
+  })}`.join(' | ');
 };

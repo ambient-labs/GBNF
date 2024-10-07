@@ -77,7 +77,7 @@ export class GBNFRule {
     return this.clone({ wrapped, });
   };
 
-  separate = (separator: string) => {
+  join = (separator: string) => {
     return this.clone({ separator, });
   };
 

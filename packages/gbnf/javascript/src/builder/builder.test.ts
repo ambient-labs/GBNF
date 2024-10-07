@@ -289,7 +289,7 @@ describe('builder', () => {
           'x-a ::= x',
         ].join('\\n'),
         _`
-         ${_`${["fxx", "bar"]}`.separate(' | ')}
+         ${_`${["fxx", "bar"]}`.join(' | ')}
       `,
       ],
       [
