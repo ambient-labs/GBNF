@@ -15,10 +15,10 @@ export const parseEnum = (
   if (schema.enum.length === 0) {
     throw new Error('Enum must have at least one value');
   }
-  return _`${schema.enum.map(value => {
+  return g`${schema.enum.map(value => {
     if (typeof value === 'string') {
-      return _`${quoteRule} ${JSON.stringify(value)} ${quoteRule}`;
+      return g`${quoteRule} ${JSON.stringify(value)} ${quoteRule}`;
     }
-    return _`"${JSON.stringify(value)}"`;
+    return g`"${JSON.stringify(value)}"`;
   })}`.join(' | ');
 };

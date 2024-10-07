@@ -8,44 +8,44 @@ export const OPT_WS = 'opt-ws';
 export const NR_OPT_WS = 'non-rec-opt-ws';
 export const VALUE = 'value';
 
-const baseNumRule = _`"-"? ${_`[0-9] | ([1-9] [0-9]*)`}`.key('base-num');
-export const quoteRule = _`"\\""`.key('quote');
-export const numRule = _`
+const baseNumRule = g`"-"? ${g`[0-9] | ([1-9] [0-9]*)`}`.key('base-num');
+export const quoteRule = g`"\\""`.key('quote');
+export const numRule = g`
   ${baseNumRule} 
-  ${_`
+  ${g`
     "." 
     [0-9]+
   `.wrap('?')} 
-  ${_`
+  ${g`
     [eE] 
     [-+]? 
     [0-9]+
   `.wrap('?')}
 `.key('number');
-export const intRule = _`
+export const intRule = g`
   ${baseNumRule} 
-  ${_`
+  ${g`
     "." 
     [0]+
   `.wrap('?')}
 `.key('integer');
-export const boolRule = _`
+export const boolRule = g`
   "true" 
   | "false"
 `.key('boolean');
-export const nullRule = _`"null"`.key('null');
-export const charRule = _`[^"']`;
-// export const char = _`[^"'\\n\\r\\t]`;
-export const strRule = _`
+export const nullRule = g`"null"`.key('null');
+export const charRule = g`[^"']`;
+// export const char = g`[^"'\\n\\r\\t]`;
+export const strRule = g`
   ${quoteRule} 
   ${charRule.wrap('*')} 
   ${quoteRule}
   `.key('string');
-export const arrRule = (value: GBNFRule | string = VALUE) => _`
+export const arrRule = (value: GBNFRule | string = VALUE) => g`
   "[" 
-  ${_`
+  ${g`
     ${value}
-    ${_`
+    ${g`
       "," 
       ${OPT_WS}
       ${value}
@@ -54,17 +54,17 @@ export const arrRule = (value: GBNFRule | string = VALUE) => _`
   "]" 
 `.key('array');
 export const objRule = (value: GBNFRule | string = VALUE) => {
-  const propertyKeyPair = _`
+  const propertyKeyPair = g`
       ${strRule}
     ":" 
     ${OPT_WS}
     ${value}
   `;
-  return _`
+  return g`
   "{" 
-  ${_`
+  ${g`
     ${propertyKeyPair}
-    ${_`
+    ${g`
       "," 
       ${OPT_WS}
       ${propertyKeyPair}
@@ -74,7 +74,7 @@ export const objRule = (value: GBNFRule | string = VALUE) => {
 `.key('object');
 };
 
-export const value = _`
+export const value = g`
   ${numRule} | ${boolRule} | ${nullRule} | ${strRule} | ${arrRule()} | ${objRule()}
 `.key(VALUE);
 

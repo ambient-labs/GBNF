@@ -8,13 +8,13 @@ import {
   // getEquijoinCondition, 
   joinCondition,
 } from './join-condition.js';
-import { _ } from 'gbnf/builder';
+import { g } from 'gbnf/builder';
 import {
   include,
 } from '../__fixtures__/includes.js';
 
 describe('joinCondition', () => {
-  const ws = _`[ \\n\\r]`;
+  const ws = g`[ \\n\\r]`;
   const rule = joinCondition;
   test.each([
     'foo.school_name = p.school_name',

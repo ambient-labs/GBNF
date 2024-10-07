@@ -9,13 +9,13 @@ import {
   fullSelectQuery,
 } from "./full-select-query.js";
 
-export const selectRule = _`
+export const selectRule = g`
   ${fullSelectQuery}
-  ${_`
+  ${g`
     ${ws} 
     ${$`UNION`} 
     ${ws} 
-    ${_`
+    ${g`
       ${$`ALL`} 
       ${ws}
     `.wrap('?')} 

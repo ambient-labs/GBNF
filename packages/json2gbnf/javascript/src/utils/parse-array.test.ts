@@ -18,7 +18,7 @@ import {
   WS
 } from '../constants.js';
 
-const ws = _`[ \\t\\n\\r]`.key(WS);
+const ws = g`[ \\t\\n\\r]`.key(WS);
 const opt_ws = ws.wrap('?').key(OPT_WS);
 const include = [opt_ws];
 

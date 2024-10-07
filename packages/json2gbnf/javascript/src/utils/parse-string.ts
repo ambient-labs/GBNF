@@ -25,20 +25,20 @@ export const parseString = (schema: JSONSchemaString): GBNFRule => {
     }
     const minChars = Array<GBNFRule>(minLength).fill(charRule);
     const maxChars = Array<GBNFRule>(maxLength - minLength).fill(charRule.wrap('?'));
-    return _`
+    return g`
       ${quoteRule}
       ${[...minChars, ...maxChars,]}
       ${quoteRule}
     `;
   } else if (minLength) {
-    return _`
+    return g`
       ${quoteRule}
       ${Array(minLength - 1).fill(charRule)}
       ${charRule.wrap('+')}
       ${quoteRule}
     `;
   } else if (maxLength) {
-    const rule = _`
+    const rule = g`
       ${quoteRule}
       ${Array(maxLength).fill(charRule.wrap('?'))}
       ${quoteRule}

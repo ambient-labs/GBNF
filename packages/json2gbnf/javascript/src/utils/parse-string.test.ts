@@ -73,7 +73,7 @@ describe('parseString', () => {
   ])('should throw an error when %s', (schema, initial, errorPos) => {
     const error = new InputParseError(JSON.stringify(initial), errorPos);
     expect(() => {
-      const grammar = _`${parseString({
+      const grammar = g`${parseString({
         type: 'string',
         ...schema,
       })} `.toString();

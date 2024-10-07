@@ -22,7 +22,7 @@ import {
   WS
 } from '../constants.js';
 
-const ws = _`[ \\t\\n\\r]`.key(WS);
+const ws = g`[ \\t\\n\\r]`.key(WS);
 const opt_ws = ws.wrap('?').key(OPT_WS);
 
 const include = [opt_ws];
@@ -35,7 +35,7 @@ describe('Multiple Primitives', () => {
     const rule = parsePrimitives(schema);
     expect(rule.toString({
       include,
-    })).toEqual(_`${[strRule, numRule]}`.join(' | ').toString({
+    })).toEqual(g`${[strRule, numRule]}`.join(' | ').toString({
       include,
     }));
   });
@@ -47,7 +47,7 @@ describe('Multiple Primitives', () => {
     const rule = parsePrimitives(schema);
     expect(rule.toString({
       include,
-    })).toEqual(_`${[strRule, numRule, boolRule, nullRule, objRule(), arrRule()]}`.join(' | ').toString({
+    })).toEqual(g`${[strRule, numRule, boolRule, nullRule, objRule(), arrRule()]}`.join(' | ').toString({
       include,
     }));
   });

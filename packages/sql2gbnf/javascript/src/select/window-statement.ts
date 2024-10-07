@@ -9,20 +9,20 @@ import {
   nroptws,
 } from '../constants.js';
 
-const rankRule = _`
-  ${_`${[$`RANK`, $`DENSE_RANK`, $`ROW_NUMBER`,]}`.join(' | ')}
+const rankRule = g`
+  ${g`${[$`RANK`, $`DENSE_RANK`, $`ROW_NUMBER`,]}`.join(' | ')}
   "()"
 `;
 
-const leadLagRule = _`
-  ${_`${[$`LEAD`, $`LAG`,]}`.join(' | ')}
+const leadLagRule = g`
+  ${g`${[$`LEAD`, $`LAG`,]}`.join(' | ')}
   "("
     ${nroptws}
     ${columnName}
     ","
     ${optws}
     ${positiveInteger}
-    ${_`
+    ${g`
       "," 
       ${optws} 
       ${positiveInteger}
@@ -31,4 +31,4 @@ const leadLagRule = _`
   ")"
 `;
 
-export const windowStatement = _` ${[rankRule, leadLagRule,]} `.join(' | ');
+export const windowStatement = g` ${[rankRule, leadLagRule,]} `.join(' | ');

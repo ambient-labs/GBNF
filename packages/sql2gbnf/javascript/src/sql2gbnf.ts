@@ -32,8 +32,8 @@ export function SQL2GBNF(schemaDef: DBMLSchemaOpts = {}, {
     caseKind,
     include: [
       rules.ws.key(ws),
-      _`${rules.optRecWS}`.key(optws),
-      _`${rules.optNonRecWS}`.key(nroptws),
+      g`${rules.optRecWS}`.key(optws),
+      g`${rules.optNonRecWS}`.key(nroptws),
     ],
   });
 };

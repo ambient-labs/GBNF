@@ -25,15 +25,15 @@ export const getSQLGBNF = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   database?: Database,
   // schema?: string,
-): GBNFRule => _`
+): GBNFRule => g`
   ${nroptws}
-  ${_`
+  ${g`
     ${selectRule}
     | ${insertRule} 
     | ${deleteRule}
     | ${updateRule}
   `.wrap()}
-  ${_`
+  ${g`
     ${nroptws} 
     ";"
   `.wrap('?')}

@@ -44,7 +44,7 @@ describe('delete', () => {
     `DELETE FROM orders o \\n USING customers c \\n JOIN products p ON o.product_id = p.product_id \\n WHERE o.total_amount > 100 \\n AND c.country = 'USA' \\n AND p.category = 'Electronics' \\n ORDER BY o.order_date DESC \\n `,
     `DELETE FROM orders o \\n USING customers c \\n JOIN products p ON o.product_id = p.product_id \\n WHERE o.total_amount > 100 \\n AND c.country = 'USA' \\n AND p.category = 'Electronics' \\n ORDER BY o.order_date DESC \\n LIMIT 10`,
   ])('it parses schema to grammar with input "%s"', (initial) => {
-    const ws = _`[ \\n\\r]`;
+    const ws = g`[ \\n\\r]`;
     let parser = GBNF([
       deleteRule.toString({
         caseKind: 'any',

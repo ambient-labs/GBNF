@@ -71,24 +71,24 @@ export const parseObject = (
   if (properties !== undefined && typeof properties === 'object') {
     const keys: ObjectEntry[] = Object.entries(properties).map(([key, value,]) => ({
       key,
-      rule: _` ${quoteRule} ${`"${key}"`} ${quoteRule} ":"  ${getPropertiesValue(value)} `,
+      rule: g` ${quoteRule} ${`"${key}"`} ${quoteRule} ":"  ${getPropertiesValue(value)} `,
     }));
     if (fixedOrder) {
-      const getPermutation = (entries: ObjectEntry[]) => _`
-        ${[entries[0].rule, ...entries.slice(1).map(({ rule, }) => _`"," ${rule}`.wrap('?')),]}
+      const getPermutation = (entries: ObjectEntry[]) => g`
+        ${[entries[0].rule, ...entries.slice(1).map(({ rule, }) => g`"," ${rule}`.wrap('?')),]}
       `;
       const permutations = Array(keys.length).fill(0).map((__, i) => getPermutation(keys.slice(i)));
-      return _`
+      return g`
         "{"
-          ${_`${permutations}`.join(' | ').wrap('?')}
+          ${g`${permutations}`.join(' | ').wrap('?')}
         "}"
       `;
     }
 
     if (additionalProperties) {
-      const anyObjectEntry = _` ${strRule} ":" ${value} `;
+      const anyObjectEntry = g` ${strRule} ":" ${value} `;
       keys.push({
-        rule: _` ${anyObjectEntry} ${_`"," ${anyObjectEntry}`.wrap('*')}`.wrap('?'),
+        rule: g` ${anyObjectEntry} ${g`"," ${anyObjectEntry}`.wrap('*')}`.wrap('?'),
       });
     }
 
@@ -98,11 +98,11 @@ export const parseObject = (
       required,
     ).map(r => r.map(({
       rule,
-    }) => rule.wrap('?'))).map(permutation => permutation.length === 1 ? permutation : _`${permutation}`.join('","'));
+    }) => rule.wrap('?'))).map(permutation => permutation.length === 1 ? permutation : g`${permutation}`.join('","'));
 
-    return _`
+    return g`
       "{"
-        ${permutations.length === 1 ? permutations[0] : _`${permutations}`.join('|')}
+        ${permutations.length === 1 ? permutations[0] : g`${permutations}`.join('|')}
       "}"
     `;
   }

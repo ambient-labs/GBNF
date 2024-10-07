@@ -14,35 +14,35 @@ import {
   optws,
 } from "../constants.js";
 
-export const havingClause = _`
+export const havingClause = g`
   ${ws}
   ${$`HAVING`}
   ${ws}
   ${columnNames}
-  ${_`${ws} ${asAlias}`.wrap('?')}
+  ${g`${ws} ${asAlias}`.wrap('?')}
   (
-    ${_`
+    ${g`
       ${ws} 
       ${$`IS`} 
       ${ws} 
-      ${_`${$`NOT`} ${ws}`.wrap('?')} 
+      ${g`${$`NOT`} ${ws}`.wrap('?')} 
       ${$`NULL`}
     `}
-    | ${_`
+    | ${g`
       ${optws} 
       ${numericOps} 
       ${optws} 
-      ${_`
+      ${g`
         ${number} 
         | ${stringWithQuotes}
       `}
     `}
-    | ${_`${ws} ${$`LIKE`} ${ws} ${stringWithQuotes}`}
-    | ${_`
+    | ${g`${ws} ${$`LIKE`} ${ws} ${stringWithQuotes}`}
+    | ${g`
       ${optws} 
       ${equalOps} 
       ${optws} 
-      ${_`
+      ${g`
         ${stringWithQuotes} 
         | ${boolean} 
         | ${number}

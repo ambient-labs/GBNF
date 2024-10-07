@@ -45,7 +45,7 @@ export const parseArray = (
     return arrRule();
   }
   const types = ([] as PrimitiveType[]).concat(schema.items.type);
-  const possibleValue = _`${types.map((type) => ({
+  const possibleValue = g`${types.map((type) => ({
     string: strRule,
     number: numRule,
     array: arrRule(),

@@ -23,9 +23,9 @@ import {
   FULL_SELECT_QUERY,
 } from '../keys.js';
 
-const numberRule = _`
+const numberRule = g`
   ${number}
-  ${_`
+  ${g`
     ${optws}
     ${arithmeticOps}
     ${optws}
@@ -33,17 +33,17 @@ const numberRule = _`
   `.wrap('*')}
 `;
 
-export const validUpdateValue = _`${stringWithQuotes} | ${numberRule} | ${boolean} | "NULL" | "null"`;
+export const validUpdateValue = g`${stringWithQuotes} | ${numberRule} | ${boolean} | "NULL" | "null"`;
 
-const setStatement = _`
+const setStatement = g`
   ${columnName}
   ${optws}
   "="
   ${optws}
-  ${_`
+  ${g`
     ${validUpdateValue}
     | ${columnName}
-    | ${_`
+    | ${g`
       "(" 
         ${nroptws} 
         ${FULL_SELECT_QUERY}
@@ -53,12 +53,12 @@ const setStatement = _`
   `}
 `;
 
-export const updateRule = _`
+export const updateRule = g`
   ${$`UPDATE`}
   ${ws}
   ${tableWithAlias}
 
-  ${_`
+  ${g`
     ${ws} 
     ${joinClause}
   `.wrap('*')}
@@ -66,7 +66,7 @@ export const updateRule = _`
   ${$`SET`}
   ${ws}
   ${setStatement}
-  ${_`
+  ${g`
     ${nroptws}
     ","
     ${optws}

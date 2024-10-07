@@ -10,11 +10,11 @@ import {
   nroptws,
 } from '../constants.js';
 
-const equijoinConditions = _`
+const equijoinConditions = g`
   ${whereClauseInner}
-  ${_`
+  ${g`
     ${ws}
-    ${_`
+    ${g`
       ${$`AND`}
       | ${$`OR`}
     `}
@@ -22,8 +22,8 @@ const equijoinConditions = _`
     ${whereClauseInner}
   `.wrap('*')}
 `;
-export const joinCondition = _`
-  ${_`
+export const joinCondition = g`
+  ${g`
     "("
       ${nroptws}
       ${equijoinConditions}

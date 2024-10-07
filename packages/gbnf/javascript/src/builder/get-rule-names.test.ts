@@ -25,7 +25,7 @@ describe('getRuleNames', () => {
 
   test('it gets rule names for rules', () => {
     expect(getRuleNames(
-      [_`a`.key('a1'), _`b`.key('b1')],
+      [g`a`.key('a1'), g`b`.key('b1')],
       parser,
       'default',
     )).toEqual(['a1', 'b1']);
@@ -33,7 +33,7 @@ describe('getRuleNames', () => {
 
   test('it returns a mixed group', () => {
     expect(getRuleNames(
-      ['foo', _`a`.key('a1'), undefined, _`b`.key('b1')],
+      ['foo', g`a`.key('a1'), undefined, g`b`.key('b1')],
       parser,
       'default',
     )).toEqual(['foo', 'a1', undefined, 'b1']);
@@ -44,13 +44,13 @@ describe('getRuleNames', () => {
       [
         [
           'foo',
-          _`a`.key('a1'),
+          g`a`.key('a1'),
           undefined,
           [
-            _`c`.key('c1'),
-            _`d`.key('d1'),
+            g`c`.key('c1'),
+            g`d`.key('d1'),
           ],
-          _`b`.key('b1'),
+          g`b`.key('b1'),
         ],
         ['foo', 'a1', undefined, 'x', 'b1'],
         [

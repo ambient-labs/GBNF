@@ -6,7 +6,7 @@ import {
 
 const isWhitespaceKind = (whitespace: WhitespaceKind): whitespace is WhitespaceKind => ['default', 'succinct', 'verbose',].includes(whitespace);
 
-const WS = _`[ \\t\\n\\r]`;
+const WS = g`[ \\t\\n\\r]`;
 
 const getGetWhitespaceDef = (whitespace: WhitespaceKind) => (mandatory: boolean, recommended = true) => {
   if (!isWhitespaceKind(whitespace)) {

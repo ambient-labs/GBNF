@@ -11,17 +11,17 @@ import {
   joinCondition,
 } from './join-condition.js';
 
-export const joinClause = _` 
-  ${_`
-    ${_`
+export const joinClause = g` 
+  ${g`
+    ${g`
       ${$`LEFT`}
       | ${$`RIGHT`}
       | ${$`FULL`}
     `}
     ${ws}
   `.wrap('?')}
-  ${_`
-    ${_`
+  ${g`
+    ${g`
       ${$`INNER`}
       | ${$`OUTER`}
     `}
@@ -30,7 +30,7 @@ export const joinClause = _`
   ${$`JOIN`} 
   ${ws} 
   ${tableName}
-  ${_`${ws} ${validAlias}`.wrap('?')}
+  ${g`${ws} ${validAlias}`.wrap('?')}
   ${ws} 
   ${$`ON`} 
   ${ws} 

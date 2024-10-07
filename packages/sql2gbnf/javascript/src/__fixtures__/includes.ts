@@ -7,14 +7,14 @@ import {
   _,
 } from 'gbnf/builder';
 
-export const WS = _`[ \\t\\n\\r]`;
+export const WS = g`[ \\t\\n\\r]`;
 export const include = [
-  _`${WS}`.key(ws),
-  _`${ws}`.wrap('*').key(optws),
-  _`${ws}`.wrap('*').key(nroptws),
+  g`${WS}`.key(ws),
+  g`${ws}`.wrap('*').key(optws),
+  g`${ws}`.wrap('*').key(nroptws),
 ];
 export const verboseInclude = [
-  _`${WS}`.wrap('+').key(ws),
-  _`${ws}`.wrap('*').key(optws),
-  _`${ws}`.wrap('*').key(nroptws),
+  g`${WS}`.wrap('+').key(ws),
+  g`${ws}`.wrap('*').key(optws),
+  g`${ws}`.wrap('*').key(nroptws),
 ]
