@@ -197,11 +197,8 @@ export class GBNFRule {
   };
 
   addToParser = (parser: GrammarBuilder, caseKind: CaseKind, leaf = false): string => {
-    const {
-      #name: name,
-    } = this;
     const gbnf = this.getGBNF(parser, caseKind);
-    return parser.addRule(gbnf, !leaf ? 'root' : name);
+    return parser.addRule(gbnf, !leaf ? 'root' : this.#name);
   };
 }
 
