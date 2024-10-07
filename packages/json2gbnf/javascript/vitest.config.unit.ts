@@ -1,3 +1,4 @@
+import path from 'path';
 import { defineConfig, } from 'vitest/config';
 
 export default defineConfig({
@@ -21,6 +22,9 @@ export default defineConfig({
     typecheck: {
       tsconfig: './tsconfig.test.json',
     },
+    setupFiles: [
+      path.resolve(__dirname, './integration-tests/setup/index.ts'),
+    ],
     globals: true,
   },
 });

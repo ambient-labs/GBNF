@@ -82,17 +82,31 @@ describe('failures', () => {
       // "country: "USAA" is valid down the additional properties path, and we
       // have no way to blacklist a set of property names from that path
       // [
-      //   {
-      //     type: 'object',
-      //     properties: {
-      //       country: {
-      //         const: 'USA',
-      //       }
+      // {
+      //   type: 'object',
+      //   properties: {
+      //     country: {
+      //       const: 'USA',
       //     }
-      //   },
-      //   JSON.stringify({ "country": "USAA" }),
-      //   15,
+      //   }
+      // },
+      // JSON.stringify({ "country": "USAA" }),
+      // 15,
       // ],
+      [
+        {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            number: { type: 'number' },
+            street_name: { type: 'string' },
+            street_type: { enum: ['Street', 'Avenue', 'Boulevard'] },
+          },
+          required: ['street_name'],
+        },
+        '{,',
+        undefined,
+      ],
       [
         {
           type: 'object',
