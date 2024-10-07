@@ -1,5 +1,5 @@
 export {
-  _,
+  g,
   $,
 } from './template-tags.js';
 export {

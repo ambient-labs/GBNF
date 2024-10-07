@@ -1,5 +1,5 @@
 import {
-  _,
+  g,
   $,
 } from "gbnf/builder";
 import {
@@ -15,49 +15,49 @@ import {
   nroptws,
 } from "../constants.js";
 
-export const whereClauseInner = _`
+export const whereClauseInner = g`
   ${columnName}
-  ${_`
-    ${_`
+  ${g`
+    ${g`
       ${optws} 
       ${equalOps}
       ${optws}
-      ${_`
+      ${g`
         ${columnName}
         | ${positiveInteger}
         | ${stringWithQuotes}
       `}
     `}
-    | ${_`
+    | ${g`
       ${optws} 
       ${numericOps}
       ${optws}
-      ${_` ${number} | ${dateDef} `}
+      ${g` ${number} | ${dateDef} `}
     `}
-    | ${_`
+    | ${g`
       ${optws} 
       ${$`LIKE`}
       ${optws}
       ${stringWithQuotes}
     `}
-    | ${_`
+    | ${g`
       ${optws} 
       ${$`BETWEEN`}
       ${ws}
-      ${_`
-        ${_` ${number} ${ws} ${$`AND`} ${ws} ${number} `}
-        | ${_` ${stringWithQuotes} ${ws} ${$`AND`} ${ws} ${stringWithQuotes} `}
+      ${g`
+        ${g` ${number} ${ws} ${$`AND`} ${ws} ${number} `}
+        | ${g` ${stringWithQuotes} ${ws} ${$`AND`} ${ws} ${stringWithQuotes} `}
       `}
     `}
     |
-    ${_`
+    ${g`
       ${ws} 
       ${$`IN`}
       ${ws}
       "("
         ${optws}
         ${stringWithQuotes}
-        ${_`
+        ${g`
           ","
           ${optws}
           ${stringWithQuotes}

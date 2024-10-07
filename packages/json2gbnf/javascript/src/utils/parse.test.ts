@@ -33,7 +33,7 @@ import {
   Grammar
 } from '../grammar.ts.bl';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 
 vi.mock('../type-guards.js', async () => {

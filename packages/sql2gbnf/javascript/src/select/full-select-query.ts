@@ -1,6 +1,6 @@
 import {
   $,
-  _,
+  g,
 } from "gbnf/builder";
 import {
   ws,
@@ -34,27 +34,27 @@ import {
 } from "../constants.js";
 import { FULL_SELECT_QUERY, } from "../keys.js";
 
-const possibleColumnsWithOver = _` 
+const possibleColumnsWithOver = g` 
 ${columnNames} 
 | ${windowStatement} 
-| ${_` 
-    ${_`${columnNames} | ${windowStatement}`} 
+| ${g` 
+    ${g`${columnNames} | ${windowStatement}`} 
     ${ws} 
     ${overStatement} `} 
 `;
-const possibleColsWithAlias = _` 
+const possibleColsWithAlias = g` 
   ${possibleColumnsWithOver} 
-  | ${_`
+  | ${g`
     ${possibleColumnsWithOver} 
-    ${_`
+    ${g`
       ${ws} 
       ${asAlias}
     `.wrap('?')
     }`
   }`;
-const projection = _`
+const projection = g`
   ${possibleColsWithAlias} 
-  ${_`
+  ${g`
     "," 
     ${optws} 
     ${possibleColsWithAlias}
@@ -62,21 +62,21 @@ const projection = _`
   }`;
 
 
-const projectionOrStar = _` ${projection} | "*" `;
-const intoClause = _`
+const projectionOrStar = g` ${projection} | "*" `;
+const intoClause = g`
   ${$`INTO`} 
   ${ws} 
   ${tableName} 
   ${ws}
 `;
-const selectlist = _`
-  ${_`
-    ${_`
+const selectlist = g`
+  ${g`
+    ${g`
       ${projectionOrStar} 
       ${ws} 
       ${intoClause.wrap('?')}
     `}
-    | ${_`
+    | ${g`
         ${intoClause.wrap('?')} 
         ${projectionOrStar} 
         ${ws}
@@ -85,24 +85,24 @@ const selectlist = _`
   ${$`FROM`}
   ${ws}
   ${tableWithAlias}
-  ${_`
+  ${g`
     ","
     ${optws}
     ${tableWithAlias}
   `.wrap('*')}
 `;
-export const fullSelectQuery = _`
+export const fullSelectQuery = g`
   ${$`SELECT`}
   ${ws}
-  ${_`${$`DISTINCT`} ${ws}`.wrap('?')}
+  ${g`${$`DISTINCT`} ${ws}`.wrap('?')}
   ${selectlist}
-  ${_`
+  ${g`
     ${ws} 
     ${joinClause}
   `.wrap('*')}
-  ${_`${whereClause.wrap('?')}`}
-  ${_`${groupByClause.wrap('?')}`}
-  ${_`${havingClause.wrap('?')}`}
-  ${_`${orderByClause.wrap('?')}`}
-  ${_`${limitClause.wrap('?')}`}
+  ${g`${whereClause.wrap('?')}`}
+  ${g`${groupByClause.wrap('?')}`}
+  ${g`${havingClause.wrap('?')}`}
+  ${g`${orderByClause.wrap('?')}`}
+  ${g`${limitClause.wrap('?')}`}
 `.key(FULL_SELECT_QUERY);

@@ -11,14 +11,14 @@ import { JSONSchemaArray } from '../types.js';
 import type * as _parseType from './parse-type.js';
 import GBNF from 'gbnf';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   OPT_WS,
   WS
 } from '../constants.js';
 
-const ws = _`[ \\t\\n\\r]`.key(WS);
+const ws = g`[ \\t\\n\\r]`.key(WS);
 const opt_ws = ws.wrap('?').key(OPT_WS);
 const include = [opt_ws];
 

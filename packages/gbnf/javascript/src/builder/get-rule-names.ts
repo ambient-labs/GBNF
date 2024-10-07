@@ -8,7 +8,7 @@ import {
   GrammarBuilder,
 } from "./grammar-builder.js";
 import {
-  _,
+  g,
 } from './template-tags.js';
 import {
   CaseKind,
@@ -27,7 +27,7 @@ export const getRuleNames = (
 ) => {
   if (Array.isArray(value)) {
     const ruleNames = getRuleNames(value, parser, caseKind, separator);
-    const rule = _`${joinWith(separator ? separator : ' ', ...ruleNames)}`;
+    const rule = g`${joinWith(separator ? separator : ' ', ...ruleNames)}`;
     return rule.addToParser(parser, caseKind, true);
   }
   if (value instanceof GBNFRule) {

@@ -1,5 +1,5 @@
 import {
-  _,
+  g,
   $,
 } from 'gbnf/builder';
 import {
@@ -9,17 +9,17 @@ import {
   ws,
 } from '../constants.js';
 
-export const whereClause = _`
+export const whereClause = g`
   ${ws}
   ${$`WHERE`}
   ${ws}
-  ${_`
+  ${g`
     ${$`NOT`}
     ${ws}
   `.wrap('?')}
   ${whereClauseInner}
-  ${_`
-    ${_` ${ws} ${$`AND`} ${ws} ${whereClauseInner} `}
-    | ${_` ${ws} ${$`OR`} ${ws} ${whereClauseInner} `}
+  ${g`
+    ${g` ${ws} ${$`AND`} ${ws} ${whereClauseInner} `}
+    | ${g` ${ws} ${$`OR`} ${ws} ${whereClauseInner} `}
   `.wrap('*')}
 `;

@@ -5,7 +5,7 @@ import {
 } from 'vitest';
 import GBNF from "gbnf";
 import { windowStatement } from './window-statement.js';
-import { _ } from 'gbnf/builder';
+import { g } from 'gbnf/builder';
 import {
   include,
 } from '../__fixtures__/includes.js';

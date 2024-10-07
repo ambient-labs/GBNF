@@ -1,6 +1,6 @@
 import {
   $,
-  _,
+  g,
 } from "gbnf/builder";
 import {
   asAlias,
@@ -9,11 +9,11 @@ import {
   optws,
 } from "../constants.js";
 
-export const groupByClause = _`
+export const groupByClause = g`
   ${ws} 
   ${$`GROUP BY`}
   ${ws}
   ${columnNames}
-  ${_`${ws} ${asAlias}`.wrap('?')}
-  ${_`"," ${optws} ${columnNames}`.wrap('*')}
+  ${g`${ws} ${asAlias}`.wrap('?')}
+  ${g`"," ${optws} ${columnNames}`.wrap('*')}
 `;

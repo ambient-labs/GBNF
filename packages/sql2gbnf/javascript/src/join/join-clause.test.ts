@@ -7,7 +7,7 @@ import {
 import GBNF, { InputParseError } from "gbnf";
 import { joinClause, } from "./join-clause.js";
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 
 import * as _joinCondition from './join-condition.js';

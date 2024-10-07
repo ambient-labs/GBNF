@@ -7,7 +7,7 @@ import {
   updateRule,
 } from './index.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import GBNF from 'gbnf';
 import { FULL_SELECT_QUERY } from '../keys.js';
@@ -37,7 +37,7 @@ describe('update', () => {
     'UPDATE foo s SET s.bar = \\n( \\nFULL_SELECT_RULE \\n)',
   ])('it parses schema to grammar with input "%s"', (initial) => {
     let parser = GBNF([
-      _`${updateRule} ";"`.toString({
+      g`${updateRule} ";"`.toString({
         caseKind: 'any',
         include: verboseInclude,
       }),

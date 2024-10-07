@@ -16,7 +16,7 @@ import {
 } from './parse-type.js';
 import type * as _parseType from './parse-type.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   OPT_WS,
@@ -32,7 +32,7 @@ vi.mock('./parse-type.js', async () => {
   };
 });
 
-const ws = _`[ \\t\\n\\r]`.key(WS);
+const ws = g`[ \\t\\n\\r]`.key(WS);
 const opt_ws = ws.wrap('?').key(OPT_WS);
 const include = [opt_ws];
 
@@ -40,9 +40,9 @@ describe('parseObject', () => {
   beforeEach(() => {
     vi.mocked(parseType).mockImplementation((key) => {
       if (key.type === 'string') {
-        return _`"\\"" [a-z]+ "\\"" `;
+        return g`"\\"" [a-z]+ "\\"" `;
       }
-      return _`[0-9]+`;
+      return g`[0-9]+`;
     });
   });
 

@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   $,
-  _,
+  g,
 } from './index.js';
 
 // module.exports = GrammarBuilder;
 module.exports.$ = $;
-module.exports._ = _;
+module.exports._ = g;

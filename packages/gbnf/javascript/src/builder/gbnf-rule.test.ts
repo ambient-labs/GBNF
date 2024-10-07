@@ -5,7 +5,7 @@ import {
 } from 'vitest';
 import {
   $,
-  _
+  g
 } from './template-tags.js';
 
 describe('GBNFRule', () => {
@@ -16,52 +16,52 @@ describe('GBNFRule', () => {
     });
 
     test('it logs a _ string', () => {
-      const rule = _`"foo"`;
+      const rule = g`"foo"`;
       expect(rule.log()).toEqual('foo')
     });
 
     test('it logs two paths', () => {
-      const rule = _`${$`foo`} | ${$`bar`}`;
+      const rule = g`${$`foo`} | ${$`bar`}`;
       expect(rule.log({ shuffle: false })).toEqual(['foo', 'bar'].join('\n'))
     });
 
     test('it logs overlapping paths', () => {
-      const rule = _`${$`foo`} | ${$`f`}`;
+      const rule = g`${$`foo`} | ${$`f`}`;
       expect(rule.log()).toEqual('f\nfoo')
     });
 
     test('turns ranges into x', () => {
-      const rule = _`[a-z]`;
+      const rule = g`[a-z]`;
       expect(rule.log()).toEqual('x')
     });
 
     test('turns multiple ranges into x', () => {
-      const rule = _`[a-z][a-z][a-z]`;
+      const rule = g`[a-z][a-z][a-z]`;
       expect(rule.log()).toEqual('xxx')
     });
 
     test('it handles a range and a string', () => {
-      const rule = _`[a-e] | "foo"`;
+      const rule = g`[a-e] | "foo"`;
       expect(rule.log({ shuffle: false })).toEqual(['x', 'foo'].join('\n'))
     });
 
     test('it handles an optional', () => {
-      const rule = _`"z" ([a-e]? | "foo")`;
+      const rule = g`"z" ([a-e]? | "foo")`;
       expect(rule.log({ shuffle: false })).toEqual(['z', 'zx', 'zfoo'].join('\n'))
     });
 
     test('it handles an optional on a rule', () => {
-      const rule = _`"z" (("bar")? | "foo")`;
+      const rule = g`"z" (("bar")? | "foo")`;
       expect(rule.log({ shuffle: false })).toEqual(['z', 'zbar', 'zfoo'].join('\n'))
     });
 
     test('it handles a star', () => {
-      const rule = _`"z" ("y")*`;
+      const rule = g`"z" ("y")*`;
       expect(rule.log({ shuffle: false })).toEqual(['z', 'zy', 'zyy', 'zyyy'].join('\n'))
     });
 
     test('it handles a star wrapping a rule', () => {
-      const rule = _`"z" ([a-e] | "foo")*`;
+      const rule = g`"z" ([a-e] | "foo")*`;
       expect(rule.log({ shuffle: false })).toEqual([
         'z',
         'zx',
@@ -82,7 +82,7 @@ describe('GBNFRule', () => {
     });
 
     test('it handles a plus', () => {
-      const rule = _`"z" ("y")+`;
+      const rule = g`"z" ("y")+`;
       expect(rule.log()).toEqual([
         'zy',
         'zyy',
@@ -91,15 +91,15 @@ describe('GBNFRule', () => {
     });
 
     test('it handles a negative', () => {
-      const rule = _`"z" [^a-zA-Z]`;
+      const rule = g`"z" [^a-zA-Z]`;
       expect(rule.log()).toEqual([
         'z^',
       ].join('\n'))
     });
 
     test('it handles alt rules', () => {
-      const rule = _`
-        ${_`"foo" | "bar" | "baz"`}
+      const rule = g`
+        ${g`"foo" | "bar" | "baz"`}
       `;
       expect(rule.log({ shuffle: false })).toEqual([
         'foo',
@@ -109,9 +109,9 @@ describe('GBNFRule', () => {
     });
 
     test('it limits to n possible rules', () => {
-      const rule = _`
-        ${_`
-          ${_`
+      const rule = g`
+        ${g`
+          ${g`
             "foo1"
             | "foo2"
           `} 
@@ -119,8 +119,8 @@ describe('GBNFRule', () => {
           | "baz"`
         }
         "z"
-        ${_`
-          ${_`
+        ${g`
+          ${g`
             "foo1"
             | "foo2"
           `} 
@@ -155,13 +155,13 @@ describe('GBNFRule', () => {
     });
 
     test('it handles max depth', () => {
-      const value = _`[a-z]`.key('value');
-      const repeating = _`
+      const value = g`[a-z]`.key('value');
+      const repeating = g`
           ","
           value
           repeating
           `.key('repeating');
-      const rule = _`
+      const rule = g`
         value
         repeating
       `;
@@ -183,14 +183,14 @@ describe('GBNFRule', () => {
     });
 
     test('it handles infinite rules', () => {
-      const value = _`[a-z]`.key('value');
-      const repeating = _`
+      const value = g`[a-z]`.key('value');
+      const repeating = g`
           ","
           value
-          ${_`"!"`.wrap('?')}
+          ${g`"!"`.wrap('?')}
           repeating
           `.key('repeating');
-      const rule = _`
+      const rule = g`
         value
         repeating
       `;

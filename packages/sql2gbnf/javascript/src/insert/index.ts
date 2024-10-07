@@ -1,7 +1,7 @@
 import {
   $,
   GBNFRule,
-  _,
+  g,
 } from "gbnf/builder";
 import {
   selectRule,
@@ -18,11 +18,11 @@ import {
   nroptws,
 } from "../constants.js";
 
-const listOfStrings = (value: GBNFRule | string) => _` 
+const listOfStrings = (value: GBNFRule | string) => g` 
   "(" 
     ${nroptws} 
     ${value} 
-    ${_`
+    ${g`
       "," 
       ${optws} 
       ${value}
@@ -31,19 +31,19 @@ const listOfStrings = (value: GBNFRule | string) => _`
   ")" 
 `;
 
-export const insertRule = _`
+export const insertRule = g`
   ${$`INSERT`}
   ${ws}
   ${$`INTO`}
   ${ws}
   ${tableName}
-  ${_`${ws} ${validAlias}`.wrap("?")}
+  ${g`${ws} ${validAlias}`.wrap("?")}
   ${optws}
   ${listOfStrings(columnName)}
   ${optws}
   ${$`VALUES`}
   ${optws}
-  ${listOfStrings(_`
+  ${listOfStrings(g`
     ${stringWithQuotes} 
     | ${number} 
     | ${boolean} 

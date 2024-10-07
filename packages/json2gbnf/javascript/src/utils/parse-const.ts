@@ -1,5 +1,5 @@
 import {
-  _,
+  g,
   GBNFRule,
 } from "gbnf/builder";
 import type {
@@ -9,7 +9,7 @@ import {
   quoteRule,
 } from '../constants.js';
 
-export const parseConst = (value: JSONSchemaObjectValueConst): GBNFRule => _`
+export const parseConst = (value: JSONSchemaObjectValueConst): GBNFRule => g`
   ${quoteRule} 
   "${value.const}"
   ${quoteRule}

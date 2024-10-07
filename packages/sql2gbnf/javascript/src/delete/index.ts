@@ -1,6 +1,6 @@
 import {
   $,
-  _,
+  g,
 } from "gbnf/builder";
 import { joinClause, } from "../join/join-clause.js";
 import {
@@ -13,19 +13,19 @@ import {
 import { orderByClause, } from "../order/order-by-clause.js";
 import { limitClause, } from "../limit/index.js";
 
-export const deleteRule = _`
+export const deleteRule = g`
   ${$`DELETE`}
   ${ws}
   ${$`FROM`}
   ${ws}
   ${tableWithAlias}
-  ${_`
+  ${g`
     ${ws}
     ${$`USING`} 
     ${ws} 
     ${tableWithAlias}
   `.wrap('?')}
-  ${_`
+  ${g`
     ${ws}
     ${joinClause}
   `.wrap('?')}

@@ -12,7 +12,7 @@ import { Graph, } from './grammar-graph/graph.js';
 import * as _Graph from './grammar-graph/graph.js';
 import { ParseState, } from './grammar-graph/parse-state.js';
 import * as _ParseState from './grammar-graph/parse-state.js';
-import { _ } from './builder/template-tags.js';
+import { g } from './builder/template-tags.js';
 
 vi.mock('./grammar-graph/parse-state.js', async () => {
   const actual = await vi.importActual('./grammar-graph/parse-state.js') as typeof _ParseState;
@@ -110,7 +110,7 @@ describe('GBNF', () => {
   });
 
   test('it builds parse state with a GBNF Rule as input', () => {
-    const grammar = _`"foo"`;
+    const grammar = g`"foo"`;
     const initialString = 'foo';
     const symbolIds = new Map();
     symbolIds.set('root', 1);

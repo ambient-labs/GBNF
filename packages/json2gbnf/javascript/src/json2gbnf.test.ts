@@ -13,7 +13,7 @@ import { hasDollarSchemaProp } from './type-guards.js';
 import type * as _types from './types.js';
 import { parse } from './utils/parse.js';
 import type * as _parse from './utils/parse.js';
-import { _ } from 'gbnf/builder';
+import { g } from 'gbnf/builder';
 
 vi.mock('./utils/parse.js', async () => {
   const actual = await vi.importActual('./utils/parse.js') as typeof _parse;
@@ -37,7 +37,7 @@ describe('JSON2GBNF', () => {
   });
 
   test('it returns blank grammar if passed false', () => {
-    expect(JSON2GBNF(false)).toEqual(_`""`.toString());
+    expect(JSON2GBNF(false)).toEqual(g`""`.toString());
   });
 
   test('it throws an error if schema is an object with an unsupported schema version', () => {
@@ -75,7 +75,7 @@ describe('JSON2GBNF', () => {
       type: 'string',
     }
   ])('it calls parse with schema "%s"', (schema) => {
-    vi.mocked(parse).mockReturnValue(_`""`);
+    vi.mocked(parse).mockReturnValue(g`""`);
     GBNF(JSON2GBNF(schema));
     expect(parse).toHaveBeenCalledTimes(1);
   });

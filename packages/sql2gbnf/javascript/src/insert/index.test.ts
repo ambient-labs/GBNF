@@ -7,7 +7,7 @@ import {
   insertRule,
 } from './index.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import GBNF from 'gbnf';
 import {

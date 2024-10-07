@@ -1,6 +1,6 @@
 import {
   $,
-  _,
+  g,
 } from "gbnf/builder";
 import {
   positiveInteger,
@@ -8,17 +8,17 @@ import {
   optws,
 } from '../constants.js';
 
-export const limitClause = _`
+export const limitClause = g`
   ${ws} 
   ${$`LIMIT`}
-  ${_`
+  ${g`
     ${optws} 
     ${positiveInteger} 
     ","
   `.wrap('?')}
   ${optws}
   ${positiveInteger}
-  ${_`
+  ${g`
     ${ws}
     ${$`OFFSET`}
     ${ws}
