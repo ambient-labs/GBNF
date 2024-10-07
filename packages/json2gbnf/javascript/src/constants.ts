@@ -1,6 +1,6 @@
 import {
   type GBNFRule,
-  _,
+  g,
 } from "gbnf/builder";
 
 export const WS = 'ws';

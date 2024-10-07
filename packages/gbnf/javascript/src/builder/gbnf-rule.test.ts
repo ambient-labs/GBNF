@@ -5,7 +5,7 @@ import {
 } from 'vitest';
 import {
   $,
-  _
+  g
 } from './template-tags.js';
 
 describe('GBNFRule', () => {

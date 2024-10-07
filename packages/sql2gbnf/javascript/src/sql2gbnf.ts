@@ -17,7 +17,7 @@ import {
   ws,
 } from "./constants.js";
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 
 export function SQL2GBNF(schemaDef: DBMLSchemaOpts = {}, {

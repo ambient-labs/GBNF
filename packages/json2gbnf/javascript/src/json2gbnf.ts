@@ -10,7 +10,7 @@ import {
   parse,
 } from './utils/parse.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   NR_OPT_WS,

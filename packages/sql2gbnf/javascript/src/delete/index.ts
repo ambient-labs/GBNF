@@ -1,6 +1,6 @@
 import {
   $,
-  _,
+  g,
 } from "gbnf/builder";
 import { joinClause, } from "../join/join-clause.js";
 import {

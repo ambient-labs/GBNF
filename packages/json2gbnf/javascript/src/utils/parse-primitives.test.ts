@@ -15,7 +15,7 @@ import {
 } from '../constants.js';
 
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   OPT_WS,

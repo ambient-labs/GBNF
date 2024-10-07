@@ -7,7 +7,7 @@ import {
   fullSelectQuery,
 } from './full-select-query.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import GBNF, {
   InputParseError,

@@ -6,7 +6,7 @@ import {
 } from '../constants.js';
 import {
   GBNFRule,
-  _,
+  g,
 } from 'gbnf/builder';
 
 export const parseEnum = (

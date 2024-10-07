@@ -1,6 +1,6 @@
 import {
   GBNFRule,
-  _,
+  g,
 } from "gbnf/builder";
 import { JSONSchemaString, } from "../types.js";
 import {

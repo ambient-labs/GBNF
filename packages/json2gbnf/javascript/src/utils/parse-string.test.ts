@@ -2,7 +2,7 @@ import { describe, it, expect, test } from 'vitest';
 import { parseString } from './parse-string.js';
 import GBNF, { InputParseError } from 'gbnf';
 import {
-  _
+  g,
 } from 'gbnf/builder';
 
 describe('parseString', () => {

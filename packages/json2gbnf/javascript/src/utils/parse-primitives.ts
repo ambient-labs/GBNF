@@ -8,7 +8,7 @@ import {
 } from "../constants.js";
 import {
   type GBNFRule,
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   PrimitiveType,

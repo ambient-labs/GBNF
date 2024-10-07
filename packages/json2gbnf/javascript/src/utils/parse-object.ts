@@ -13,7 +13,7 @@ import {
   parseConst,
 } from './parse-const.js';
 import {
-  _,
+  g,
   GBNFRule,
 } from 'gbnf/builder';
 import {

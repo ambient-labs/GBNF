@@ -1,6 +1,6 @@
 import {
   GBNFRule,
-  _,
+  g,
 } from 'gbnf/builder';
 import type {
   JSONSchemaArray,

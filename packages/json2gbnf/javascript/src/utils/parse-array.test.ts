@@ -11,7 +11,7 @@ import { JSONSchemaArray } from '../types.js';
 import type * as _parseType from './parse-type.js';
 import GBNF from 'gbnf';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   OPT_WS,

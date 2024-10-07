@@ -7,7 +7,7 @@ import {
   whereClauseInner,
 } from './where-clause-inner.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import GBNF, {
   InputParseError,

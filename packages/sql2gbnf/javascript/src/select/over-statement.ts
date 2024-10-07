@@ -1,7 +1,7 @@
 import {
   $,
   GBNFRule,
-  _,
+  g,
 } from "gbnf/builder";
 import {
   direction,

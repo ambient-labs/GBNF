@@ -7,7 +7,7 @@ import {
   deleteRule,
 } from './index.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import GBNF from 'gbnf';
 import { FULL_SELECT_QUERY } from '../keys.js';

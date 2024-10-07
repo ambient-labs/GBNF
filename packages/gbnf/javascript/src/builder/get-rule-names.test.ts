@@ -9,7 +9,7 @@ import {
 } from './get-rule-names.js';
 import { GrammarBuilder } from './grammar-builder.js';
 import {
-  _,
+  g,
 } from '../builder/template-tags.js';
 
 const parser = new GrammarBuilder();

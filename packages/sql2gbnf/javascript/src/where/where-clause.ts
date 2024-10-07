@@ -1,5 +1,5 @@
 import {
-  _,
+  g,
   $,
 } from 'gbnf/builder';
 import {

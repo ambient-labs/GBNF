@@ -1,7 +1,7 @@
 import { WhitespaceKind, } from "../types.js";
 import {
   GBNFRule,
-  _,
+  g,
 } from "gbnf/builder";
 
 const isWhitespaceKind = (whitespace: WhitespaceKind): whitespace is WhitespaceKind => ['default', 'succinct', 'verbose',].includes(whitespace);

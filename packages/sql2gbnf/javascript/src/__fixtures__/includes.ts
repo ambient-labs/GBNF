@@ -4,7 +4,7 @@ import {
   nroptws,
 } from '../constants.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 
 export const WS = g`[ \\t\\n\\r]`;

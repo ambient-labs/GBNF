@@ -16,7 +16,7 @@ import {
 } from './parse-type.js';
 import type * as _parseType from './parse-type.js';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   OPT_WS,

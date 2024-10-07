@@ -12,7 +12,7 @@ import {
 } from '../types.js';
 import GBNF from 'gbnf';
 import {
-  _,
+  g,
 } from 'gbnf/builder';
 import {
   OPT_WS,
