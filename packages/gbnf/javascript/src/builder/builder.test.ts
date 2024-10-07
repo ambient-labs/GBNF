@@ -123,14 +123,14 @@ describe('builder', () => {
           'root ::= [a-z] uppercase',
           'uppercase ::= [A-Z]',
         ].join('\\n'),
-        _` [a-z] ${_.key('uppercase')`[A-Z]`}`,
+        _` [a-z] ${_.name('uppercase')`[A-Z]`}`,
       ],
       [
         [
           'root ::= " FOO " bar',
           'bar ::= "ZZZ"',
         ].join('\\n'),
-        $` FOO ${$.key('bar')`ZZZ`}`,
+        $` FOO ${$.name('bar')`ZZZ`}`,
       ],
       [
         [
@@ -146,7 +146,7 @@ describe('builder', () => {
           'az ::= [a-z]',
           'az-a ::= [ a-z]',
         ].join('\\n'),
-        _`${_.key('az')`[a-z]`} ${_.key('az')`[ a-z]`}`,
+        _`${_.name('az')`[a-z]`} ${_.name('az')`[ a-z]`}`,
       ],
       [
         [
@@ -155,7 +155,7 @@ describe('builder', () => {
           'az-a ::= [ a-z]',
           'az-b ::= [ a-z ]',
         ].join('\\n'),
-        _`${_.key('az')`[a-z]`} ${_.key('az')`[ a-z]`} ${_.key('az')`[ a-z ]`}`,
+        _`${_.name('az')`[a-z]`} ${_.name('az')`[ a-z]`} ${_.name('az')`[ a-z ]`}`,
       ],
 
       [
@@ -227,7 +227,7 @@ describe('builder', () => {
         ].join('\\n'),
         _`
       ${$`SELECT `}
-      ${_.key('column-name')`("*" | [a-z])`}
+      ${_.name('column-name')`("*" | [a-z])`}
       ${$` FROM `}
       ${_`[a-z]`}
       `,
@@ -326,7 +326,7 @@ describe('builder', () => {
   // describe('errors', () => {
   //   test.each([
   //     [
-  //       () => _`${_.key('a')`"A"`}${_.key('b')`"A"`}`,
+  //       () => _`${_.name('a')`"A"`}${_.name('b')`"A"`}`,
   //     ],
   //   ])(`expect to throw: '%s'`, (rule) => {
   //     expect(() => {

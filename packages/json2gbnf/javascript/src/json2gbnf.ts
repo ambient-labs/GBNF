@@ -40,9 +40,9 @@ export function JSON2GBNF<T extends JSONSchema>(
     throw new Error(`Unsupported schema version: ${schema['$schema']}`);
   }
 
-  const ws = _`[ \\t\\n\\r]`.key(WS);
-  const optionalWhitespace = _`${whitespace === 'default' ? ws.wrap('?').key(OPT_WS) : whitespace === 'succinct' ? _`""`.key(OPT_WS) : ws.wrap('*').key(OPT_WS)}`;
-  const nonRecommendedOptionalWhitespace = _`${whitespace === 'verbose' ? ws.wrap('*') : undefined}`.key(NR_OPT_WS);
+  const ws = _`[ \\t\\n\\r]`.name(WS);
+  const optionalWhitespace = _`${whitespace === 'default' ? ws.wrap('?').name(OPT_WS) : whitespace === 'succinct' ? _`""`.name(OPT_WS) : ws.wrap('*').name(OPT_WS)}`;
+  const nonRecommendedOptionalWhitespace = _`${whitespace === 'verbose' ? ws.wrap('*') : undefined}`.name(NR_OPT_WS);
 
   const include = [
     ws,

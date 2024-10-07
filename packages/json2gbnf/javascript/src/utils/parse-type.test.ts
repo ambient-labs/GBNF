@@ -19,8 +19,8 @@ import {
   WS
 } from '../constants.js';
 
-const ws = _`[ \\t\\n\\r]`.key(WS);
-const opt_ws = ws.wrap('?').key(OPT_WS);
+const ws = _`[ \\t\\n\\r]`.name(WS);
+const opt_ws = ws.wrap('?').name(OPT_WS);
 const include = [opt_ws];
 
 describe('parseType', () => {

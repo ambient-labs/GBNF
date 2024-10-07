@@ -24,7 +24,7 @@ interface Opts {
 
 export class GBNFRule {
   raw: boolean;
-  name?: string;
+  #name?: string;
   wrapped?: string;
   separator?: string;
   constructor(
@@ -38,7 +38,7 @@ export class GBNFRule {
     }: Opts
   ) {
     this.raw = raw;
-    this.name = name;
+    this.#name = name;
     this.wrapped = wrapped;
     this.separator = separator;
   }
@@ -62,14 +62,14 @@ export class GBNFRule {
   clone = (opts: Partial<Opts>) => {
     return new GBNFRule(this.strings, this.values, {
       raw: this.raw,
-      name: this.name,
+      name: this.#name,
       wrapped: this.wrapped,
       separator: this.separator,
       ...opts,
     });
   };
 
-  key = (name: string) => {
+  name = (name: string) => {
     return this.clone({ name, });
   };
 
@@ -198,7 +198,7 @@ export class GBNFRule {
 
   addToParser = (parser: GrammarBuilder, caseKind: CaseKind, leaf = false): string => {
     const {
-      name,
+      #name: name,
     } = this;
     const gbnf = this.getGBNF(parser, caseKind);
     return parser.addRule(gbnf, !leaf ? 'root' : name);

@@ -8,8 +8,8 @@ export const OPT_WS = 'opt-ws';
 export const NR_OPT_WS = 'non-rec-opt-ws';
 export const VALUE = 'value';
 
-const baseNumRule = _`"-"? ${_`[0-9] | ([1-9] [0-9]*)`}`.key('base-num');
-export const quoteRule = _`"\\""`.key('quote');
+const baseNumRule = _`"-"? ${_`[0-9] | ([1-9] [0-9]*)`}`.name('base-num');
+export const quoteRule = _`"\\""`.name('quote');
 export const numRule = _`
   ${baseNumRule} 
   ${_`
@@ -21,26 +21,26 @@ export const numRule = _`
     [-+]? 
     [0-9]+
   `.wrap('?')}
-`.key('number');
+`.name('number');
 export const intRule = _`
   ${baseNumRule} 
   ${_`
     "." 
     [0]+
   `.wrap('?')}
-`.key('integer');
+`.name('integer');
 export const boolRule = _`
   "true" 
   | "false"
-`.key('boolean');
-export const nullRule = _`"null"`.key('null');
+`.name('boolean');
+export const nullRule = _`"null"`.name('null');
 export const charRule = _`[^"']`;
 // export const char = _`[^"'\\n\\r\\t]`;
 export const strRule = _`
   ${quoteRule} 
   ${charRule.wrap('*')} 
   ${quoteRule}
-  `.key('string');
+  `.name('string');
 export const arrRule = (value: GBNFRule | string = VALUE) => _`
   "[" 
   ${_`
@@ -52,7 +52,7 @@ export const arrRule = (value: GBNFRule | string = VALUE) => _`
     `.wrap('*')}
   `.wrap('?')}
   "]" 
-`.key('array');
+`.name('array');
 export const objRule = (value: GBNFRule | string = VALUE) => {
   const propertyKeyPair = _`
       ${strRule}
@@ -71,10 +71,10 @@ export const objRule = (value: GBNFRule | string = VALUE) => {
     `.wrap('*')
       }`.wrap('?')} 
   "}"
-`.key('object');
+`.name('object');
 };
 
 export const value = _`
   ${numRule} | ${boolRule} | ${nullRule} | ${strRule} | ${arrRule()} | ${objRule()}
-`.key(VALUE);
+`.name(VALUE);
 

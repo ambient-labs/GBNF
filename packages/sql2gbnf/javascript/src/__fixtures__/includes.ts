@@ -9,12 +9,12 @@ import {
 
 export const WS = _`[ \\t\\n\\r]`;
 export const include = [
-  _`${WS}`.key(ws),
-  _`${ws}`.wrap('*').key(optws),
-  _`${ws}`.wrap('*').key(nroptws),
+  _`${WS}`.name(ws),
+  _`${ws}`.wrap('*').name(optws),
+  _`${ws}`.wrap('*').name(nroptws),
 ];
 export const verboseInclude = [
-  _`${WS}`.wrap('+').key(ws),
-  _`${ws}`.wrap('*').key(optws),
-  _`${ws}`.wrap('*').key(nroptws),
+  _`${WS}`.wrap('+').name(ws),
+  _`${ws}`.wrap('*').name(optws),
+  _`${ws}`.wrap('*').name(nroptws),
 ]

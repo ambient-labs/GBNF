@@ -105,4 +105,4 @@ export const fullSelectQuery = _`
   ${_`${havingClause.wrap('?')}`}
   ${_`${orderByClause.wrap('?')}`}
   ${_`${limitClause.wrap('?')}`}
-`.key(FULL_SELECT_QUERY);
+`.name(FULL_SELECT_QUERY);

@@ -155,12 +155,12 @@ describe('GBNFRule', () => {
     });
 
     test('it handles max depth', () => {
-      const value = _`[a-z]`.key('value');
+      const value = _`[a-z]`.name('value');
       const repeating = _`
           ","
           value
           repeating
-          `.key('repeating');
+          `.name('repeating');
       const rule = _`
         value
         repeating
@@ -183,13 +183,13 @@ describe('GBNFRule', () => {
     });
 
     test('it handles infinite rules', () => {
-      const value = _`[a-z]`.key('value');
+      const value = _`[a-z]`.name('value');
       const repeating = _`
           ","
           value
           ${_`"!"`.wrap('?')}
           repeating
-          `.key('repeating');
+          `.name('repeating');
       const rule = _`
         value
         repeating
