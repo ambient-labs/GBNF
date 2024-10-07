@@ -33,9 +33,9 @@ describe('Multiple Primitives', () => {
       type: ['string', 'number',],
     };
     const rule = parsePrimitives(schema);
-    expect(rule.compile({
+    expect(rule.toString({
       include,
-    })).toEqual(_`${[strRule, numRule]}`.join(' | ').compile({
+    })).toEqual(_`${[strRule, numRule]}`.join(' | ').toString({
       include,
     }));
   });
@@ -45,9 +45,9 @@ describe('Multiple Primitives', () => {
       type: ['string', 'number', 'boolean', 'null', 'object', 'array',],
     };
     const rule = parsePrimitives(schema);
-    expect(rule.compile({
+    expect(rule.toString({
       include,
-    })).toEqual(_`${[strRule, numRule, boolRule, nullRule, objRule(), arrRule()]}`.join(' | ').compile({
+    })).toEqual(_`${[strRule, numRule, boolRule, nullRule, objRule(), arrRule()]}`.join(' | ').toString({
       include,
     }));
   });

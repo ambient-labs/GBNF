@@ -42,7 +42,7 @@ describe('parseArray', () => {
   ] as [JSONSchemaArray, unknown[]][])(`it handles schema '%s' for '%s'`, (schema, initial) => {
     const rule = parseArray(schema);
     expect(() => GBNF([
-      rule.compile({
+      rule.toString({
         include,
       }),
       `value ::= ""`,

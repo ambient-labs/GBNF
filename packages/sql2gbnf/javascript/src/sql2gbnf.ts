@@ -28,7 +28,7 @@ export function SQL2GBNF(schemaDef: DBMLSchemaOpts = {}, {
 
   const rules = getWhitespaceDefs(whitespace);
 
-  return getSQLGBNF(database).compile({
+  return getSQLGBNF(database).toString({
     caseKind,
     include: [
       rules.ws.key(ws),

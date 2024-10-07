@@ -57,7 +57,7 @@ describe('insert', () => {
     'INSERT INTO table (col1) VALUES (SELECT (SELECT foo FROM bar) FROM table)',
   ])('it parses schema to grammar with input "%s"', (initial) => {
     let parser = GBNF([
-      insertRule.compile({
+      insertRule.toString({
         caseKind: 'any',
         include: verboseInclude,
       }),

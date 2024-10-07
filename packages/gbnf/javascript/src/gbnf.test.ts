@@ -134,6 +134,6 @@ describe('GBNF', () => {
     vi.mocked(buildRuleStack).mockImplementation((rules) => rules as any);
 
     expect(GBNF(grammar, initialString)).toEqual(mockParseState);
-    expect(Graph).toHaveBeenCalledWith(grammar.compile(), rules, 1);
+    expect(Graph).toHaveBeenCalledWith(grammar.toString(), rules, 1);
   });
 });

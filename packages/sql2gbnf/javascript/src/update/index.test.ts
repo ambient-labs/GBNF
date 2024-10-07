@@ -37,7 +37,7 @@ describe('update', () => {
     'UPDATE foo s SET s.bar = \\n( \\nFULL_SELECT_RULE \\n)',
   ])('it parses schema to grammar with input "%s"', (initial) => {
     let parser = GBNF([
-      _`${updateRule} ";"`.compile({
+      _`${updateRule} ";"`.toString({
         caseKind: 'any',
         include: verboseInclude,
       }),

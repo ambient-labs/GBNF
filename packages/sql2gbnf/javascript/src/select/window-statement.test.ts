@@ -20,7 +20,7 @@ describe('windowStatement', () => {
     `LAG(salary, 1)`,
     `LAG(salary, 1, 0)`,
   ])('it parses schema to grammar with input "%s"', (initial) => {
-    const fullGrammar = windowStatement.compile({
+    const fullGrammar = windowStatement.toString({
       include,
     });
     let parser = GBNF(fullGrammar);
@@ -37,7 +37,7 @@ describe('windowStatement', () => {
     `LAG(salary,1)`,
     `LAG(salary,1,0)`,
   ])('it parses schema with succinct whitespace to grammar with input "%s"', (initial) => {
-    const fullGrammar = windowStatement.compile({
+    const fullGrammar = windowStatement.toString({
       include,
     });
     let parser = GBNF(fullGrammar);

@@ -46,7 +46,7 @@ describe('delete', () => {
   ])('it parses schema to grammar with input "%s"', (initial) => {
     const ws = _`[ \\n\\r]`;
     let parser = GBNF([
-      deleteRule.compile({
+      deleteRule.toString({
         caseKind: 'any',
         include: verboseInclude,
       }),

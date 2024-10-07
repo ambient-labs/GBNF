@@ -17,7 +17,7 @@ import {
 } from '../__fixtures__/includes.js';
 
 describe('fullSelectQuery', () => {
-  const grammar = _`${fullSelectQuery}`.compile({
+  const grammar = _`${fullSelectQuery}`.toString({
     include,
     caseKind: 'any',
   });

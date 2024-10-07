@@ -43,7 +43,7 @@ export class GBNFRule {
     this.separator = separator;
   }
 
-  compile = ({
+  toString = ({
     include = [],
     caseKind = 'default',
   }: {
@@ -82,7 +82,7 @@ export class GBNFRule {
   };
 
   [customInspectSymbol]() {
-    return this.compile();
+    return this.toString();
   }
 
   log = ({
@@ -96,8 +96,8 @@ export class GBNFRule {
     n?: number;
     maxDepth?: number;
     maxRunTime?: number;
-  } & Parameters<typeof this.compile>[0] = {}) => {
-    let gbnf = this.compile(opts);
+  } & Parameters<typeof this.toString>[0] = {}) => {
+    let gbnf = this.toString(opts);
     gbnf = gbnf.replaceAll(/\((.*?)\)\*/g, '($1)? ($1)? ($1)?');
     gbnf = gbnf.replaceAll(/\((.*?)\)\+/g, '($1)  ($1)? ($1)?');
     gbnf = gbnf.replaceAll(/\[(.*?)\]\*/g, '[$1]? [$1]? [$1]?');

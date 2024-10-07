@@ -41,7 +41,7 @@ describe('overStatement', () => {
     `OVER (ORDER BY transaction_date RANGE BETWEEN INTERVAL '1' MONTH PRECEDING AND INTERVAL '1' MONTH FOLLOWING)`,
     `OVER (ORDER BY transaction_date RANGE BETWEEN INTERVAL '1-2' YEAR TO MONTH PRECEDING AND CURRENT ROW)`,
   ])('it parses schema to grammar with input "%s"', (initial) => {
-    let parser = GBNF(overStatement.compile({
+    let parser = GBNF(overStatement.toString({
       include,
     }));
     parser = parser.add(initial.split('\\n').join('\n'));

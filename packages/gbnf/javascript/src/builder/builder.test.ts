@@ -46,7 +46,7 @@ describe('builder', () => {
       ['root ::= "  SELECT  \\tFOO  "', $`  SELECT  \tFOO  `],
     ])(`'%s'`, (_expectation, rule) => {
       const expectation = _expectation.replace(/\\t/g, '\t');
-      expect(rule.compile()).toEqual(expectation);
+      expect(rule.toString()).toEqual(expectation);
     });
   });
 
@@ -174,7 +174,7 @@ describe('builder', () => {
       ],
     ])(`'%s'`, (_expectation, rule) => {
       const expectation = _expectation.replace(/\\n/g, '\n').replace(/\\t/g, '\t').split('\n').sort().join('\n');
-      expect(rule.compile()).toEqual(expectation);
+      expect(rule.toString()).toEqual(expectation);
     });
   });
 
@@ -234,7 +234,7 @@ describe('builder', () => {
       ],
     ])(`'%s'`, (_expectation, rule) => {
       const expectation = _expectation.replace(/\\n/g, '\n').replace(/\\t/g, '\t').split('\n').sort().join('\n');
-      expect(rule.compile()).toEqual(expectation);
+      expect(rule.toString()).toEqual(expectation);
     });
   });
 
@@ -319,7 +319,7 @@ describe('builder', () => {
       ],
     ])(`'%s'`, (_expectation, rule) => {
       const expectation = _expectation.replace(/\\t/g, '\t').replace(/\\n/g, '\n').split('\n').sort().join('\n');
-      expect(rule.compile().split('\n').sort().join('\n')).toEqual(expectation);
+      expect(rule.toString().split('\n').sort().join('\n')).toEqual(expectation);
     });
   });
 
@@ -330,7 +330,7 @@ describe('builder', () => {
   //     ],
   //   ])(`expect to throw: '%s'`, (rule) => {
   //     expect(() => {
-  //       return rule().compile();
+  //       return rule().toString();
   //     }).toThrow();
   //   });
   // });
@@ -343,7 +343,7 @@ describe('builder', () => {
       ['root ::= [sS] [eE] [lL] [eE] [cC] [tT]', 'any' as CaseKind, $`SELect`],
     ])(`'%s'`, (_expectation, caseKind, rule) => {
       const expectation = _expectation.replace(/\\t/g, '\t').split('\n').sort().join('\n');
-      expect(rule.compile({ caseKind })).toEqual(expectation);
+      expect(rule.toString({ caseKind })).toEqual(expectation);
     });
   });
 });

@@ -34,7 +34,7 @@ export function JSON2GBNF<T extends JSONSchema>(
   if (schema === false) {
     // https://json-schema.org/understanding-json-schema/basics
     // false will always be invalid
-    return _`""`.compile();
+    return _`""`.toString();
   }
   if (hasDollarSchemaProp(schema) && schema['$schema'] !== 'https://json-schema.org/draft/2020-12/schema') {
     throw new Error(`Unsupported schema version: ${schema['$schema']}`);
@@ -51,13 +51,13 @@ export function JSON2GBNF<T extends JSONSchema>(
   ];
 
   if (schema === true || schema === null || isEmptyObject(schema)) {
-    return _`${value}`.compile({ include, });
+    return _`${value}`.toString({ include, });
   }
 
   return parse(
     schema,
     fixedOrder,
-  ).compile({
+  ).toString({
     include: [
       ...include,
       value,

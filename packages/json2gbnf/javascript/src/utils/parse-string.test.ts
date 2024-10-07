@@ -48,7 +48,7 @@ describe('parseString', () => {
       const grammar = parseString({
         type: 'string',
         ...schema,
-      }).compile();
+      }).toString();
       return GBNF(
         grammar,
         JSON.stringify(initial),
@@ -76,7 +76,7 @@ describe('parseString', () => {
       const grammar = _`${parseString({
         type: 'string',
         ...schema,
-      })} `.compile();
+      })} `.toString();
       return GBNF(grammar, JSON.stringify(initial),
       );
     }).toThrowError(error);
