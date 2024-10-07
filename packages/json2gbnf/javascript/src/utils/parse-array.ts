@@ -52,6 +52,6 @@ export const parseArray = (
     boolean: boolRule,
     'null': nullRule,
     object: objRule(),
-  }[type]))}`.separate('|');
+  }[type]))}`.join('|');
   return arrRule(possibleValue);
 };

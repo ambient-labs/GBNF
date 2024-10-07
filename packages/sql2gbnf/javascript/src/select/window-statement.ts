@@ -10,12 +10,12 @@ import {
 } from '../constants.js';
 
 const rankRule = _`
-  ${_`${[$`RANK`, $`DENSE_RANK`, $`ROW_NUMBER`,]}`.separate(' | ')}
+  ${_`${[$`RANK`, $`DENSE_RANK`, $`ROW_NUMBER`,]}`.join(' | ')}
   "()"
 `;
 
 const leadLagRule = _`
-  ${_`${[$`LEAD`, $`LAG`,]}`.separate(' | ')}
+  ${_`${[$`LEAD`, $`LAG`,]}`.join(' | ')}
   "("
     ${nroptws}
     ${columnName}
@@ -31,4 +31,4 @@ const leadLagRule = _`
   ")"
 `;
 
-export const windowStatement = _` ${[rankRule, leadLagRule,]} `.separate(' | ');
+export const windowStatement = _` ${[rankRule, leadLagRule,]} `.join(' | ');

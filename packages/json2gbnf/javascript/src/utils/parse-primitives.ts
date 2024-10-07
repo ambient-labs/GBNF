@@ -31,5 +31,5 @@ export const parsePrimitives = (schema: JSONSchemaMultiplePrimitiveTypes) => {
       throw new Error(`Unknown type ${type} for schema ${JSON.stringify(schema)}`);
     }
   }
-  return _` ${schema.type.map(type => PRIMITIVE_TYPES[type])} `.separate(' | ');
+  return _` ${schema.type.map(type => PRIMITIVE_TYPES[type])} `.join(' | ');
 };

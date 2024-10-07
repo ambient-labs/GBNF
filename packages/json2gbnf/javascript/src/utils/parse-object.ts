@@ -80,7 +80,7 @@ export const parseObject = (
       const permutations = Array(keys.length).fill(0).map((__, i) => getPermutation(keys.slice(i)));
       return _`
         "{"
-          ${_`${permutations}`.separate(' | ').wrap('?')}
+          ${_`${permutations}`.join(' | ').wrap('?')}
         "}"
       `;
     }
@@ -98,11 +98,11 @@ export const parseObject = (
       required,
     ).map(r => r.map(({
       rule,
-    }) => rule.wrap('?'))).map(permutation => permutation.length === 1 ? permutation : _`${permutation}`.separate('","'));
+    }) => rule.wrap('?'))).map(permutation => permutation.length === 1 ? permutation : _`${permutation}`.join('","'));
 
     return _`
       "{"
-        ${permutations.length === 1 ? permutations[0] : _`${permutations}`.separate('|')}
+        ${permutations.length === 1 ? permutations[0] : _`${permutations}`.join('|')}
       "}"
     `;
   }
