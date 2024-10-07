@@ -36,6 +36,7 @@ export class GBNFRule {
       wrapped,
       separator,
     }: Opts
+
   ) {
     this.raw = raw;
     this.name = name;
