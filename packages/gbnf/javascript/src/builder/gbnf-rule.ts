@@ -8,12 +8,9 @@ import {
 } from "./types.js";
 import { GrammarBuilder, } from "./grammar-builder.js";
 import { getRawValue, } from "./get-raw-value.js";
-import { GBNF, } from "../gbnf.js";
-import { isRuleChar, isRuleCharExcluded, isRuleEnd, } from "../grammar-graph/type-guards.js";
-import { ParseState, } from "../grammar-graph/parse-state.js";
 import { getRuleNames, } from "./get-rule-names.js";
 import { getGBNF, } from "./get-gbnf.js";
-import { shuffleSort, } from "./shuffle-sort.js";
+import { log, LogOptions, } from "./log.js";
 
 export interface GBNFOpts {
   key?: string;
@@ -23,8 +20,8 @@ export interface GBNFOpts {
 
 export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
   #key?: string;
-  wrapped?: string;
-  separator?: string;
+  #wrapped?: string;
+  #separator?: string;
   constructor(
     protected strings: TemplateStringsArray,
     protected values: Value[],
@@ -35,8 +32,8 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     }: GBNFOpts = {}
   ) {
     this.#key = key;
-    this.wrapped = wrapped;
-    this.separator = separator;
+    this.#wrapped = wrapped;
+    this.#separator = separator;
   }
 
   toString = ({
@@ -55,8 +52,8 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
   clone = (opts: Partial<GBNFOpts>) => {
     return new GBNFRule(this.strings, this.values, {
       key: this.#key,
-      wrapped: this.wrapped,
-      separator: this.separator,
+      wrapped: this.#wrapped,
+      separator: this.#separator,
       ...opts,
     });
   };
@@ -77,97 +74,13 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     return this.toString();
   }
 
-  log = ({
-    shuffle = true,
-    n = Infinity,
-    maxDepth = 20,
-    maxRunTime = 50,
-    ...opts
-  }: {
-    shuffle?: boolean;
-    n?: number;
-    maxDepth?: number;
-    maxRunTime?: number;
-  } & Parameters<typeof this.toString>[0] = {} as T) => {
-    let gbnf = this.toString(opts as T);
-    gbnf = gbnf.replaceAll(/\((.*?)\)\*/g, '($1)? ($1)? ($1)?');
-    gbnf = gbnf.replaceAll(/\((.*?)\)\+/g, '($1)  ($1)? ($1)?');
-    gbnf = gbnf.replaceAll(/\[(.*?)\]\*/g, '[$1]? [$1]? [$1]?');
-    gbnf = gbnf.replaceAll(/\[(.*?)\]\+/g, '[$1]  [$1]? [$1]?');
-    class Node {
-      char: string;
-      terminal = false;
-      reachedMaxDepth = false;
-      children: Node[] = [];
-
-      constructor(char = '') {
-        this.char = char;
-      }
-    }
-    const parseState = GBNF(gbnf);
-    const rootNode = new Node('');
-
-    let remaining = n;
-    const start = performance.now();
-    let reachedMaximumRunTime = false;
-    function traverseParseState(currentNode: Node, parseState: ParseState, remainingDepth = maxDepth) {
-      if (performance.now() - start > maxRunTime) {
-        reachedMaximumRunTime = true;
-        return;
-      }
-      if (remainingDepth <= 0) {
-        currentNode.reachedMaxDepth = true;
-        remaining -= 1;
-        return;
-      }
-      for (const rule of parseState) {
-        if (remaining <= 0) {
-          return;
-        }
-        if (isRuleChar(rule)) {
-          for (const value of rule.value) {
-            const char = Array.isArray(value) ? 'x' : String.fromCodePoint(value);
-            const nextNode = new Node(char);
-            currentNode.children.push(nextNode);
-            traverseParseState(nextNode, parseState.add(Array.isArray(value) ? String.fromCodePoint(value[0]) : char), remainingDepth - 1);
-          }
-        } else if (isRuleCharExcluded(rule)) {
-          for (const value of rule.value) {
-            const char = Array.isArray(value) ? '^' : String.fromCodePoint(value);
-            const nextNode = new Node(char);
-            currentNode.children.push(nextNode);
-            traverseParseState(nextNode, parseState.add(Array.isArray(value) ? String.fromCodePoint(value[0] - 1) : char), remainingDepth - 1);
-          }
-        } else if (isRuleEnd(rule)) {
-          remaining -= 1;
-          currentNode.terminal = true;
-        }
-      }
-    }
-
-    traverseParseState(rootNode, parseState);
-
-    const result = new Set<string>();
-    function traverse(node: Node, path = '') {
-      if (result.size >= n) {
-        return;
-      }
-      if (node.terminal || node.reachedMaxDepth || (reachedMaximumRunTime && node.children.length === 0)) {
-        result.add(path);
-      }
-      for (const child of (shuffle ? shuffleSort(node.children) : node.children)) {
-        traverse(child, path + child.char);
-      }
-    }
-    traverse(rootNode);
-    return [...result,].join('\n');
-  };
+  log = (opts: LogOptions & T = {} as T) => log(this.toString(opts), opts);
 
   getGBNF = (parser: GrammarBuilder, args: T) => {
     const {
       strings,
       values,
-      separator,
+      #separator: separator,
     } = this;
 
     const ruleNames = getRuleNames(values, parser, separator, args);
@@ -179,8 +92,8 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     });
     return getGBNF(ruleNames, _strings, {
       raw: true,
-      wrapped: this.wrapped,
-      separator: this.separator,
+      wrapped: this.#wrapped,
+      separator: this.#separator,
     });
   };
 
