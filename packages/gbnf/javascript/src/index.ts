@@ -14,6 +14,6 @@ export { ParseState, } from './grammar-graph/parse-state.js';
 export {
   InputParseError,
   GrammarParseError,
-} from './utils/errors/errors.js';
+} from './utils/errors/input-parse-error.js';
 
 export * from "./builder/index.js";

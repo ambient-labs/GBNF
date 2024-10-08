@@ -1,4 +1,4 @@
-import { GrammarParseError, } from "../utils/errors/errors.js";
+import { GrammarParseError, } from "../utils/errors/input-parse-error.js";
 
 export const PARSE_NAME_ERROR = 'Failed to find a valid name';
 export const GET_INVALID_CHAR_ERROR = (char: string) => `Invalid character "${char}" when parsing name, only lowercase letters and hyphens are allowed.`;

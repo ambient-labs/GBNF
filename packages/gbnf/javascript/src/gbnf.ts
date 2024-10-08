@@ -1,4 +1,4 @@
-import { GrammarParseError, } from "./utils/errors/errors.js";
+import { GrammarParseError, } from "./utils/errors/input-parse-error.js";
 import { buildRuleStack, } from "./grammar-parser/build-rule-stack.js";
 import { Graph, } from "./grammar-graph/graph.js";
 import { ParseState, } from "./grammar-graph/parse-state.js";
