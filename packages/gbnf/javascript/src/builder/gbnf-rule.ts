@@ -3,7 +3,7 @@ import {
 } from "./join.js";
 import {
   customInspectSymbol,
-  type CaseKind,
+  type ToStringArgs,
   type Value,
 } from "./types.js";
 import { GrammarBuilder, } from "./grammar-builder.js";
@@ -23,10 +23,6 @@ interface Opts {
   separator?: string;
 }
 
-export interface ToStringArgs {
-  caseKind?: CaseKind;
-  include?: GBNFRule[];
-}
 
 export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
   raw: boolean;
@@ -175,7 +171,7 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     return [...result,].join('\n');
   };
 
-  getGBNF = (parser: GrammarBuilder, { caseKind = 'default', }: T) => {
+  getGBNF = (parser: GrammarBuilder, args: T) => {
     const {
       strings,
       values,
@@ -183,7 +179,7 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
       separator,
     } = this;
 
-    const ruleNames = getRuleNames(values, parser, separator, { caseKind, });
+    const ruleNames = getRuleNames(values, parser, separator, args);
     let inQuote = false;
     const _strings = strings.map(string => {
       if (raw) {
@@ -191,7 +187,7 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
         inQuote = _inQuote;
         return str;
       }
-      return getStringValue(string, caseKind);
+      return getStringValue(string, args);
     });
     return getGBNF(ruleNames, _strings, {
       raw: this.raw,
