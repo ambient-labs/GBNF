@@ -47,6 +47,11 @@ jobs:
         working-directory: ${{ inputs.package }}
         run: pnpm install
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - name: 'Unit Test'
         working-directory: ${{ inputs.package }}
         run: 'pnpm test:unit'
