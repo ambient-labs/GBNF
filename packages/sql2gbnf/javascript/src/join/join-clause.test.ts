@@ -4,11 +4,10 @@ import {
   test,
   expect,
 } from 'vitest';
-import GBNF, { InputParseError } from "gbnf";
+import GBNF, {
+  InputParseError
+} from "gbnf";
 import { joinClause, } from "./join-clause.js";
-import {
-  g,
-} from 'gbnf/builder';
 
 import * as _joinCondition from './join-condition.js';
 import {

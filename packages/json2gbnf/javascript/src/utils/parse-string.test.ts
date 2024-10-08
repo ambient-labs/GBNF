@@ -1,6 +1,8 @@
 import { describe, it, expect, test } from 'vitest';
 import { parseString } from './parse-string.js';
-import GBNF, { InputParseError } from 'gbnf';
+import GBNF, {
+  InputParseError
+} from 'gbnf';
 import {
   g,
 } from 'gbnf/builder';

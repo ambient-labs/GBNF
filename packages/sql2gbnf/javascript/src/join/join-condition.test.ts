@@ -3,7 +3,9 @@ import {
   test,
   expect,
 } from 'vitest';
-import GBNF, { InputParseError } from "gbnf";
+import GBNF, {
+  InputParseError
+} from "gbnf";
 import {
   // getEquijoinCondition, 
   joinCondition,

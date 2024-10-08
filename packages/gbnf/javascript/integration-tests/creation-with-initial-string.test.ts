@@ -1,5 +1,8 @@
 import { describe, test, expect } from 'vitest';
-import GBNF, { InputParseError, RuleType, } from '../src/index.js';
+import GBNF, {
+  InputParseError,
+  RuleType,
+} from 'gbnf';
 
 describe('creation with initial string', () => {
   test.each([
