@@ -66,7 +66,8 @@ describe('getRuleNames', () => {
       const ruleNames = getRuleNames(
         rules,
         parser,
-        'default',
+        undefined,
+        { caseKind: 'default', },
       );
       expect(ruleNames.sort()).toEqual(expectation.sort());
       expect([...parser.grammar].sort()).toEqual(grammar.sort());

@@ -59,6 +59,12 @@ jobs:
         working-directory: ${{ inputs.package }}
         run: 'NODE_OPTIONS=--trace-deprecation pnpm test:integration'
 
+      - name: Setup tmate session
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
