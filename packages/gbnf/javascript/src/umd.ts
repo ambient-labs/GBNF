@@ -13,7 +13,7 @@ import { ParseState, } from './grammar-graph/parse-state.js';
 import {
   InputParseError,
   GrammarParseError,
-} from './utils/errors.js';
+} from './utils/errors/errors.js';
 
 module.exports = GBNF;
 module.exports.RuleType = InternalRuleType;

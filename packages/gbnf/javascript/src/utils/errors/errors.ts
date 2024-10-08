@@ -1,4 +1,4 @@
-import type { ValidInput, } from "../grammar-graph/types.js";
+import type { ValidInput, } from "../../grammar-graph/types.js";
 
 export const GRAMMAR_PARSER_ERROR_HEADER_MESSAGE = (reason: string) => `Failed to parse grammar: ${reason}`;
 export const INPUT_PARSER_ERROR_HEADER_MESSAGE = `Failed to parse input string:`;
