@@ -15,7 +15,10 @@ export function getAllPermutations<T>(array: T[], filter: (p: T[], key: string) 
 
   generate([], array);
   if (required.length === 0) {
-    return permutations;
+    return [
+      [],
+      ...permutations,
+    ];
   }
   const filteredPermutations = permutations.filter(permutation => {
     let valid = true;

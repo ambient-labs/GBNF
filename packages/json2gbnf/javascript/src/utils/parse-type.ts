@@ -1,5 +1,5 @@
 import { parseArray, } from './parse-array.js';
-import { parseObject, } from './parse-object.js';
+import { parseObject, } from './parse-object/parse-object.js';
 import { parseString, } from './parse-string.js';
 import type {
   ParseTypeArg,

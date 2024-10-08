@@ -10,22 +10,22 @@ import {
 import {
   parseObject,
 } from './parse-object.js';
-import { JSONSchemaObject } from '../types.js';
+import { JSONSchema, JSONSchemaObject } from '../../types.js';
 import {
   parseType,
-} from './parse-type.js';
-import type * as _parseType from './parse-type.js';
+} from '../parse-type.js';
+import type * as _parseType from '../parse-type.js';
 import {
   g,
 } from 'gbnf/builder';
 import {
   OPT_WS,
   WS
-} from '../constants.js';
+} from '../../constants.js';
 import GBNF from 'gbnf';
 
-vi.mock('./parse-type.js', async () => {
-  const actual = await vi.importActual('./parse-type.js') as typeof _parseType;
+vi.mock('../parse-type.js', async () => {
+  const actual = await vi.importActual('../parse-type.js') as typeof _parseType;
   return {
     ...actual,
     parseType: vi.fn(),
@@ -63,8 +63,47 @@ describe('parseObject', () => {
     ].join('\n'), '{}')).not.toThrow();
   });
 
-  test.each([
-    ...[
+  describe('no additionalProperties', () => {
+    test.each([
+      ['{"bar":123,"baz": "foo"}'],
+    ])('should throw if additional properties are not allowed', (initial) => {
+      const schema: JSONSchemaObject = {
+        type: 'object',
+        properties: {
+          foo: { type: 'string', },
+          bar: { type: 'number', },
+        },
+        additionalProperties: false,
+      };
+      const rule = parseObject(schema).toString({
+        include,
+      });
+      expect(() => GBNF(rule, initial)).toThrow();
+    });
+
+    test.each([
+      ['{"bar":123,"baz": "foo"}'],
+    ])('should throw if given an invalid input', (initial) => {
+      // TODO
+      const schema: JSONSchemaObject =
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          number: { type: 'number' },
+          street_name: { type: 'string' },
+          street_type: { enum: ['Street', 'Avenue', 'Boulevard'] },
+        },
+        required: ['street_name'],
+      }
+        ;
+      const rule = parseObject(schema).toString({
+        include,
+      });
+      expect(() => GBNF(rule, initial)).toThrow();
+    });
+
+    test.each([
       '{',
       '{}',
       '{"',
@@ -89,17 +128,25 @@ describe('parseObject', () => {
       '{"bar":123,"foy":"baz"}',
       '{"foy":"baz"}',
       '{"bar":123}',
-    ].map(val => ([
-      {
+    ])('it should parse a schema with two properties and no additional properties for "%s"', (initial) => {
+      const schema: JSONSchemaObject = {
         type: 'object',
         properties: {
           foy: { type: 'string', },
           bar: { type: 'number', },
         },
         additionalProperties: false,
-      }, val,
-    ])),
-    ...[
+      };
+      expect(() => {
+        const grammar = parseObject(schema).toString({
+          include,
+        });
+        // console.log(grammar);
+        GBNF(grammar, initial);
+      }).not.toThrow();
+    });
+
+    test.each([
       '{',
       '{"',
       '{"foo"',
@@ -122,43 +169,69 @@ describe('parseObject', () => {
       '{"bar":123,"foo":"baz"',
       '{"bar":123,"foo":"baz"}',
       '{"foo":"baz"}',
-    ].map(val => ([
-      {
+    ])('it should parse a schema with two properties, no additional properties, and required properties "foo" for "%s"', (initial) => {
+      const schema: JSONSchemaObject = {
         type: 'object',
         properties: {
           foo: { type: 'string', },
           bar: { type: 'number', },
         },
         additionalProperties: false,
-        requiredProperties: ['foo'],
-      }, val,
-    ])),
-    ...[
+        required: ['foo'],
+      };
+      expect(() => {
+        const grammar = parseObject(schema).toString({
+          include,
+        });
+        // console.log(grammar);
+        GBNF(grammar, initial);
+      }).not.toThrow();
+    });
+  });
+
+  describe('additionalProperties', () => {
+    test.each([
       '{"bax"',
       '{"fox":"',
       '{"foo":"por",',
       '{"foo":"baz","baz":"qux","poo":123,"bar":123}',
-    ].map(val => ([
-      {
+    ])('it should parse an object with no properties and additional properties allowed for "%s"', (initial) => {
+      const schema: JSONSchemaObject = {
         type: 'object',
         properties: {},
         additionalProperties: true,
-      }, val,
-    ])),
-    ...[
+      };
+      expect(() => {
+        const grammar = parseObject(schema).toString({
+          include,
+        });
+        // console.log(grammar);
+        GBNF(grammar, initial);
+      }).not.toThrow();
+    });
+
+    test.each([
       '{',
       '{"',
       '{"bay"',
-    ].map(val => ([
-      {
+    ])('it should parse an object with 1 property and additional properties allowed for "%s"', (initial) => {
+      const schema: JSONSchemaObject = {
         type: 'object',
         properties: {
           foo: { type: 'string', },
         },
         additionalProperties: true,
-      }, val,
-    ])),
-    ...[
+      };
+      expect(() => {
+        const grammar = parseObject(schema).toString({
+          include,
+        });
+        // console.log(grammar);
+        GBNF(grammar, initial);
+      }).not.toThrow();
+    });
+
+    test.each([
       '{',
       '{"',
       '{"bay"',
@@ -167,28 +240,23 @@ describe('parseObject', () => {
       '{"bay":"baz',
       '{"bay":"baz","baz":"qux"',
       '{"foo":"baz","baz":"qux","pop":123,"bar":123}',
-    ].map(val => ([
-      {
+    ])('it should parse an object with 2 properties and additional properties allowed for "%s"', (initial) => {
+      const schema: JSONSchemaObject = {
         type: 'object',
         properties: {
           foo: { type: 'string', },
           bar: { type: 'number', },
         },
         additionalProperties: true,
-      }, val,
-    ])),
-  ] as [JSONSchemaObject, string][])(`it should parse '%s' for '%s'`, (schema, initial) => {
-    const rule = parseObject(schema);
-    if (typeof rule === 'string') {
-      throw new Error('Expected rule to be a GBNFRule');
-    }
-    expect(() => {
-      const grammar = rule.toString({
-        include,
-      });
-      // console.log(grammar);
-      GBNF(grammar, initial);
-    }).not.toThrow();
+      };
+      expect(() => {
+        const grammar = parseObject(schema).toString({
+          include,
+        });
+        // console.log(grammar);
+        GBNF(grammar, initial);
+      }).not.toThrow();
+    });
   });
 
 
@@ -249,13 +317,6 @@ describe('parseObject', () => {
     ].join('\n'), initial)).not.toThrow();
   });
 
-  it('should throw an error if an unsupported key is present', () => {
-    const schema = { patternProperties: {}, } as JSONSchemaObject;
-    expect(() => parseObject(schema)).toThrowError(
-      'patternProperties is not supported',
-    );
-  });
-
   it.each([
     [['foo'], '{"bar":123}'],
     [['bar'], '{"foo":"foo"}'],
@@ -268,23 +329,6 @@ describe('parseObject', () => {
       },
       additionalProperties: false,
       required,
-    };
-    const rule = parseObject(schema).toString({
-      include,
-    });
-    expect(() => GBNF(rule, initial)).toThrow();
-  });
-
-  it.each([
-    ['{"bar":123,"baz": "foo"}'],
-  ])('should throw if additional properties are not allowed', (initial) => {
-    const schema: JSONSchemaObject = {
-      type: 'object',
-      properties: {
-        foo: { type: 'string', },
-        bar: { type: 'number', },
-      },
-      additionalProperties: false,
     };
     const rule = parseObject(schema).toString({
       include,

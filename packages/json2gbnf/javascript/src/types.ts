@@ -76,6 +76,11 @@ export interface JSONSchemaObject {
   minProperties?: number;
   maxProperties?: number;
 }
+export type JSONSchemaObjectWithProperties = Omit<JSONSchemaObject, 'properties'> & { properties: Record<string, JSONSchemaValue> };
+export const isJSONSchemaObjectWithProperties = (schema: JSONSchemaObject): schema is JSONSchemaObjectWithProperties => {
+  return schema.properties !== undefined && typeof schema.properties === 'object';
+};
+
 export interface JSONSchemaMultiplePrimitiveTypes {
   type: ('string' | 'number' | 'boolean' | 'null' | 'object' | 'array')[]
 }

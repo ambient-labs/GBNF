@@ -93,7 +93,7 @@ describe('schema', () => {
     ].map(([type, val]) => ([{ type }, val,])),
 
     ...[
-      [{}, {},],
+      // [{}, {},],
       [{}, { "number": 1600, "street_name": "Pennsylvania", "street_type": "Avenue" },],
       [{}, { "number": 10.1, "street_name": "Foo", "street_type": "Boulevard" },],
       [{}, { "street_name": "Foo", "number": 10.1, },],

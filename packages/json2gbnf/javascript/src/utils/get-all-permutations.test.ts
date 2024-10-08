@@ -9,19 +9,20 @@ import {
 
 describe('getAllPermutations', () => {
   test('it returns an empty array when given an empty array', () => {
-    expect(getAllPermutations([])).toEqual([]);
+    expect(getAllPermutations([])).toEqual([[]]);
   });
 
   test('it returns an array with a single empty array when given an empty array and no required elements', () => {
-    expect(getAllPermutations([], undefined, [])).toEqual([]);
+    expect(getAllPermutations([], undefined, [])).toEqual([[]]);
   });
 
   test('it returns all permutations of a single element array', () => {
-    expect(getAllPermutations(['a'])).toEqual([['a']]);
+    expect(getAllPermutations(['a'])).toEqual([[], ['a']]);
   });
 
   test('it returns all permutations of a two element array', () => {
     expect(getAllPermutations(['a', 'b'])).toEqual([
+      [],
       ['a'],
       ['a', 'b'],
       ['b'],
@@ -31,6 +32,7 @@ describe('getAllPermutations', () => {
 
   test('it returns all permutations of a three element array', () => {
     expect(getAllPermutations(['a', 'b', 'c'])).toEqual([
+      [],
       ['a'],
       ['a', 'b'],
       ['a', 'b', 'c'],
@@ -70,6 +72,7 @@ describe('getAllPermutations', () => {
 
     test('it returns all permutations when required elements is an empty array', () => {
       expect(getAllPermutations(['a', 'b'], filter, [])).toEqual([
+        [],
         ['a'],
         ['a', 'b'],
         ['b'],
