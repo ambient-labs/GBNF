@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import {
   GRAMMAR_PARSER_ERROR_HEADER_MESSAGE,
   GrammarParseError,
-} from './grammar-parser-error.js';
+} from './grammar-parse-error.js';
 
 describe('GrammarParseError', () => {
   test('it renders a message', () => {
