@@ -72,7 +72,7 @@ describe('GBNF', () => {
         rules: InternalRuleDef[][] = [[{ type: InternalRuleType.END }]];
         symbolIds = symbolIds;
       }
-      return new MockRulesBuilder() as RulesBuilder;
+      return new MockRulesBuilder() as unknown as RulesBuilder;
     });
     expect(() => GBNF('')).toThrowError(new GrammarParseError('', 0, `Grammar does not contain a root symbol. Available symbols are: ${JSON.stringify(symbolIds.keys())}`));
   });

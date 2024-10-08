@@ -175,6 +175,8 @@ export class Graph {
     }
   }
 
+  private previousCodePoints: number[] = [];
+
   public add = (src: ValidInput, _pointers?: Pointers,): Pointers => {
     let pointers = _pointers || this.getInitialPointers();
     const codePoints = getInputAsCodePoints(src);
@@ -182,9 +184,10 @@ export class Graph {
       const codePoint = codePoints[codePointPos];
       pointers = this.parse(pointers, codePoint);
       if (pointers.size === 0) {
-        throw new InputParseError(codePoints, codePointPos);
+        throw new InputParseError(codePoints, codePointPos, this.previousCodePoints);
       }
     }
+    this.previousCodePoints.push(...codePoints);
     return pointers;
   };
 

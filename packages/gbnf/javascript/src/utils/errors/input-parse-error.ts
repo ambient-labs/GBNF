@@ -1,24 +1,29 @@
-import type { ValidInput, } from "../../grammar-graph/types.js";
 import { getInputAsString, } from "./get-input-as-string.js";
 import { buildErrorPosition, } from "./build-error-position.js";
+import type { ValidInput, } from "../../grammar-graph/types.js";
 
 export const INPUT_PARSER_ERROR_HEADER_MESSAGE = `Failed to parse input string:`;
 
 export class InputParseError extends Error {
-  _src: ValidInput;
-  pos: number;
-  constructor(src: ValidInput, pos: number) {
+  name = 'InputParseError';
+  constructor(private mostRecentInput: ValidInput, private pos: number, private previousInput: ValidInput = '') {
     super([
       INPUT_PARSER_ERROR_HEADER_MESSAGE,
       '',
-      ...buildErrorPosition(getInputAsString(src), pos),
+      ...buildErrorPosition(`${getInputAsString(previousInput)}${getInputAsString(mostRecentInput)}`,
+        pos + getInputAsString(previousInput).length),
     ].join('\n'));
-    this._src = src;
-    this.pos = pos;
-    this.name = 'InputParseError';
   }
 
   get src() {
-    return getInputAsString(this._src);
+    return `${getInputAsString(this.previousInput)}${getInputAsString(this.mostRecentInput)}`;
+  }
+
+  get errorForMostRecentInput() {
+    return [
+      INPUT_PARSER_ERROR_HEADER_MESSAGE,
+      '',
+      ...buildErrorPosition(getInputAsString(this.mostRecentInput), this.pos),
+    ].join('\n');
   }
 }

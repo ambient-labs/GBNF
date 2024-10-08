@@ -13,6 +13,7 @@ import * as _joinCondition from './join-condition.js';
 import {
   verboseInclude,
 } from '../__fixtures__/includes.js';
+import { getInputAsCodePoints } from '../../../../gbnf/javascript/src/grammar-graph/get-input-as-code-points.js';
 
 vi.mock('./join-condition.js', async () => {
   const actual = await vi.importActual('./join-condition.js') as typeof _joinCondition;

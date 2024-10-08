@@ -1,5 +1,13 @@
-import { describe, test, expect } from 'vitest';
-import GBNF, { RuleType, } from '../src/index.js';
+import {
+  describe,
+  test,
+  expect
+} from 'vitest';
+import GBNF, {
+  RuleType,
+  InputParseError,
+} from 'gbnf';
+import { getInputAsCodePoints } from '../src/grammar-graph/get-input-as-code-points';
 
 describe('additional strings', () => {
   test.each([
@@ -333,5 +341,34 @@ describe('additional strings', () => {
     state = state.add(starting);
     state = state.add(additional);
     expect([...state]).toEqual(expected);
+  });
+
+  describe('InputParseError', () => {
+    test('it reports full input in error message by default', () => {
+      const grammar = 'root ::= "bar"';
+      let state = GBNF(grammar);
+      state = state.add('b');
+      state = state.add('a')
+      expect(() => {
+        state.add('z');
+      }).toThrowError(new InputParseError('z', 0, 'ba'));
+    });
+
+    test('it reports most recent input in error message if specified', () => {
+      const grammar = 'root ::= "bar"';
+      let state = GBNF(grammar);
+      state = state.add('b');
+      state = state.add('a')
+      try {
+        state.add('z');
+        throw new Error('Expected an error to be thrown');
+      } catch (err) {
+        if (!(err instanceof InputParseError)) {
+          throw new Error('Expected an error of type InputParseError to be thrown');
+        }
+        const expectedErr = new InputParseError('z', 0, 'ba');
+        expect(err.errorForMostRecentInput).toEqual(expectedErr.errorForMostRecentInput);
+      }
+    });
   });
 });

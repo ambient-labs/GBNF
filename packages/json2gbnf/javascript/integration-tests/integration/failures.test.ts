@@ -10,6 +10,7 @@ import GBNF, {
 import type {
   TopLevelJSONSchema
 } from "../../src/types.js";
+import { getInputAsCodePoints } from '../../../../gbnf/javascript/src/grammar-graph/get-input-as-code-points.js';
 
 describe('failures', () => {
   test.each([
