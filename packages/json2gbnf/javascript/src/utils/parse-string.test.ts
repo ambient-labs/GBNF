@@ -6,6 +6,7 @@ import GBNF, {
 import {
   g,
 } from 'gbnf/builder';
+import { getInputAsCodePoints } from '../../../../gbnf/javascript/src/grammar-graph/get-input-as-code-points.js';
 
 describe('parseString', () => {
   test.each([
@@ -73,7 +74,7 @@ describe('parseString', () => {
     [{ minLength: 2, maxLength: 3 }, `f`, 2],
     [{ minLength: 2, maxLength: 4 }, `foooo'`, 5],
   ])('should throw an error when %s', (schema, initial, errorPos) => {
-    const error = new InputParseError(JSON.stringify(initial), errorPos);
+    const error = new InputParseError(initial, errorPos);
     expect(() => {
       const grammar = g`${parseString({
         type: 'string',
