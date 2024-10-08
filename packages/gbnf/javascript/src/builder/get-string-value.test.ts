@@ -22,6 +22,6 @@ describe('getStringValue', () => {
     ['SEL\\nect', '"SEL\\nect"', 'default'],
     ['SEL\\n\\n\\nect', '"SEL\\n\\n\\nect"', 'default'],
   ] as [string, string, CaseKind][])(`'%s' should be '%s'`, (value, expectation, caseKind) => {
-    expect(getStringValue(value.split('\\n').join('\n'), caseKind)).toBe(expectation);
+    expect(getStringValue(value.split('\\n').join('\n'), { caseKind })).toBe(expectation);
   });
 });

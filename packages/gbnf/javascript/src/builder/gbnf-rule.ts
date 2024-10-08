@@ -23,7 +23,6 @@ interface Opts {
   separator?: string;
 }
 
-
 export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
   raw: boolean;
   name?: string;
