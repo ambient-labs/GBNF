@@ -47,13 +47,19 @@
       "command": "pnpm test:unit && pnpm test:integration "
     },
     "test:integration": {
-      "command": "vitest --config ./vitest.config.integration.ts run"
+      "command": "vitest --config ./vitest.config.integration.ts run",
+      "dependencies": [
+        "build"
+      ]
     },
     "test:unit:watch": {
       "command": "vitest --config ./vitest.config.unit.ts --hideSkippedTests"
     },
     "test:integration:watch": {
-      "command": "vitest --config ./vitest.config.integration.ts --hideSkippedTests"
+      "command": "vitest --config ./vitest.config.integration.ts --hideSkippedTests",
+      "dependencies": [
+        "build"
+      ]
     },
     "lint": {
       "command": "eslint -c .eslintrc.cjs src --ext .ts"
