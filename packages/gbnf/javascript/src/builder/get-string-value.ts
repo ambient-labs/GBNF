@@ -1,4 +1,6 @@
-export const getStringValue = (value: string, caseKind: 'lower' | 'upper' | 'any' | 'default') => {
+import { CaseKind, ToStringArgs, } from "./types.js";
+
+export const getStringValue = (value: string, { caseKind = 'default', }: ToStringArgs & { caseKind?: CaseKind }) => {
   if (value === '') {
     return '';
   }

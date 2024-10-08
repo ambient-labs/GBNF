@@ -10,3 +10,7 @@ export interface Frontmatter {
 export type CaseKind = 'lower' | 'upper' | 'any' | 'default';
 
 export const customInspectSymbol = Symbol.for('nodejs.util.inspect.custom');
+
+export interface ToStringArgs {
+  include?: GBNFRule[];
+}
