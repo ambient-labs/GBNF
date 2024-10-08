@@ -8,7 +8,6 @@ import {
 } from "./types.js";
 import { GrammarBuilder, } from "./grammar-builder.js";
 import { getRawValue, } from "./get-raw-value.js";
-import { getStringValue, } from "./get-string-value.js";
 import { GBNF, } from "../gbnf.js";
 import { isRuleChar, isRuleCharExcluded, isRuleEnd, } from "../grammar-graph/type-guards.js";
 import { ParseState, } from "../grammar-graph/parse-state.js";
