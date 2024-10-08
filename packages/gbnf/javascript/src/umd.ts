@@ -12,8 +12,10 @@ import {
 import { ParseState, } from './grammar-graph/parse-state.js';
 import {
   InputParseError,
-  GrammarParseError,
 } from './utils/errors/input-parse-error.js';
+import {
+  GrammarParseError,
+} from './utils/errors/grammar-parse-error.js';
 
 module.exports = GBNF;
 module.exports.RuleType = InternalRuleType;
