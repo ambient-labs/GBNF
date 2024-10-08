@@ -3,7 +3,7 @@ import { describe, test, expect, vi } from 'vitest';
 import { GBNF } from './gbnf.js';
 import { RulesBuilder, } from './rules-builder/index.js';
 import * as _RulesBuilder from './rules-builder/index.js';
-import { GrammarParseError } from './utils/errors.js';
+import { GrammarParseError } from './utils/errors/grammar-parse-error.js';
 import { afterEach } from 'node:test';
 import { InternalRuleDef, InternalRuleType, SymbolIds } from './rules-builder/types.js';
 import { buildRuleStack, } from './grammar-parser/build-rule-stack.js';

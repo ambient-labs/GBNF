@@ -18,7 +18,9 @@ import {
   isRuleRef,
 } from './type-guards.js';
 import { isPointInRange, } from "../utils/is-point-in-range.js";
-import { InputParseError, } from "../utils/errors.js";
+import {
+  InputParseError,
+} from "../utils/errors/input-parse-error.js";
 import { RuleRef, } from "./rule-ref.js";
 import { getInputAsCodePoints, } from "./get-input-as-code-points.js";
 

@@ -6,7 +6,7 @@ import {
 import {
   SQL2GBNF,
 } from '../../src/sql2gbnf.js';
-import GBNF, { InputParseError } from 'gbnf';
+import GBNF from 'gbnf';
 
 const schema = `
 -- Create users table

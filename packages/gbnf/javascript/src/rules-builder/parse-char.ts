@@ -1,4 +1,4 @@
-import { GrammarParseError, } from "../utils/errors.js";
+import { GrammarParseError, } from "../utils/errors/grammar-parse-error.js";
 
 export const parseChar = (src: string, pos: number): [number, number] => {
   if (src[pos] === '\\') {

@@ -3,7 +3,7 @@ import {
   test,
   expect,
 } from 'vitest';
-import { GrammarParseError } from '../utils/errors.js';
+import { GrammarParseError } from '../utils/errors/grammar-parse-error.js';
 import {
   GET_INVALID_CHAR_ERROR,
   PARSE_NAME_ERROR,
