@@ -8,7 +8,6 @@ import {
 } from "./types.js";
 import { GrammarBuilder, } from "./grammar-builder.js";
 import { getRawValue, } from "./get-raw-value.js";
-import { getStringValue, } from "./get-string-value.js";
 import { GBNF, } from "../gbnf.js";
 import { isRuleChar, isRuleCharExcluded, isRuleEnd, } from "../grammar-graph/type-guards.js";
 import { ParseState, } from "../grammar-graph/parse-state.js";
@@ -16,31 +15,26 @@ import { getRuleNames, } from "./get-rule-names.js";
 import { getGBNF, } from "./get-gbnf.js";
 import { shuffleSort, } from "./shuffle-sort.js";
 
-interface Opts {
-  raw: boolean;
-  name?: string;
+export interface GBNFOpts {
+  key?: string;
   wrapped?: string;
   separator?: string;
 }
 
 export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
-  raw: boolean;
-  name?: string;
+  #key?: string;
   wrapped?: string;
   separator?: string;
   constructor(
     protected strings: TemplateStringsArray,
     protected values: Value[],
     {
-      raw,
-      name,
+      key,
       wrapped,
       separator,
-    }: Opts
-
+    }: GBNFOpts = {}
   ) {
-    this.raw = raw;
-    this.name = name;
+    this.#key = key;
     this.wrapped = wrapped;
     this.separator = separator;
   }
@@ -58,18 +52,17 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     );
   };
 
-  clone = (opts: Partial<Opts>) => {
+  clone = (opts: Partial<GBNFOpts>) => {
     return new GBNFRule(this.strings, this.values, {
-      raw: this.raw,
-      name: this.name,
+      key: this.#key,
       wrapped: this.wrapped,
       separator: this.separator,
       ...opts,
     });
   };
 
-  key = (name: string) => {
-    return this.clone({ name, });
+  key = (key: string) => {
+    return this.clone({ key, });
   };
 
   wrap = (wrapped = '') => {
@@ -174,32 +167,25 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     const {
       strings,
       values,
-      raw,
       separator,
     } = this;
 
     const ruleNames = getRuleNames(values, parser, separator, args);
     let inQuote = false;
     const _strings = strings.map(string => {
-      if (raw) {
-        const { str, inQuote: _inQuote, } = getRawValue(string, inQuote);
-        inQuote = _inQuote;
-        return str;
-      }
-      return getStringValue(string, args);
+      const { str, inQuote: _inQuote, } = getRawValue(string, inQuote);
+      inQuote = _inQuote;
+      return str;
     });
     return getGBNF(ruleNames, _strings, {
-      raw: this.raw,
+      raw: true,
       wrapped: this.wrapped,
       separator: this.separator,
     });
   };
 
   addToParser = (parser: GrammarBuilder, args: T, leaf = false): string => {
-    const {
-      name,
-    } = this;
     const gbnf = this.getGBNF(parser, args);
-    return parser.addRule(gbnf, !leaf ? 'root' : name);
+    return parser.addRule(gbnf, !leaf ? 'root' : this.#key);
   };
 }
