@@ -14,6 +14,7 @@ import { isRuleChar, isRuleCharExcluded, isRuleEnd, } from "../grammar-graph/typ
 import { ParseState, } from "../grammar-graph/parse-state.js";
 import { getRuleNames, } from "./get-rule-names.js";
 import { getGBNF, } from "./get-gbnf.js";
+import { shuffleSort, } from "./shuffle-sort.js";
 
 interface Opts {
   raw: boolean;
@@ -22,7 +23,12 @@ interface Opts {
   separator?: string;
 }
 
-export class GBNFRule {
+export interface ToStringArgs {
+  caseKind?: CaseKind;
+  include?: GBNFRule[];
+}
+
+export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
   raw: boolean;
   name?: string;
   wrapped?: string;
@@ -46,15 +52,12 @@ export class GBNFRule {
 
   toString = ({
     include = [],
-    caseKind = 'default',
-  }: {
-    caseKind?: CaseKind;
-    include?: GBNFRule[];
-  } = {}, parser = new GrammarBuilder()) => {
+    ...args
+  }: T = {} as T, parser = new GrammarBuilder()) => {
     for (const rule of include) {
-      rule.addToParser(parser, caseKind, true);
+      rule.addToParser(parser, args, true);
     }
-    this.addToParser(parser, caseKind);
+    this.addToParser(parser, args as T);
     return joinWith('\n',
       ...[...parser.grammar,].sort(),
     );
@@ -97,8 +100,8 @@ export class GBNFRule {
     n?: number;
     maxDepth?: number;
     maxRunTime?: number;
-  } & Parameters<typeof this.toString>[0] = {}) => {
-    let gbnf = this.toString(opts);
+  } & Parameters<typeof this.toString>[0] = {} as T) => {
+    let gbnf = this.toString(opts as T);
     gbnf = gbnf.replaceAll(/\((.*?)\)\*/g, '($1)? ($1)? ($1)?');
     gbnf = gbnf.replaceAll(/\((.*?)\)\+/g, '($1)  ($1)? ($1)?');
     gbnf = gbnf.replaceAll(/\[(.*?)\]\*/g, '[$1]? [$1]? [$1]?');
@@ -172,7 +175,7 @@ export class GBNFRule {
     return [...result,].join('\n');
   };
 
-  getGBNF = (parser: GrammarBuilder, caseKind: CaseKind) => {
+  getGBNF = (parser: GrammarBuilder, { caseKind = 'default', }: T) => {
     const {
       strings,
       values,
@@ -180,7 +183,7 @@ export class GBNFRule {
       separator,
     } = this;
 
-    const ruleNames = getRuleNames(values, parser, caseKind, separator);
+    const ruleNames = getRuleNames(values, parser, separator, { caseKind, });
     let inQuote = false;
     const _strings = strings.map(string => {
       if (raw) {
@@ -197,18 +200,11 @@ export class GBNFRule {
     });
   };
 
-  addToParser = (parser: GrammarBuilder, caseKind: CaseKind, leaf = false): string => {
+  addToParser = (parser: GrammarBuilder, args: T, leaf = false): string => {
     const {
       name,
     } = this;
-    const gbnf = this.getGBNF(parser, caseKind);
+    const gbnf = this.getGBNF(parser, args);
     return parser.addRule(gbnf, !leaf ? 'root' : name);
   };
-}
-
-function shuffleSort<T>(arr: T[]): T[] {
-  return arr
-    .map(value => ({ value, sort: Math.random(), }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value, }) => value);
 }
