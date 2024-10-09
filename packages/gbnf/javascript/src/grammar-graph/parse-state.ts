@@ -2,12 +2,28 @@ import type { Graph, } from "./graph.js";
 import type { Pointers, ResolvedRule, } from "./types.js";
 
 
-export class ParseState {
-  #graph: Graph;
-  #pointers: Pointers;
+export class ParseState extends Function {
+  protected _graph: Graph;
+  protected _pointers: Pointers;
+
   constructor(graph: Graph, pointers: Pointers) {
-    this.#graph = graph;
-    this.#pointers = pointers;
+    super();
+    this._graph = graph;
+    this._pointers = pointers;
+    return new Proxy(this, {
+      apply: (target, _, args: [string]) => {
+        const _call = target._call.bind(target);
+        return _call(...args);
+      },
+    });
+  }
+
+  _call(input: string) {
+    return this.add(input);
+  }
+
+  __call__(input: string): ParseState {
+    return this.add(input);
   }
 
   *[Symbol.iterator](): IterableIterator<ResolvedRule> {
@@ -16,7 +32,7 @@ export class ParseState {
 
   *rules(): IterableIterator<ResolvedRule> {
     const rules = new Set<string>();
-    for (const { rule, } of this.#pointers) {
+    for (const { rule, } of this._pointers) {
       const key = JSON.stringify(rule);
       if (!rules.has(key)) {
         rules.add(key);
@@ -26,8 +42,8 @@ export class ParseState {
   }
 
   add(input: string): ParseState {
-    const pointers = this.#graph.add(input, this.#pointers);
-    return new ParseState(this.#graph, pointers);
+    const pointers = this._graph.add(input, this._pointers);
+    return new ParseState(this._graph, pointers);
   }
 
   get size() {
@@ -35,6 +51,6 @@ export class ParseState {
   }
 
   get grammar() {
-    return this.#graph.grammar;
+    return this._graph.grammar;
   }
 }
