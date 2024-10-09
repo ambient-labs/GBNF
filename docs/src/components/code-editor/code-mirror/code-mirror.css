@@ -1,0 +1,27 @@
+:host {
+  font-size: var(--font-size);
+  position: relative;
+  /* min-height: 800px; */
+}
+
+wc-codemirror {
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  overflow: scroll;
+}
+
+.cm-s-neo .CodeMirror-cursor {
+  background: transparent;
+}
+
+select {
+  /* position: absolute; */
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
+
+
+.cm-s-solarized.CodeMirror {
+  box-shadow: none !important;
+}

@@ -1,0 +1,176 @@
+:host {
+  --font-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+slot {
+  display: none;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: var(--ce-max-width);
+  margin: var(--ce-margin);
+}
+
+wc-codemirror {
+  /* // border: 1px solid var(--color-code-editor-border-color); */
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  min-height: 100px;
+  max-height: 1000px;
+  overflow: scroll;
+  border-bottom: none;
+}
+
+#output {
+  /* // border: 1px solid var(--color-code-editor-border-color); */
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  /* // height: 40px; */
+  background-color: var(--color-code-editor-output);
+  font-family: monospace;
+  position: relative;
+  /* // padding: 5px 0px; */
+  transition-duration: 0.2s;
+  /* // height: 50px; */
+  overflow-y: scroll;
+}
+
+code-editor-actions {
+  position: absolute;
+  top: calc(var(--padding) - 4px);
+  right: var(--padding);
+  display: flex;
+  z-index: 100;
+  gap: var(--padding);
+}
+
+/* #output.active {
+  min-height: 260px;
+}
+
+*/
+.fullscreen #output.active {
+  flex: 1;
+}
+
+#output-inner {
+  /* // border-top: 1px solid rgba(0,0,0,0.4);  */
+  background-color: rgba(0, 0, 0, 0.1);
+  flex: 1;
+  padding: 0;
+  transition-duration: 0.2s;
+  color: red;
+}
+
+#output-inner.active {
+  padding: 5px 10px;
+}
+
+.chat-bubble {
+  margin: calc(var(--padding) * 4);
+  background: white;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  padding: calc(var(--padding) * 4);
+  border-radius: calc(var(--padding) * 2);
+  /* // max-width: 50%; */
+}
+
+form {
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  /* align-items: center; */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding: calc(var(--padding) * .5) var(--padding);
+  /* padding: 0; */
+  font-size: 12px;
+  /* padding: 0 5px; */
+
+  .editable-note {
+    opacity: 0.3;
+    font-style: italic;
+    /* margin: calc(var(--padding) * 2); */
+  }
+
+  grid-template-columns: 2fr 1fr;
+  border-top: 1px solid var(--color-code-console-border);
+
+  #clear-console {
+    cursor: pointer;
+    /* position: absolute; */
+    font-size: 14px;
+    z-index: 1;
+    /* left: calc(var(--padding) * 1);
+    bottom: calc(var(--padding) * 1); */
+    /* opacity: 0.3; */
+    transition-duration: 0.2s;
+
+    /* &:hover {
+      opacity: 1;
+    } */
+  }
+
+  sl-button#run {
+    max-width: 150px;
+    justify-self: end;
+    cursor: pointer;
+
+    &::part(base) {
+      /* border-radius: 0px; */
+    }
+  }
+
+}
+
+
+sl-button#loading {
+  &::part(base) {
+    width: 100%;
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+sl-button {
+
+  &::part(base) {
+    border-radius: 8px;
+
+    &:hover {
+      color: black;
+      border-color: var(--color-button-border-active);
+      background-color: var(--color-button-background-hover);
+    }
+
+    &:active {
+      color: black;
+      border-color: var(--color-button-border-active);
+      background-color: var(--color-button-background-active);
+    }
+  }
+}
+
+.cm-s-neo .CodeMirror-cursor {
+  /* // border-left: 1px solid red; */
+  background: transparent;
+}
+
+@container (min-width: 800px) {
+  form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* // @container (width < 600px) { */

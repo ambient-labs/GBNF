@@ -6,12 +6,35 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "docoddity dev",
-    "build": "docoddity build --output ./build"
+    "dev": "wireit",
+    "build": "wireit"
+  },
+  "wireit": {
+    "dev": {
+      "command": "docoddity dev --port 6166",
+      "dependencies": [
+        "../packages/gbnf/javascript:build"
+      ]
+    },
+    "build": {
+      "command": "docoddity build --output ./build",
+      "dependencies": [
+        "../packages/gbnf/javascript:build"
+      ]
+    }
   },
   "author": "Ambient Labs",
   "license": "MIT",
   "dependencies": {
-    "docoddity": "^0.3.2"
+    "@emotion/css": "^11.13.4",
+    "@shoelace-style/shoelace": "^2.17.1",
+    "copy-component": "^0.3.0",
+    "docoddity": "^0.4.8",
+    "gbnf": "workspace:*",
+    "lit": "^3.2.0",
+    "shiki": "^1.21.0"
+  },
+  "devDependencies": {
+    "wireit": "^0.14.9"
   }
 }

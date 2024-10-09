@@ -1,0 +1,43 @@
+button {
+  appearance: none;
+  padding: 8px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+}
+
+.icon-container {
+  position: relative;
+  height: 16px;
+  width: 16px;
+}
+
+.clippy {
+  color: #24292e;
+  position: absolute;
+  top: 0;
+  left: 0;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 0;
+  transition: all 300ms ease-in-out;
+}
+
+.clippy.copied {
+  stroke-dashoffset: -50;
+}
+
+.check {
+  color: #28a745;
+  position: absolute;
+  top: 0;
+  left: 0;
+  stroke-dasharray: 50;
+  stroke-dashoffset: -50;
+  transition: all 300ms ease-in-out;
+  visibility: hidden;
+}
+
+.check.visible {
+  stroke-dashoffset: 0;
+  visibility: visible;
+}
