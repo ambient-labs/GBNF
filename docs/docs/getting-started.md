@@ -3,14 +3,10 @@ title: 'Getting Started'
 order: 1
 ---
 
-```javascript
-const wait = () => new Promise(r => setTimeout(r, 1000))
-let i = 0;
-while (i < 50) {
-  console.log(i)
-  await wait();
-  i++;
-}
+
+```multiple
+javascript: ./foo.js
+python: ./foo.py
 ```
 
 ## Installation
@@ -24,7 +20,7 @@ npm install gbnf
 You can also use `GBNF` directly in your browser:
 
 ```html
-<script src='https://cdn.jsdelivr.net/npm/gbnf@0.1.21/+esm'></script>
+<script src='https://cdn.jsdelivr.net/npm/gbnf@latest/+esm'></script>
 <script type="text/javascript">
 console.log(GBNF)
 </script>
@@ -37,7 +33,8 @@ console.log(GBNF)
 ```javascript
 import GBNF from 'gbnf'
 
-const grammar = GBNF('root ::= "foo" | "bar" | "baz"')
+const grammar = GBNF('root ::= "foo" | "bar" | "baz"') // throws if invalid grammar
+const state = grammar('ba') // throws if invalid input
 console.log([...grammar]) // get rules
 ```
 
@@ -50,10 +47,9 @@ const grammar = g`"foo" | "bar" | "baz"`
 console.log(grammar)
 ```
 
+## Usage
 
-
-
-## Get a list of valid rules for the next input
+### Get a list of valid rules for the next input
 
 For any given valid string, you can get a list of valid next inputs that can be provided:
 
@@ -66,7 +62,7 @@ grammar = grammar.add('b')
 console.log([...grammar]) // get a list of valid input rules after we've added some text'
 ```
 
-## Build grammars on the fly
+### Build grammars on the fly
 
 Instead of writing this:
 
@@ -107,5 +103,5 @@ const turn = g`${move} " " ${move} "\n" `.key('turn');
 // Force first move to "1. ", then any 1-2 digit number after, relying on model to follow the pattern
 const root = g`"1. " ${turn} ([1-9] [0-9]? ". " ${turn})+`;
 
-console.log(root.compile());
+console.log(root.toString());
 ```

@@ -4,8 +4,12 @@
   /* min-height: 800px; */
 }
 
+slot {
+  display: none;
+}
+
 wc-codemirror {
-  border-radius: 4px 4px 0 0;
+  /* border-radius: 4px 4px 0 0; */
   overflow: hidden;
   overflow: scroll;
 }
@@ -19,9 +23,4 @@ select {
   top: 0;
   right: 0;
   z-index: 100;
-}
-
-
-.cm-s-solarized.CodeMirror {
-  box-shadow: none !important;
 }

@@ -11,6 +11,7 @@ import {
 } from 'lit/decorators.js';
 import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/index.min.js';
 import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/mode/javascript/javascript.js';
+import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/mode/python/python.js';
 import { CodeEditorCodeMirror } from './code-mirror/code-mirror.js';
 import style from './code-editor.css?raw';
 import type { CodeConsole } from './code-console/code-console.js';
@@ -26,6 +27,13 @@ const IMPORT_MAP: Record<string, string> = {
 };
 
 const GET_SCRIPT_TIMEOUT = 2000;
+
+const getHTMLMode = () => {
+  return document.getElementsByTagName('html')[0].getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+const getLocalKey = (key: string) => `@ambient-labs/code-editor/${key}`;
+
 export class CodeEditor extends LitElement {
   static styles = unsafeCSS(style);
 
@@ -36,10 +44,32 @@ export class CodeEditor extends LitElement {
 
   worker = new ScriptWorker(new URL('./worker/worker.ts', import.meta.url).href, this);
 
-  getHTMLMode = () => {
-    const html = document.getElementsByTagName('html')[0];
-    return html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  }
+  @property({ type: Boolean })
+  autorun = false;
+
+  @property({ type: String })
+  protected theme: string = localStorage.getItem(getLocalKey('theme')) ?? 'Default';
+
+  @property({ type: String })
+  language = localStorage.getItem(getLocalKey('language')) ?? 'text';
+
+  @state()
+  protected mode?: 'light' | 'dark' = getHTMLMode();
+
+  @state()
+  public output: ({ type: 'log' | 'error', data: unknown[] })[] = [];
+
+  @state()
+  protected running = false;
+
+  @state()
+  protected hover = false;
+
+  @state()
+  protected fullscreen = false;
+
+  @state()
+  protected tempTheme?: string;
 
   constructor() {
     super();
@@ -54,12 +84,6 @@ export class CodeEditor extends LitElement {
     });
   }
 
-
-  @state()
-  protected mode?: 'light' | 'dark' = this.getHTMLMode();
-
-  @property({ type: Boolean })
-  autorun = false;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -103,12 +127,6 @@ export class CodeEditor extends LitElement {
     }
   }
 
-  @state()
-  public output: ({ type: 'log' | 'error', data: unknown[] })[] = [];
-
-  @state()
-  protected running = false;
-
   execute = async () => {
     if (this.running) {
       this.running = false;
@@ -129,9 +147,6 @@ export class CodeEditor extends LitElement {
     }
   }
 
-  @state()
-  protected hover = false;
-
   mouseover = () => {
     if (this.running) {
       this.hover = true;
@@ -145,8 +160,6 @@ export class CodeEditor extends LitElement {
   codeConsole: Ref<CodeConsole> = createRef();
   container: Ref<HTMLDivElement> = createRef();
 
-  @state()
-  protected fullscreen = false;
   toggleFullscreen = async () => {
     if (!document.fullscreenElement) {
       this.container.value?.requestFullscreen().then(() => {
@@ -162,27 +175,27 @@ export class CodeEditor extends LitElement {
     }
   }
 
-  @state()
-  protected theme: string = localStorage.getItem('chosenTheme') ?? 'Default';
-
   handleThemeChange({ detail: { theme } }: CustomEvent<{ theme: string }>) {
     this.theme = theme;
   }
 
   protected updated(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('theme')) {
-      this.persistTheme(this.theme);
+      this.persist('theme', this.theme);
+    }
+    if (_changedProperties.has('language')) {
+      this.persist('language', this.language);
     }
   }
 
-  persistTheme = (theme: string) => {
-    if (theme === 'Default') {
-      localStorage.removeItem('chosenTheme');
+  persist = (key: 'theme' | 'language', value: string) => {
+    if (value === 'Default') {
+      localStorage.removeItem(getLocalKey(key));
     } else {
-      localStorage.setItem('chosenTheme', theme);
+      localStorage.setItem(getLocalKey(key), value);
     }
     window.document.querySelectorAll('code-editor').forEach((editor) => {
-      editor.theme = theme;
+      editor[key] = value;
     });
   }
 
@@ -199,9 +212,6 @@ export class CodeEditor extends LitElement {
     }
     return theme;
   }
-
-  @state()
-  protected tempTheme?: string;
 
   handleHoverTheme = ({ detail: { theme } }: CustomEvent<{ theme: string }>) => {
     this.tempTheme = theme;

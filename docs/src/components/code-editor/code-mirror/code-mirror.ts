@@ -53,6 +53,7 @@ export class CodeEditorCodeMirror extends LitElement {
     const target = e.target as HTMLSlotElement;
     const childNodes = target.assignedNodes({ flatten: true });
     const textContents = childNodes.map((node) => typeof node === 'string' ? node : node.textContent ? node.textContent : '');
+    // console.log('textContents', textContents);
     // this.script = textContents.filter(r => r.trim()).join('');
     this.script = textContents.map((r, i) => {
       if (i === 0 || i === textContents.length - 1) {
@@ -61,6 +62,7 @@ export class CodeEditorCodeMirror extends LitElement {
 
       return r;
     }).join('');
+    console.log('this.script', this.script);
     this.codeMirror.value = this.script;
   }
 
@@ -86,6 +88,12 @@ export class CodeEditorCodeMirror extends LitElement {
         theme="${theme}" 
         ${ref(this.ref)}
       >
+        <style>
+
+        .cm-s-solarized.CodeMirror {
+  box-shadow: none !important;
+}
+        </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/theme/${theme}.css">
         ${THEMES.map((theme) => html`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/theme/${theme}.css">`)}
       </wc-codemirror>

@@ -1,7 +1,7 @@
 {
   "title": "GBNF",
   "head": [
-    "<link rel='icon' href='https://fav.farm/📜' />",
+    "<link rel='icon' href='https://fav.farm/🧱' />",
     "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.17.1/cdn/themes/light.css",
     "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.17.1/cdn/themes/dark.css",
     "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.17.1/cdn/shoelace-autoloader.js",
@@ -18,7 +18,17 @@
       },
       {
         "url": "/grammars/",
-        "text": "Grammars"
+        "text": "Grammars",
+        "children": [
+          {
+            "url": "/grammars/json",
+            "text": "JSON"
+          },
+          {
+            "url": "/grammars/sql",
+            "text": "SQL"
+          }
+        ]
       }
     ],
     "right": [

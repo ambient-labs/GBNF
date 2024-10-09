@@ -6,7 +6,6 @@ self.onmessage = async (event: MessageEvent) => {
   const postMessage = (type: string, postData?: unknown) => self.postMessage(JSON.stringify({
     type,
     data: postData,
-    threadID,
   }));
 
   const getPostMessage = (type: string) => (...data: unknown[]) => postMessage(type, prepareDataForPosting(data));
@@ -24,7 +23,7 @@ self.onmessage = async (event: MessageEvent) => {
   };
 
 
-  const { threadID, type, ...data } = event.data;
+  const { type, ...data } = event.data;
   // consoleInfo(event)
   if (data.type === 'abort') {
     // consoleInfo('abort!!!')
@@ -35,15 +34,15 @@ self.onmessage = async (event: MessageEvent) => {
     //   // URL.revokeObjectURL(fn);
     // }
   } else {
-    consoleInfo(`[${threadID}] starting cell execution...`);
+    consoleInfo(`starting cell execution...`);
     try {
       const result = await run(data, scriptConsole);
-      self.postMessage(JSON.stringify({ type: 'result', data: result, threadID }));
+      self.postMessage(JSON.stringify({ type: 'result', data: result }));
     } catch (err: unknown) {
       consoleError('error', (err as any).message);
     } finally {
-      consoleInfo(`[${threadID}] completed cell execution...`);
-      self.postMessage(JSON.stringify({ type: 'complete', threadID }));
+      consoleInfo(`completed cell execution...`);
+      self.postMessage(JSON.stringify({ type: 'complete' }));
     }
   }
 }

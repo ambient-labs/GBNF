@@ -20,7 +20,7 @@ slot {
 
 wc-codemirror {
   /* // border: 1px solid var(--color-code-editor-border-color); */
-  border-radius: 4px 4px 0 0;
+  /* border-radius: 4px 4px 0 0; */
   overflow: hidden;
   min-height: 100px;
   max-height: 1000px;
@@ -46,12 +46,14 @@ wc-codemirror {
 }
 
 code-editor-actions {
-  position: absolute;
-  top: calc(var(--padding) - 4px);
-  right: var(--padding);
+  /* position: absolute; */
+  /* top: calc(var(--padding) - 4px);
+  right: var(--padding); */
   display: flex;
   z-index: 100;
   gap: var(--padding);
+  border: 1px solid var(--color-code-editor-border-color);
+  border-radius: 4px 4px 0 0;
 }
 
 /* #output.active {
