@@ -13,7 +13,7 @@ import {
 } from './types.js';
 
 
-describe('builder', () => {
+describe('StringGBNFRule', () => {
   describe('singleline', () => {
     test.each([
       ['root ::= "SELECT"', ssssss`SELECT`],
@@ -105,14 +105,6 @@ describe('builder', () => {
     ])(`'%s'`, (_expectation, rule) => {
       const expectation = _expectation.replace(/\\n/g, '\n').replace(/\\t/g, '\t').split('\n').sort().join('\n');
       expect(rule.toString()).toEqual(expectation);
-    });
-  });
-
-  describe('arrays', () => {
-    test.each([
-    ])(`'%s'`, (_expectation, rule) => {
-      const expectation = _expectation.replace(/\\t/g, '\t').replace(/\\n/g, '\n').split('\n').sort().join('\n');
-      expect(rule.toString().split('\n').sort().join('\n')).toEqual(expectation);
     });
   });
 
