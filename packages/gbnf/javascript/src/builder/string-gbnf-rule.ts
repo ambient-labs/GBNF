@@ -18,7 +18,7 @@ export class StringGBNFRule extends GBNFRule<Args> {
     const {
       strings,
       values,
-      #separator: separator,
+      _separator: separator,
     } = this;
 
     const ruleNames = getRuleNames(values, parser, separator, args);

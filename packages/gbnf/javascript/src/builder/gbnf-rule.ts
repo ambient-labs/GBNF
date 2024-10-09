@@ -80,7 +80,7 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     const {
       strings,
       values,
-      #separator: separator,
+      _separator: separator,
     } = this;
 
     const ruleNames = getRuleNames(values, parser, separator, args);
