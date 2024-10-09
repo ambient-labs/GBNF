@@ -76,21 +76,24 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
 
   log = (opts: LogOptions & T = {} as T) => log(this.toString(opts), opts);
 
+  renderStrings: (strings: TemplateStringsArray, _args: T) => string[] = (strings) => {
+    let inQuote = false;
+    return strings.map(string => {
+      const { str, inQuote: _inQuote, } = getRawValue(string, inQuote);
+      inQuote = _inQuote;
+      return str;
+    });
+  };
+
   getGBNF = (parser: GrammarBuilder, args: T) => {
     const {
-      strings,
       values,
       _separator: separator,
     } = this;
 
     const ruleNames = getRuleNames(parser, values, separator, args);
-    let inQuote = false;
-    const _strings = strings.map(string => {
-      const { str, inQuote: _inQuote, } = getRawValue(string, inQuote);
-      inQuote = _inQuote;
-      return str;
-    });
-    return getGBNF(ruleNames, _strings, {
+    const strings = this.renderStrings(this.strings, args);
+    return getGBNF(ruleNames, strings, {
       raw: true,
       wrapped: this._wrapped,
       separator: this._separator,
