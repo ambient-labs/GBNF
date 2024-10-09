@@ -1,10 +1,13 @@
 import {
-  $,
   g,
 } from "gbnf/builder";
 import {
   FULL_SELECT_QUERY,
 } from './keys.js';
+
+import {
+  $,
+} from './string-rule.js';
 
 export const ws = 'ws';
 export const optws = 'opt-ws';
