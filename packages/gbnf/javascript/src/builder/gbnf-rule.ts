@@ -85,18 +85,21 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     });
   };
 
+  get separator() {
+    return this._separator;
+  }
+
   getGBNF = (parser: GrammarBuilder, args: T) => {
     const {
       values,
-      _separator: separator,
+      separator,
     } = this;
 
     const ruleNames = getRuleNames(parser, values, separator, args);
     const strings = this.renderStrings(this.strings, args);
     return getGBNF(ruleNames, strings, {
-      raw: true,
       wrapped: this._wrapped,
-      separator: this._separator,
+      separator: this.separator,
     });
   };
 

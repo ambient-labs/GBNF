@@ -44,9 +44,7 @@ export const getGBNF = (
   {
     wrapped,
     separator = '',
-    raw,
   }: {
-    raw: boolean;
     wrapped?: string,
     separator?: string,
   }
@@ -79,7 +77,7 @@ export const getGBNF = (
     return part.slice(startIndex, endIndex);
   });
   const gbnf = joinWith(
-    raw ? `${separator}` : separator ? ` ${separator} ` : ' ',
+    separator,
     ...partsToJoin,
   );
 
