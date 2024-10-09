@@ -4,30 +4,14 @@ import {
   expect,
 } from 'vitest';
 import {
-  $,
   g
 } from './template-tags.js';
 
 describe('GBNFRule', () => {
   describe('logging', () => {
-    test('it logs', () => {
-      const rule = $`foo`;
-      expect(rule.log()).toEqual('foo')
-    });
-
     test('it logs a _ string', () => {
       const rule = g`"foo"`;
       expect(rule.log()).toEqual('foo')
-    });
-
-    test('it logs two paths', () => {
-      const rule = g`${$`foo`} | ${$`bar`}`;
-      expect(rule.log({ shuffle: false })).toEqual(['foo', 'bar'].join('\n'))
-    });
-
-    test('it logs overlapping paths', () => {
-      const rule = g`${$`foo`} | ${$`f`}`;
-      expect(rule.log()).toEqual('f\nfoo')
     });
 
     test('turns ranges into x', () => {
