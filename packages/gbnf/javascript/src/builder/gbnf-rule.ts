@@ -20,8 +20,8 @@ export interface GBNFOpts {
 
 export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
   #key?: string;
-  #wrapped?: string;
-  #separator?: string;
+  protected _wrapped?: string;
+  protected _separator?: string;
   constructor(
     protected strings: TemplateStringsArray,
     protected values: Value[],
@@ -32,8 +32,8 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     }: GBNFOpts = {}
   ) {
     this.#key = key;
-    this.#wrapped = wrapped;
-    this.#separator = separator;
+    this._wrapped = wrapped;
+    this._separator = separator;
   }
 
   toString = ({
@@ -52,8 +52,8 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
   clone = (opts: Partial<GBNFOpts>) => {
     return new GBNFRule(this.strings, this.values, {
       key: this.#key,
-      wrapped: this.#wrapped,
-      separator: this.#separator,
+      wrapped: this._wrapped,
+      separator: this._separator,
       ...opts,
     });
   };
@@ -92,8 +92,8 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     });
     return getGBNF(ruleNames, _strings, {
       raw: true,
-      wrapped: this.#wrapped,
-      separator: this.#separator,
+      wrapped: this._wrapped,
+      separator: this._separator,
     });
   };
 
