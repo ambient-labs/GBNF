@@ -21,7 +21,7 @@ export class StringGBNFRule extends GBNFRule<Args> {
       separator,
     } = this;
 
-    const ruleNames = getRuleNames(values, parser, separator, args);
+    const ruleNames = getRuleNames(parser, values, separator, args);
     const _strings = strings.map(string => {
       return getStringValue(string, args);
     });
