@@ -170,7 +170,7 @@ To implement this rule, we:
 
 We want to provide a rule that enables the case of the string to be set at runtime. The below implements the behavior:
 
-```typescript
+```javascript
 import { GBNFRule } from 'gbnf'
 
 const getStringValue = (value, caseKind) => ([
@@ -190,25 +190,21 @@ const getStringValue = (value, caseKind) => ([
 ].join(' '));
 
 class StringGBNFRule extends GBNFRule {
-  toString({ caseKind }) {
-    const {
-      strings, // the string inputs of the template tags
-      values,
-      separator,
-    } = this;
+  renderStrings = (
+    strings,
+    args,
+  ) => {
+    console.log(strings, args)
+    return strings.map(string => getStringValue(string, args));
+  };
 
-    const ruleNames = getRuleNames(values, parser, separator, args);
-    const _strings = strings.map(string => {
-      return getStringValue(string, args);
-    });
-    return getGBNF(ruleNames, _strings, {
-      raw: false,
-      wrapped: this.wrapped,
-      separator: this.separator,
-    });
-  }
+  // get separator() {
+  //   const { _separator: separator, } = this;
+  //   return separator ? ` ${separator} ` : ' ';
+  // }
 }
 
-const s = StringGBNFRule.create() // creates a valid template tag
+const s = StringGBNFRule.templateTag();
+
 console.log(s`select`.toString({ caseKind: 'upper' }))
 ```
