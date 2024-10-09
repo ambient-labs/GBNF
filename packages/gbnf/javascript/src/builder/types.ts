@@ -14,3 +14,8 @@ export const customInspectSymbol = Symbol.for('nodejs.util.inspect.custom');
 export interface ToStringArgs {
   include?: GBNFRule[];
 }
+
+export type TemplateTag<GBNFRuleType extends GBNFRule> = {
+  (strings: TemplateStringsArray, ...values: Value[]): GBNFRuleType;
+  key(name: string): (strings: TemplateStringsArray, ...values: Value[]) => GBNFRuleType;
+};

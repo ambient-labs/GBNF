@@ -3,6 +3,7 @@ import {
 } from "./join.js";
 import {
   customInspectSymbol,
+  TemplateTag,
   type ToStringArgs,
   type Value,
 } from "./types.js";
@@ -34,6 +35,16 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     this.#key = key;
     this._wrapped = wrapped;
     this._separator = separator;
+  }
+
+  static templateTag<GBNFRuleType extends GBNFRule>() {
+    const templateTag: TemplateTag<GBNFRuleType> = (strings, ...values) => new this(strings, values) as GBNFRuleType;
+
+    templateTag.key = (name: string) => (strings: TemplateStringsArray, ...values: Value[]) => {
+      return new this(strings, values, { key: name, }) as GBNFRuleType;
+    };
+
+    return templateTag;
   }
 
   toString = ({
