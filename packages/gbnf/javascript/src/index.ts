@@ -19,3 +19,7 @@ export {
 } from './utils/errors/grammar-parse-error.js';
 
 export * from "./builder/index.js";
+
+export {
+  type ToStringArgs,
+} from './builder/types.js';

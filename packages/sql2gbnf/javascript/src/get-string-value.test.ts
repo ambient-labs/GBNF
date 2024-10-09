@@ -25,3 +25,4 @@ describe('getStringValue', () => {
     expect(getStringValue(value.split('\\n').join('\n'), { caseKind })).toBe(expectation);
   });
 });
+

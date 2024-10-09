@@ -1,6 +1,5 @@
 export {
   g,
-  $,
 } from './template-tags.js';
 export {
   GrammarBuilder,

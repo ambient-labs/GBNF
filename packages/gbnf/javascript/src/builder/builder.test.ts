@@ -5,14 +5,10 @@ import {
 } from 'vitest';
 
 import {
-  $,
   g,
-  GBNFRule,
 } from './index.js';
 import {
   CaseKind,
-  TemplateTag,
-  ToStringArgs
 } from './types.js';
 
 
@@ -45,11 +41,6 @@ describe('builder', () => {
         "SELECT"
         "FROM"
       `],
-      ['root ::= "SELECT"', $`SELECT`],
-      ['root ::= "SELECT "', $`SELECT `],
-      ['root ::= "  SELECT  FOO  "', $`  SELECT  FOO  `],
-      ['root ::= "  SELECT  \\nFOO  "', $`  SELECT  \nFOO  `],
-      ['root ::= "  SELECT  \\tFOO  "', $`  SELECT  \tFOO  `],
     ])(`'%s'`, (_expectation, rule) => {
       const expectation = _expectation.replace(/\\t/g, '\t');
       expect(rule.toString()).toEqual(expectation);
@@ -71,20 +62,6 @@ describe('builder', () => {
           'x ::= [0-9]',
         ].join('\\n'),
         g`[a-z] ${g`[0-9]`}`,
-      ],
-      [
-        [
-          'root ::= [a-z] x',
-          'x ::= "FOO"',
-        ].join('\\n'),
-        g`[a-z] ${$`FOO`}`,
-      ],
-      [
-        [
-          'root ::= [a-z] x',
-          'x ::= "FOO"',
-        ].join('\\n'),
-        g` \n[a-z] \n${$`FOO`}`,
       ],
       [
         [
@@ -115,13 +92,6 @@ describe('builder', () => {
         ].join('\\n'),
         g` [a-z] ${g` \n\t[A-Z]`} ${g`[A-Z] \n\t`}`,
       ],
-      [
-        [
-          'root ::= " FOO " x',
-          'x ::= "YYY"',
-        ].join('\\n'),
-        $` FOO ${$`YYY`}`,
-      ],
 
       // rules can be named
       [
@@ -130,13 +100,6 @@ describe('builder', () => {
           'uppercase ::= [A-Z]',
         ].join('\\n'),
         g` [a-z] ${g.key('uppercase')`[A-Z]`}`,
-      ],
-      [
-        [
-          'root ::= " FOO " bar',
-          'bar ::= "ZZZ"',
-        ].join('\\n'),
-        $` FOO ${$.key('bar')`ZZZ`}`,
       ],
       [
         [
@@ -201,41 +164,6 @@ describe('builder', () => {
         ].join('\\n'),
         g`
         ${g`[a-z]`}
-      `,
-      ],
-      [
-        [
-          'root ::= x',
-          'x ::= "SELECT"',
-        ].join('\\n'),
-        g`
-        ${$`SELECT`}
-      `,
-      ],
-      [
-        [
-          'root ::= x x-a',
-          'x ::= "SELECT"',
-          'x-a ::= "FROM"',
-        ].join('\\n'),
-        g`
-         ${$`SELECT`}
-         ${$`FROM`}
-      `,
-      ],
-      [
-        [
-          'root ::= x column-name x-a x-b',
-          'column-name ::= ("*" | [a-z])',
-          'x ::= "SELECT "',
-          'x-b ::= [a-z]',
-          'x-a ::= " FROM "',
-        ].join('\\n'),
-        g`
-      ${$`SELECT `}
-      ${g.key('column-name')`("*" | [a-z])`}
-      ${$` FROM `}
-      ${g`[a-z]`}
       `,
       ],
     ])(`'%s'`, (_expectation, rule) => {
@@ -340,18 +268,6 @@ describe('builder', () => {
   //     }).toThrow();
   //   });
   // });
-
-  describe('cases', () => {
-    test.each([
-      ['root ::= "SELect"', 'default' as CaseKind, $`SELect`],
-      ['root ::= "SELECT"', 'upper' as CaseKind, $`SELect`],
-      ['root ::= "select"', 'lower' as CaseKind, $`SELect`],
-      ['root ::= [sS] [eE] [lL] [eE] [cC] [tT]', 'any' as CaseKind, $`SELect`],
-    ])(`'%s'`, (_expectation, caseKind, rule) => {
-      const expectation = _expectation.replace(/\\t/g, '\t').split('\n').sort().join('\n');
-      expect(rule.toString({ caseKind })).toEqual(expectation);
-    });
-  });
 
   describe('chaining', () => {
     const content = 'foo';

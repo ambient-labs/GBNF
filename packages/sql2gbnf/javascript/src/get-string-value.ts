@@ -35,3 +35,4 @@ export const getStringValue = (value: string, { caseKind = 'default', }: ToStrin
     return str && str !== '"' && str !== '""';
   }).join(' ');
 };
+
