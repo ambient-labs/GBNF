@@ -1,8 +1,10 @@
 import {
-  $,
   g,
 } from "gbnf/builder";
 import { joinClause, } from "../join/join-clause.js";
+import {
+  $,
+} from '../string-rule.js';
 import {
   tableWithAlias,
   ws,

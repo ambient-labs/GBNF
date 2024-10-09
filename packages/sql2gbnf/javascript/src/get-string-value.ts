@@ -1,4 +1,9 @@
-import { CaseKind, ToStringArgs, } from "./types.js";
+import {
+  type ToStringArgs,
+} from 'gbnf';
+import {
+  type CaseKind,
+} from "./types.js";
 
 export const getStringValue = (value: string, { caseKind = 'default', }: ToStringArgs & { caseKind?: CaseKind }) => {
   if (value === '') {
@@ -35,3 +40,4 @@ export const getStringValue = (value: string, { caseKind = 'default', }: ToStrin
     return str && str !== '"' && str !== '""';
   }).join(' ');
 };
+

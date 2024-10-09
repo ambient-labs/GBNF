@@ -5,7 +5,7 @@ export type AddRule = (rule: string, symbolName?: string) => string;
 export type GetConst = (key: string, opts?: { left?: boolean; right?: boolean }) => string;
 
 export type WhitespaceKind = 'succinct' | 'verbose' | 'default';
-export type CaseKind = 'lower' | 'upper' | 'any';
+export type CaseKind = 'lower' | 'upper' | 'any' | 'default';
 export interface BaseSchemaOpts {
   whitespace?: WhitespaceKind;
   case?: CaseKind;

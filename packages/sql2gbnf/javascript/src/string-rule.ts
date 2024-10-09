@@ -1,9 +1,9 @@
 import {
   GBNFRule,
-} from "./gbnf-rule.js";
+  type ToStringArgs,
+} from "gbnf";
 import { getStringValue, } from "./get-string-value.js";
 import {
-  type ToStringArgs,
   type CaseKind,
 } from "./types.js";
 
@@ -19,3 +19,5 @@ export class StringGBNFRule extends GBNFRule<Args> {
     return separator ? ` ${separator} ` : ' ';
   }
 }
+
+export const $ = StringGBNFRule.templateTag();

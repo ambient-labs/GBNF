@@ -1,8 +1,10 @@
 import {
-  $,
   GBNFRule,
   g,
 } from "gbnf/builder";
+import {
+  $,
+} from '../string-rule.js';
 import {
   selectRule,
 } from '../select/index.js';

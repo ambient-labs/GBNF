@@ -1,7 +1,9 @@
 import {
-  $,
   g,
 } from "gbnf/builder";
+import {
+  $,
+} from '../string-rule.js';
 import {
   validAlias,
   tableName,
