@@ -3,7 +3,6 @@ import {
 } from "./join.js";
 import {
   customInspectSymbol,
-  TemplateTag,
   type ToStringArgs,
   type Value,
 } from "./types.js";
@@ -20,9 +19,9 @@ export interface GBNFOpts {
 }
 
 export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
-  #key?: string;
-  protected _wrapped?: string;
-  protected _separator?: string;
+  _key?: string;
+  _wrapped?: string;
+  _separator?: string;
   constructor(
     protected strings: TemplateStringsArray,
     protected values: Value[],
@@ -32,19 +31,19 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
       separator,
     }: GBNFOpts = {}
   ) {
-    this.#key = key;
+    this._key = key;
     this._wrapped = wrapped;
     this._separator = separator;
   }
 
   static templateTag<GBNFRuleType extends GBNFRule>() {
-    const templateTag: TemplateTag<GBNFRuleType> = (strings, ...values) => new this(strings, values) as GBNFRuleType;
-
-    templateTag.key = (name: string) => (strings: TemplateStringsArray, ...values: Value[]) => {
-      return new this(strings, values, { key: name, }) as GBNFRuleType;
+    const makeTemplateTag = (opts: GBNFOpts = {}) => {
+      const templateTag = (strings: TemplateStringsArray, ...values: Value[]) => new this(strings, values, opts) as GBNFRuleType;
+      templateTag.key = (key: string) => makeTemplateTag({ ...opts, key, });
+      templateTag.wrap = (wrapped: string) => makeTemplateTag({ ...opts, wrapped, });
+      return templateTag;
     };
-
-    return templateTag;
+    return makeTemplateTag();
   }
 
   toString = ({
@@ -62,7 +61,7 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
 
   clone = (opts: Partial<GBNFOpts>) => {
     return new GBNFRule(this.strings, this.values, {
-      key: this.#key,
+      key: this._key,
       wrapped: this._wrapped,
       separator: this._separator,
       ...opts,
@@ -116,6 +115,6 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
 
   addToParser = (parser: GrammarBuilder, args: T, leaf = false): string => {
     const gbnf = this.getGBNF(parser, args);
-    return parser.addRule(gbnf, !leaf ? 'root' : this.#key);
+    return parser.addRule(gbnf, !leaf ? 'root' : this._key);
   };
 }
