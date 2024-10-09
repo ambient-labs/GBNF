@@ -18,15 +18,15 @@ import {
 export type RuleNames = (string | RuleNames)[];
 
 export const getRuleNames = (
-  values: Value[],
   parser: GrammarBuilder,
+  values: Value[],
   separator?: string,
   args: ToStringArgs = {},
 ): (string | undefined)[] => values.map((
   value,
 ) => {
   if (Array.isArray(value)) {
-    const ruleNames = getRuleNames(value, parser, separator, args);
+    const ruleNames = getRuleNames(parser, value, separator, args);
     const rule = g`${joinWith(separator ? separator : ' ', ...ruleNames)}`;
     return rule.addToParser(parser, args, true);
   }

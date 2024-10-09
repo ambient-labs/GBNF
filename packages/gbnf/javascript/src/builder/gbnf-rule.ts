@@ -83,7 +83,7 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
       _separator: separator,
     } = this;
 
-    const ruleNames = getRuleNames(values, parser, separator, args);
+    const ruleNames = getRuleNames(parser, values, separator, args);
     let inQuote = false;
     const _strings = strings.map(string => {
       const { str, inQuote: _inQuote, } = getRawValue(string, inQuote);

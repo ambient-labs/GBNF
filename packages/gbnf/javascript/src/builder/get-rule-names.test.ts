@@ -17,25 +17,22 @@ const parser = new GrammarBuilder();
 describe('getRuleNames', () => {
   test('it gets rule names for strings', () => {
     expect(getRuleNames(
-      ['a', 'b'],
       parser,
-      'default',
+      ['a', 'b'],
     )).toEqual(['a', 'b']);
   });
 
   test('it gets rule names for rules', () => {
     expect(getRuleNames(
-      [g`a`.key('a1'), g`b`.key('b1')],
       parser,
-      'default',
+      [g`a`.key('a1'), g`b`.key('b1')],
     )).toEqual(['a1', 'b1']);
   });
 
   test('it returns a mixed group', () => {
     expect(getRuleNames(
-      ['foo', g`a`.key('a1'), undefined, g`b`.key('b1')],
       parser,
-      'default',
+      ['foo', g`a`.key('a1'), undefined, g`b`.key('b1')],
     )).toEqual(['foo', 'a1', undefined, 'b1']);
   });
 
@@ -64,10 +61,8 @@ describe('getRuleNames', () => {
 
     ])(`(array) it handles '%s'`, (rules, expectation, grammar) => {
       const ruleNames = getRuleNames(
-        rules,
         parser,
-        undefined,
-        { caseKind: 'default', },
+        rules,
       );
       expect(ruleNames.sort()).toEqual(expectation.sort());
       expect([...parser.grammar].sort()).toEqual(grammar.sort());
