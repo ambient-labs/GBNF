@@ -7,8 +7,14 @@ import {
 import {
   $,
   g,
+  GBNFRule,
 } from './index.js';
-import { CaseKind } from './types.js';
+import {
+  CaseKind,
+  TemplateTag,
+  ToStringArgs
+} from './types.js';
+
 
 describe('builder', () => {
   describe('singleline', () => {
@@ -346,4 +352,64 @@ describe('builder', () => {
       expect(rule.toString({ caseKind })).toEqual(expectation);
     });
   });
+
+  describe('chaining', () => {
+    const content = 'foo';
+    const key = 'foo-key';
+    const wrap = '*';
+    const availableMethods = ['tag', 'key', 'wrap'];
+    function* generatePermutations(methods: string[], current: string[] = [], minLength: number = 2): string[][] {
+      if (current.length >= minLength) {
+        if (current.includes("tag") && current.some((method) => method !== "tag")) {
+          yield current;
+        }
+      }
+
+      if (current.length < methods.length) {
+        for (const method of methods) {
+          if (!current.includes(method)) {
+            yield* generatePermutations(methods, [...current, method], minLength);
+          }
+        }
+      }
+    }
+
+    const getRule = (permutation: string[]) => {
+      let rule: any;
+
+      for (const method of permutation) {
+        if (method === 'tag') {
+          const value = `"${content}"`;
+          rule = rule === undefined ? g`${value}` : rule`${value}`;
+        } else if (method === 'key' || method === 'wrap') {
+          const value = method === 'key' ? key : wrap;
+          rule = rule === undefined ? g[method](value) : rule[method](value);
+        } else {
+          throw new Error(`unknown method: ${method}`);
+        }
+      }
+
+      return rule;
+    }
+
+    const getExpectation = (permutation: string[]) => {
+      const _key = permutation.includes('key') ? key : 'x';
+      const _wrap = permutation.includes('wrap') ? wrap : '';
+      return [
+        `root ::= ${_key}`,
+        `${_key} ::= ${_wrap ? `("foo")${_wrap}` : `"foo"`}`,
+      ].join('\n');
+    };
+
+    const permutations = [...generatePermutations(availableMethods)].map(p => p.join(','));
+
+    test.each(permutations)('%s', (_permutation) => {
+      const permutation = _permutation.split(',');
+      const rule = getRule(permutation);
+
+      const expectation = getExpectation(permutation);
+
+      expect(g`${rule}`.toString().split('\n').sort().join('\n')).toEqual(expectation.split('\n').sort().join('\n'));
+    });
+  })
 });

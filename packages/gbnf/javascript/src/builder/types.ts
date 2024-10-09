@@ -1,5 +1,5 @@
 import {
-  type GBNFRule,
+  GBNFRule,
 } from './gbnf-rule.js';
 export type Value = string | GBNFRule | undefined | (string | GBNFRule | undefined)[];
 
@@ -17,5 +17,9 @@ export interface ToStringArgs {
 
 export type TemplateTag<GBNFRuleType extends GBNFRule> = {
   (strings: TemplateStringsArray, ...values: Value[]): GBNFRuleType;
-  key(name: string): (strings: TemplateStringsArray, ...values: Value[]) => GBNFRuleType;
+  // key(name: string): (strings: TemplateStringsArray, ...values: Value[]) => GBNFRuleType;
+  // wrap(wrapped: string): (strings: TemplateStringsArray, ...values: Value[]) => GBNFRuleType;
+  key(name: string): TemplateTag<GBNFRuleType>;
+  wrap(wrapped: string): TemplateTag<GBNFRuleType>;
+  opts: Record<string, unknown>;
 };
