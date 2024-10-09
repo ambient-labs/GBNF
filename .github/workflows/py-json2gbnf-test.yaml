@@ -31,8 +31,7 @@ jobs:
           # - pyversion: "3.12"
           - pyversion: "3.11"
             enable_coverage: true
-          - pyversion: "3.10"
-            more_hypothesis_examples_if_cron: true
+          - pyversion: "3.12"
     uses: ./.github/workflows/py-shared-unit-test.yaml
     with:
       package: ./packages/json2gbnf/python
