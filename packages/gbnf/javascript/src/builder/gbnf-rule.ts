@@ -37,25 +37,6 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     this._separator = separator;
   }
 
-  // static templateTag<GBNFRuleType extends GBNFRule>() {
-  //   const templateTag: TemplateTag<GBNFRuleType> = (strings, ...values) => new this(strings, values, templateTag.opts) as GBNFRuleType;
-
-  //   templateTag.opts = {};
-
-  //   templateTag.key = (key: string) => {
-  //     templateTag.opts.key = key;
-  //     return templateTag;
-  //   };
-
-  //   templateTag.wrap = (wrapped: string) => {
-  //     templateTag.opts.wrapped = wrapped;
-  //     return templateTag;
-  //     // return new this(strings, values, { wrapped, }) as GBNFRuleType;
-  //   };
-
-  //   return templateTag;
-  // }
-
   static templateTag<GBNFRuleType extends GBNFRule>() {
     const makeTemplateTag = (opts: GBNFOpts = {}) => {
       const templateTag = (strings: TemplateStringsArray, ...values: Value[]) => new this(strings, values, opts) as GBNFRuleType;
@@ -65,16 +46,6 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
     };
     return makeTemplateTag();
   }
-
-
-  get options(): GBNFOpts {
-    return {
-      key: this._key,
-      wrapped: this._wrapped,
-      separator: this._separator,
-    };
-  }
-
 
   toString = ({
     include = [],
