@@ -33,8 +33,11 @@ export const getRuleNames = (
   if (value instanceof GBNFRule) {
     return value.addToParser(parser, args, true);
   }
-  if (value !== undefined) {
+  if (typeof value === 'string') {
     return value;
+  }
+  if (typeof value === 'number') {
+    return `${value}`;
   }
   return undefined;
 });
