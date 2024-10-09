@@ -251,6 +251,37 @@ describe('builder', () => {
           "ll2"
       `,
       ],
+
+      // null rules should maintain their indices
+      [
+        [
+          'root ::= "ll2"  "ll2" x "ll2"',
+          'x ::= llb',
+        ].join('\\n'),
+        g`
+          "ll2"
+          ${null}
+          "ll2"
+          ${g`llb`}
+          "ll2"
+      `,
+      ],
+
+      // boolean rules should maintain their indices
+      [
+        [
+          'root ::= "ll2"  "ll2"  x "ll2"',
+          'x ::= llb',
+        ].join('\\n'),
+        g`
+          "ll2"
+          ${true}
+          "ll2"
+          ${false}
+          ${g`llb`}
+          "ll2"
+      `,
+      ],
     ])(`'%s'`, (_expectation, rule) => {
       const expectation = _expectation.replace(/\\t/g, '\t').replace(/\\n/g, '\n').split('\n').sort().join('\n');
       expect(rule.toString().split('\n').sort().join('\n')).toEqual(expectation);
@@ -274,7 +305,7 @@ describe('builder', () => {
     const key = 'foo-key';
     const wrap = '*';
     const availableMethods = ['tag', 'key', 'wrap'];
-    function* generatePermutations(methods: string[], current: string[] = [], minLength: number = 2): string[][] {
+    function* generatePermutations(methods: string[], current: string[] = [], minLength: number = 2) {
       if (current.length >= minLength) {
         if (current.includes("tag") && current.some((method) => method !== "tag")) {
           yield current;
@@ -301,7 +332,7 @@ describe('builder', () => {
           const value = method === 'key' ? key : wrap;
           rule = rule === undefined ? g[method](value) : rule[method](value);
         } else {
-          throw new Error(`unknown method: ${method}`);
+          throw new Error(`unknown method (in test): ${method}`);
         }
       }
 

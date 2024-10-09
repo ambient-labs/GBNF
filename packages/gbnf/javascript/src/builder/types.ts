@@ -1,7 +1,8 @@
 import {
   GBNFRule,
 } from './gbnf-rule.js';
-export type Value = string | GBNFRule | undefined | (string | GBNFRule | undefined)[];
+type ValidGBNFValue = string | GBNFRule | undefined | null | boolean | number;
+export type Value = ValidGBNFValue | (ValidGBNFValue)[];
 
 export interface Frontmatter {
   raw?: boolean;

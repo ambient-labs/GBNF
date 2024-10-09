@@ -41,6 +41,7 @@ export class GBNFRule<T extends ToStringArgs = ToStringArgs> {
       const templateTag = (strings: TemplateStringsArray, ...values: Value[]) => new this(strings, values, opts) as GBNFRuleType;
       templateTag.key = (key: string) => makeTemplateTag({ ...opts, key, });
       templateTag.wrap = (wrapped: string) => makeTemplateTag({ ...opts, wrapped, });
+      templateTag.join = (separator: string) => makeTemplateTag({ ...opts, separator, });
       return templateTag;
     };
     return makeTemplateTag();
