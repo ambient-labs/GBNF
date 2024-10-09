@@ -3,7 +3,6 @@ import {
 } from "./join.js";
 import {
   customInspectSymbol,
-  TemplateTag,
   type ToStringArgs,
   type Value,
 } from "./types.js";
