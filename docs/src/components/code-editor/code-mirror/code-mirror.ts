@@ -1,6 +1,7 @@
 import {
   LitElement,
   PropertyValueMap,
+  PropertyValues,
   css,
   html,
   unsafeCSS
@@ -19,6 +20,7 @@ import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/mode/javascr
 import { emit } from '../../../utils/emit.js';
 import style from './code-mirror.css?raw';
 import { THEMES } from './themes.js';
+import { SlottedTextObserverController } from '../slot-controller.js';
 
 export const TAG_NAME = 'code-editor-wc-codemirror';
 
@@ -38,8 +40,21 @@ export class CodeEditorCodeMirror extends LitElement {
 
   ref: Ref<WCCodeMirror> = createRef();
 
-  @property({ type: String, })
+  private slottedTextObserver = new SlottedTextObserverController(this, (target) => {
+    const childNodes = target.assignedNodes({ flatten: true });
+    this.script = childNodes.map((node) => {
+      if (typeof node === 'string') {
+        return node;
+      }
+      return node.textContent ?? '';
+    }).join('');
+  });
+
+  @state()
   script = '';
+
+  @property({ type: String })
+  theme?: string;
 
   get codeMirror(): WCCodeMirror {
     const codeMirror = this.ref.value;
@@ -49,21 +64,10 @@ export class CodeEditorCodeMirror extends LitElement {
     return codeMirror;
   }
 
-  handleSlotchange(e: Event) {
-    const target = e.target as HTMLSlotElement;
-    const childNodes = target.assignedNodes({ flatten: true });
-    const textContents = childNodes.map((node) => typeof node === 'string' ? node : node.textContent ? node.textContent : '');
-    // console.log('textContents', textContents);
-    // this.script = textContents.filter(r => r.trim()).join('');
-    this.script = textContents.map((r, i) => {
-      if (i === 0 || i === textContents.length - 1) {
-        return Array(r.split('\n').length - 1).fill('').join('\n')
-      }
-
-      return r;
-    }).join('');
-    console.log('this.script', this.script);
-    this.codeMirror.value = this.script;
+  protected updated(_changedProperties: PropertyValues): void {
+    if (_changedProperties.has('script') && this.script !== this.codeMirror.value) {
+      this.codeMirror.value = this.script;
+    }
   }
 
   protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -77,9 +81,6 @@ export class CodeEditorCodeMirror extends LitElement {
     });
   }
 
-  @property({ type: String })
-  theme?: string;
-
   protected render() {
     const { theme } = this;
     return html`
@@ -88,16 +89,10 @@ export class CodeEditorCodeMirror extends LitElement {
         theme="${theme}" 
         ${ref(this.ref)}
       >
-        <style>
-
-        .cm-s-solarized.CodeMirror {
-  box-shadow: none !important;
-}
-        </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/theme/${theme}.css">
         ${THEMES.map((theme) => html`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/theme/${theme}.css">`)}
+        <slot></slot>
       </wc-codemirror>
-      <slot @slotchange=${this.handleSlotchange}></slot>
     `;
   }
 }

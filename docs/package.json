@@ -7,13 +7,18 @@
   "type": "module",
   "scripts": {
     "dev": "wireit",
-    "build": "wireit"
+    "build": "wireit",
+    "build:py": "wireit"
   },
   "wireit": {
+    "build:py": {
+      "command": "cd ../packages/gbnf/python && make build_package"
+    },
     "dev": {
       "command": "docoddity dev --port 6166",
       "dependencies": [
-        "../packages/gbnf/javascript:build"
+        "../packages/gbnf/javascript:build",
+        "build:py"
       ]
     },
     "build": {
@@ -29,9 +34,11 @@
     "@emotion/css": "^11.13.4",
     "@shoelace-style/shoelace": "^2.17.1",
     "copy-component": "^0.3.0",
-    "docoddity": "^0.4.8",
+    "docoddity": "^0.4.9",
     "gbnf": "workspace:*",
+    "js-yaml": "^4.1.0",
     "lit": "^3.2.0",
+    "pyodide": "^0.26.2",
     "shiki": "^1.21.0"
   },
   "devDependencies": {

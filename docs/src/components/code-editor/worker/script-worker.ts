@@ -1,7 +1,7 @@
 // sharedWorker = new SharedWorker(workerUrl);
 // worker = new Worker(workerUrl);
 
-import { CodeEditor } from "../code-editor.js";
+import { CodeEditor } from "../code-editor/code-editor.js";
 
 export class AbortError extends Error {
   constructor() {
@@ -34,8 +34,8 @@ const makeResolver = (): { promise: Promise<void>, resolve: () => void, reject: 
 //     type: 'module'
 //   });
 export class ScriptWorker {
-  private #worker?: Worker;
-  constructor(protected url: string, protected el: CodeEditor) {
+  #worker?: Worker;
+  constructor(protected url: string, protected callback: (data: ({ type: 'log' | 'error', data: unknown[] })) => void) {
     this.startWorker();
   }
 
@@ -48,7 +48,7 @@ export class ScriptWorker {
     return this.#worker;
   }
 
-  run(script: string) {
+  run(script: string, language: 'javascript' | 'python') {
     if (this.running) {
       throw new Error('already running');
     }
@@ -57,16 +57,9 @@ export class ScriptWorker {
     this.worker.postMessage({
       type: 'start',
       script,
+      kernel: language,
     });
     return promise;
-  }
-
-  postMessage(message: Record<string, unknown>) {
-    this.worker.postMessage(message);
-  }
-
-  onMessage(callback: (event: MessageEvent) => void) {
-    this.worker.addEventListener('message', callback);
   }
 
   abort = () => {
@@ -101,8 +94,8 @@ export class ScriptWorker {
 
 
     this.worker.onmessage = (event) => {
-      const { type, data, threadID } = JSON.parse(event.data);
-      // console.log('worker message', type, data, threadID);
+      // console.log('on message', event)
+      const { type, data } = JSON.parse(event.data);
       // if (type === 'log' || type === 'error' || type === 'result') {
       if (type === 'log' || type === 'error' || type === 'info' || type === 'warn') {
         // if (type === 'error') {
@@ -110,13 +103,10 @@ export class ScriptWorker {
         // }
         // if (threadID === this.threadID) {
         if (data) {
-          // console.log(...data)
-          this.el.output.push({
+          this.callback({
             type,
             data,
-          });
-          this.el.requestUpdate();
-          this.el.codeConsole.value?.requestUpdate();
+          })
         }
         // }
       } else if (type === 'worker-log') {
@@ -132,20 +122,10 @@ export class ScriptWorker {
           throw new Error('not running');
         }
         this.running.resolve();
+        this.running = undefined;
       }
     };
 
   }
 }
 
-
-// this.sharedWorker.port.postMessage({
-//   threadID: this.threadID,
-//   type: 'abort',
-// });
-// this.sharedWorker.port.postMessage({
-//   threadID: this.threadID,
-//   type: 'start',
-//   script: this.ref.value?.script,
-//   importMap: IMPORT_MAP,
-// });

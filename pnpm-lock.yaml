@@ -18,14 +18,20 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
       docoddity:
-        specifier: ^0.4.8
-        version: 0.4.8(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5)
+        specifier: ^0.4.9
+        version: 0.4.9(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5)
       gbnf:
         specifier: workspace:*
         version: link:../packages/gbnf/javascript
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
       lit:
         specifier: ^3.2.0
         version: 3.2.0
+      pyodide:
+        specifier: ^0.26.2
+        version: 0.26.2
       shiki:
         specifier: ^1.21.0
         version: 1.21.0
@@ -1743,8 +1749,8 @@ packages:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
 
-  docoddity@0.4.8:
-    resolution: {integrity: sha512-Rnix134OMzQkkL9IxZLw5LmhhDg0QwylNp0SnsqDLIlNMVWMv0fZgTVirTzRcijJyyAdNiajZ3rjka3XIKQa0g==}
+  docoddity@0.4.9:
+    resolution: {integrity: sha512-c/tWFVSLjGoRxHZzne2/4By3KoEO8FFjeqRnoyO0OI18Gc7g7E5XMcJYofxmAmW60LW/Fu8qNnULUSWOYHtlCg==}
     engines: {node: '>=22.0.0', pnpm: '>=9.0.0'}
     hasBin: true
 
@@ -2979,6 +2985,10 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  pyodide@0.26.2:
+    resolution: {integrity: sha512-8VCRdFX83gBsWs6XP2rhG8HMaB+JaVyyav4q/EMzoV8fXH8HN6T5IISC92SNma6i1DRA3SVXA61S1rJcB8efgA==}
+    engines: {node: '>=18.0.0'}
 
   qr-creator@1.0.0:
     resolution: {integrity: sha512-C0cqfbS1P5hfqN4NhsYsUXePlk9BO+a45bAQ3xLYjBL3bOIFzoVEjs79Fado9u9BPBD3buHi3+vY+C8tHh4qMQ==}
@@ -5487,7 +5497,7 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
-  docoddity@0.4.8(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5):
+  docoddity@0.4.9(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5):
     dependencies:
       '@docsearch/js': 3.6.1(@algolia/client-search@4.24.0)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)
       '@shoelace-style/shoelace': 2.17.1(@types/react@16.14.62)
@@ -6884,6 +6894,13 @@ snapshots:
   punycode@1.4.1: {}
 
   punycode@2.3.1: {}
+
+  pyodide@0.26.2:
+    dependencies:
+      ws: 8.17.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   qr-creator@1.0.0: {}
 

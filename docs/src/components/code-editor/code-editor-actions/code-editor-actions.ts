@@ -42,6 +42,7 @@ export class CodeEditorActions extends LitElement {
     left: 5px;
     top: 10px;
   }
+
   `;
   static metadata = {
     tag: TAG_NAME,
@@ -50,6 +51,7 @@ export class CodeEditorActions extends LitElement {
 
   @property({ type: Boolean }) fullscreen = false;
   @property({ type: String }) theme?: string;
+  @property({ type: Array }) languages: string[] = [];
 
   toggleFullscreen = async () => {
     emit(this, 'toggle-fullscreen');
@@ -84,15 +86,11 @@ export class CodeEditorActions extends LitElement {
   }
 
   render() {
-    const { fullscreen, language } = this;
-    console.log('language', language)
+    const { fullscreen, language, languages } = this;
     const fullScreenIcon = fullscreen ? 'fullscreen-exit' : 'arrows-fullscreen';
     return html`
     <div id="left">
-    <sl-select size="small" value="${language}" @sl-change=${this.selectLanguage}>
-      <sl-option value="javascript">Javascript</sl-option>
-      <sl-option value="python">Python</sl-option>
-    </sl-select>
+    <slot name="left"></slot>
     </div>
     <div id="right">
         <sl-button size="small" id="fullscreen" @click=${this.toggleFullscreen}>

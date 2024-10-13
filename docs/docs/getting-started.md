@@ -3,12 +3,6 @@ title: 'Getting Started'
 order: 1
 ---
 
-
-```multiple
-javascript: ./foo.js
-python: ./foo.py
-```
-
 ## Installation
 
 You can install `gbnf` with:
@@ -17,7 +11,7 @@ You can install `gbnf` with:
 npm install gbnf
 ```
 
-You can also use `GBNF` directly in your browser:
+You can also use the Javascript flavor of `GBNF` directly in your browser:
 
 ```html
 <script src='https://cdn.jsdelivr.net/npm/gbnf@latest/+esm'></script>
@@ -30,21 +24,16 @@ console.log(GBNF)
 
 `GBNF` exposes a default export for [validating grammars and inputs](validations/grammar), and [retrieving rules](state-rules):
 
-```javascript
-import GBNF from 'gbnf'
-
-const grammar = GBNF('root ::= "foo" | "bar" | "baz"') // throws if invalid grammar
-const state = grammar('ba') // throws if invalid input
-console.log([...grammar]) // get rules
+```multiple
+javascript: ./snippets/getting-started/quick-start/quick-start.js
+python: ./snippets/getting-started/quick-start/quick-start.py
 ```
 
 `GBNF` also provides a convenience template tag for [building grammars](writing):
 
-```javascript
-import { g } from 'gbnf'
-
-const grammar = g`"foo" | "bar" | "baz"`
-console.log(grammar)
+```multiple
+javascript: ./snippets/getting-started/quick-start/template-tag.js
+python: ./snippets/getting-started/quick-start/template-tag.py
 ```
 
 ## Usage
