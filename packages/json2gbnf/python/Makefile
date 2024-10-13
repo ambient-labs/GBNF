@@ -7,10 +7,10 @@ upgrade_dev_deps:
 	source .venv/dev/bin/activate && ./upgrade-dev-dependencies.sh && pip install -r dev-deps/python3.11/dev.txt
 
 test:
-	source .venv/dev/bin/activate && make copy_js_package && pytest .
+	make copy_js_package && uvx pytest .
 
 lint:
-	source .venv/dev/bin/activate && ruff check . --fix
+	uvx ruff check . --fix
 
 copy_assets:
 	cp ../../../LICENSE ./ 
