@@ -24,7 +24,6 @@ from .rules_builder import RulesBuilder
 
 
 def GBNF(grammar: str, _initial_string: str = ""):
-    print("Latest GBNF!")
     rules_builder = RulesBuilder(grammar)
     rules = rules_builder.rules
     symbol_ids = rules_builder.symbol_ids
