@@ -5,7 +5,7 @@ from .is_word_char import is_word_char
 from .parse_char import parse_char
 from .parse_name import parse_name
 from .parse_space import parse_space
-from .types import InternalRuleType
+from .gbnf_types import InternalRuleType
 
 
 class RulesBuilder:
@@ -34,7 +34,9 @@ class RulesBuilder:
                         for key, value in self.symbol_ids.items():
                             if value == elem["value"]:
                                 raise GrammarParseError(
-                                    src, self.pos, f"Undefined rule identifier '{key}'",
+                                    src,
+                                    self.pos,
+                                    f"Undefined rule identifier '{key}'",
                                 )
 
     def parse_rule(self, src):
@@ -62,7 +64,9 @@ class RulesBuilder:
             self.pos += 1
         elif self.pos < len(src) and src[self.pos]:
             raise GrammarParseError(
-                src, self.pos, f"Expecting newline or end at {self.pos}",
+                src,
+                self.pos,
+                f"Expecting newline or end at {self.pos}",
             )
         self.pos = parse_space(src, self.pos, True)
 
@@ -86,7 +90,9 @@ class RulesBuilder:
     def check_duration(self):
         if perf_counter() - self.start > self.time_limit:
             raise GrammarParseError(
-                self.src, self.pos, f"Duration of {self.time_limit} exceeded",
+                self.src,
+                self.pos,
+                f"Duration of {self.time_limit} exceeded",
             )
 
     def parse_sequence(self, rule_name, out_elements, depth=0):
@@ -165,7 +171,9 @@ class RulesBuilder:
                 )
                 if src[self.pos] != ")":
                     raise GrammarParseError(
-                        src, self.pos, f"Expecting ')' at {self.pos}",
+                        src,
+                        self.pos,
+                        f"Expecting ')' at {self.pos}",
                     )
                 self.pos = parse_space(src, self.pos + 1, is_nested)
             elif src[self.pos] in "*+?":
