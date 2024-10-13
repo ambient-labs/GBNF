@@ -25,11 +25,23 @@ jobs:
           - pyversion: "3.12"
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      # - uses: actions/setup-python@v4
+      #   with:
+      #     python-version: ${{ matrix.pyversion }}
+      #     cache: pip
+      #     cache-dependency-path: ${{ inputs.package }}/${{ format('python{0}', matrix.pyversion) }}/test.txt
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.pyversion }}
+          # python-version-file: ".python-version"
+          # python-version-file: "pyproject.toml"
+          python-version: 3.11
           cache: pip
-          cache-dependency-path: ${{ inputs.package }}/${{ format('python{0}', matrix.pyversion) }}/test.txt
+          cache-dependency-path: ${{ inputs.package}}/dev-deps/python3.11/lint.txt
 
       - run: python3 -m venv .venv/dev && source .venv/dev/bin/activate
         working-directory: ${{ inputs.package }}
