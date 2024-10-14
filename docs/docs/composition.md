@@ -43,7 +43,9 @@ console.log(grammar.toString())
 
 `GBNF` automatically finds duplicate rules and combines them.
 
-Sometimes a rule needs explicit name. A common case is when a rule references itself. You can define a custom rule name with `name`:
+### Explicit rule keys
+
+Sometimes a rule needs explicit name (for example, if it recursively references itself). You can define a custom rule name with `key`:
 
 ```javascript
 import { g } from 'gbnf'
@@ -84,7 +86,7 @@ console.log(g`
 
 ### Arrays
 
-Arrays can be provided, and are automatically joined into whitespace-separated definitions:
+Arrays are automatically joined into whitespace-separated definitions:
 
 ```javascript
 import { g } from 'gbnf'
@@ -92,16 +94,7 @@ import { g } from 'gbnf'
 console.log(g`${["a", "a", "a"]}`.toString())
 ```
 
-Arrays can contain rules too:
-
-```javascript
-import { g } from 'gbnf'
-
-const a = g`"a"`
-console.log(g`${[a, a, a]}`.toString())
-```
-
-You can also specify that an array be joined with a specific character. For example, you may want to join with a `|`:
+Alternatively, you can specify the separator for an array with `join`:
 
 ```javascript
 import { g } from 'gbnf'
@@ -110,6 +103,16 @@ console.log(g`${["foo", "bar"]}`.join(' | ').toString())
 ```
 
 Joins apply to _all_ arrays contained within a rule. If you need different behavior per array, wrap each array in its own rule.
+
+Arrays can also contain rules:
+
+```javascript
+import { g } from 'gbnf'
+
+const a = g`"a"`
+console.log(g`${[a, a, a]}`.toString())
+```
+
 
 ### Undefined, null, and booleans
 

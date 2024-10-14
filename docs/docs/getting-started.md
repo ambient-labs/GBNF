@@ -3,16 +3,6 @@ title: 'Getting Started'
 order: 1
 ---
 
-```javascript
-const wait = () => new Promise(r => setTimeout(r, 1000))
-let i = 0;
-while (i < 50) {
-  console.log(i)
-  await wait();
-  i++;
-}
-```
-
 ## Installation
 
 You can install `gbnf` with:
@@ -21,10 +11,10 @@ You can install `gbnf` with:
 npm install gbnf
 ```
 
-You can also use `GBNF` directly in your browser:
+You can also use the Javascript flavor of `GBNF` directly in your browser:
 
 ```html
-<script src='https://cdn.jsdelivr.net/npm/gbnf@0.1.21/+esm'></script>
+<script src='https://cdn.jsdelivr.net/npm/gbnf@latest/+esm'></script>
 <script type="text/javascript">
 console.log(GBNF)
 </script>
@@ -34,26 +24,21 @@ console.log(GBNF)
 
 `GBNF` exposes a default export for [validating grammars and inputs](validations/grammar), and [retrieving rules](state-rules):
 
-```javascript
-import GBNF from 'gbnf'
-
-const grammar = GBNF('root ::= "foo" | "bar" | "baz"')
-console.log([...grammar]) // get rules
+```multiple
+javascript: ./snippets/getting-started/quick-start/quick-start.js
+python: ./snippets/getting-started/quick-start/quick-start.py
 ```
 
 `GBNF` also provides a convenience template tag for [building grammars](writing):
 
-```javascript
-import { g } from 'gbnf'
-
-const grammar = g`"foo" | "bar" | "baz"`
-console.log(grammar)
+```multiple
+javascript: ./snippets/getting-started/quick-start/template-tag.js
+python: ./snippets/getting-started/quick-start/template-tag.py
 ```
 
+## Usage
 
-
-
-## Get a list of valid rules for the next input
+### Get a list of valid rules for the next input
 
 For any given valid string, you can get a list of valid next inputs that can be provided:
 
@@ -66,7 +51,7 @@ grammar = grammar.add('b')
 console.log([...grammar]) // get a list of valid input rules after we've added some text'
 ```
 
-## Build grammars on the fly
+### Build grammars on the fly
 
 Instead of writing this:
 
@@ -107,5 +92,5 @@ const turn = g`${move} " " ${move} "\n" `.key('turn');
 // Force first move to "1. ", then any 1-2 digit number after, relying on model to follow the pattern
 const root = g`"1. " ${turn} ([1-9] [0-9]? ". " ${turn})+`;
 
-console.log(root.compile());
+console.log(root.toString());
 ```

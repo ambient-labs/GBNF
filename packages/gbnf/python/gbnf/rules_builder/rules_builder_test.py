@@ -1,7 +1,7 @@
 import pytest
 
 from .rules_builder import RulesBuilder
-from .types import InternalRuleType
+from .gbnf_types import InternalRuleType
 
 test_cases = [
     (

@@ -1,12 +1,11 @@
-import { serializeError } from 'https://cdn.jsdelivr.net/npm/serialize-error/index.js';
-import { run, RunConsole } from './run.js';
+// import { serializeError } from 'https://cdn.jsdelivr.net/npm/serialize-error/index.js';
+import { run, } from './run.js';
 import { prepareDataForPosting } from './prepare-data-for-posting.js';
 
 self.onmessage = async (event: MessageEvent) => {
   const postMessage = (type: string, postData?: unknown) => self.postMessage(JSON.stringify({
     type,
     data: postData,
-    threadID,
   }));
 
   const getPostMessage = (type: string) => (...data: unknown[]) => postMessage(type, prepareDataForPosting(data));
@@ -24,9 +23,8 @@ self.onmessage = async (event: MessageEvent) => {
   };
 
 
-  const { threadID, type, ...data } = event.data;
-  // consoleInfo(event)
-  if (data.type === 'abort') {
+  const { type, ...data } = event.data;
+  if (type === 'abort') {
     // consoleInfo('abort!!!')
     // const fn = fns.get(id);
     // if (fn === undefined) {
@@ -34,16 +32,22 @@ self.onmessage = async (event: MessageEvent) => {
     // } else {
     //   // URL.revokeObjectURL(fn);
     // }
-  } else {
-    consoleInfo(`[${threadID}] starting cell execution...`);
+  } else if (type === 'start') {
+    consoleInfo(`starting cell execution...`);
     try {
       const result = await run(data, scriptConsole);
-      self.postMessage(JSON.stringify({ type: 'result', data: result, threadID }));
+      self.postMessage(JSON.stringify({ type: 'result', data: result }));
     } catch (err: unknown) {
       consoleError('error', (err as any).message);
     } finally {
-      consoleInfo(`[${threadID}] completed cell execution...`);
-      self.postMessage(JSON.stringify({ type: 'complete', threadID }));
+      consoleInfo(`completed cell execution...`);
+      self.postMessage(JSON.stringify({ type: 'complete' }));
+    }
+  } else {
+    if (!type) {
+      consoleError(`No "type" provided`);
+    } else {
+      consoleError(`unknown message type: "${type}"`);
     }
   }
 }

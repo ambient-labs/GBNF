@@ -1,10 +1,21 @@
 export interface StartEvent {
-  threadID: string;
   script: string;
+  kernel: 'javascript' | 'python';
   type: 'start';
 }
 
 export interface AbortEvent {
-  threadID: string;
   type: 'abort';
+}
+
+export interface RunConsole {
+  info: typeof console.info;
+  log: typeof console.log;
+  warn: typeof console.warn;
+  error: typeof console.error;
+}
+
+export interface RunOptions {
+  script: string;
+  kernel: 'javascript' | 'python';
 }
