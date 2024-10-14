@@ -3,8 +3,11 @@ SHELL := /bin/bash
 init:
 	source .venv/dev/bin/activate && pip install -r requirements.txt
 
+upgrade_dev_deps:
+	source .venv/dev/bin/activate && ./upgrade-dev-dependencies.sh && pip install -r dev-deps/python3.11/dev.txt
+
 test:
-	make copy_js_package && uvx pytest .
+	make copy_js_package && source .venv/dev/bin/activate && pytest .
 
 lint:
 	uvx ruff check . --fix
