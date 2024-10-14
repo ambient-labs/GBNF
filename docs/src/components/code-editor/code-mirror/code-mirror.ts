@@ -54,7 +54,7 @@ export class CodeEditorCodeMirror extends LitElement {
   script = '';
 
   @property({ type: String })
-  theme?: string;
+  theme!: string;
 
   get codeMirror(): WCCodeMirror {
     const codeMirror = this.ref.value;
@@ -68,6 +68,19 @@ export class CodeEditorCodeMirror extends LitElement {
     if (_changedProperties.has('script') && this.script !== this.codeMirror.value) {
       this.codeMirror.value = this.script;
     }
+    if (_changedProperties.has('theme')) {
+      if (!this.theme) {
+        throw new Error('Theme not set');
+      }
+      this.loadTheme(this.theme);
+    }
+  }
+
+  loadTheme(theme: string) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/theme/${theme}.css`;
+    this.ref.value?.shadowRoot?.appendChild(link);
   }
 
   protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -89,8 +102,6 @@ export class CodeEditorCodeMirror extends LitElement {
         theme="${theme}" 
         ${ref(this.ref)}
       >
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/theme/${theme}.css">
-        ${THEMES.map((theme) => html`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror/theme/${theme}.css">`)}
         <slot></slot>
       </wc-codemirror>
     `;

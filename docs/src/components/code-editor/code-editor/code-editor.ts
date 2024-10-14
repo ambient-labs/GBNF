@@ -29,6 +29,8 @@ import {
   type Mode,
   isSupportedLanguage
 } from './types.js';
+import { emit } from '../../../utils/emit.js';
+import { TAG_NAME as CodeEditorMultiTagName } from '../code-editor-multi/code-editor-multi.js';
 
 export const TAG_NAME = 'code-editor';
 
@@ -52,7 +54,7 @@ export class CodeEditor extends LitElement {
   autorun = false;
 
   @property({ type: String })
-  protected theme: string = getLocalItem('theme') ?? 'Default';
+  theme: string = getLocalItem('theme') ?? 'Default';
 
   @property({ type: String })
   language: string = getLocalItem('language') || 'javascript';
@@ -185,7 +187,8 @@ export class CodeEditor extends LitElement {
 
   protected updated(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('theme')) {
-      persist('theme', this.theme, TAG_NAME);
+      persist('theme', this.theme, TAG_NAME, [CodeEditorMultiTagName, TAG_NAME]);
+      emit(this, 'theme-change', { theme: this.theme });
     }
     if (_changedProperties.has('language')) {
       this._language; // call the getter to ensure a valid language
@@ -203,8 +206,8 @@ export class CodeEditor extends LitElement {
   clearConsole = () => this.output = [];
 
   protected render() {
-    const { output, language, fullscreen, theme, tempTheme, mode } = this;
-    const codemirrorTheme = getVisibleTheme(mode, theme, tempTheme);
+    const { output, language, fullscreen, theme, tempTheme, _mode } = this;
+    const codemirrorTheme = getVisibleTheme(_mode, theme, tempTheme);
     return html`
       <div id="container" class="${fullscreen ? 'fullscreen' : ''}" @keydown=${this.handleKeydown} ${ref(this.container)}>
         <code-editor-actions 
