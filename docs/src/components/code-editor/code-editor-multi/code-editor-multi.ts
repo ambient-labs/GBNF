@@ -13,7 +13,7 @@ import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/index.min.js
 import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/mode/javascript/javascript.js';
 import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/mode/python/python.js';
 import style from './code-editor-multi.css?raw';
-import { persist } from '../persist.js';
+import { broadcast, persist } from '../persist.js';
 import { SlottedTextObserverController } from '../slot-controller.js';
 export const TAG_NAME = 'code-editor-multi';
 import { getTemplates } from './get-templates.js';
@@ -61,7 +61,9 @@ export class CodeEditorMulti extends LitElement {
       return html`<slot></slot>`;
     }
     return html`
-      <code-editor ?autorun=${autorun} language="${language}"><sl-select slot="left" size="small" value="${language}" @sl-change=${this.selectLanguage}>
+      <code-editor 
+      ?autorun=${autorun} 
+      language="${language}"><sl-select slot="left" size="small" value="${language}" @sl-change=${this.selectLanguage}>
           ${languages.map((lang) => html`<sl-option value="${lang}">${lang}</sl-option>`)}
         </sl-select>${script}</code-editor>
       <slot></slot>
