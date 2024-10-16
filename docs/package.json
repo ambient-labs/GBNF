@@ -22,9 +22,10 @@
       ]
     },
     "build": {
-      "command": "docoddity build",
+      "command": "rimraf build && docoddity build --buildDir build -v ./docoddity.vite.config.js",
       "dependencies": [
-        "../packages/gbnf/javascript:build"
+        "../packages/gbnf/javascript:build",
+        "build:py"
       ]
     }
   },
@@ -34,7 +35,7 @@
     "@emotion/css": "^11.13.4",
     "@shoelace-style/shoelace": "^2.17.1",
     "copy-component": "^0.3.0",
-    "docoddity": "^0.4.9",
+    "docoddity": "^0.4.14",
     "gbnf": "workspace:*",
     "js-yaml": "^4.1.0",
     "lit": "^3.2.0",
@@ -42,6 +43,8 @@
     "shiki": "^1.21.0"
   },
   "devDependencies": {
+    "rimraf": "^5.0.5",
+    "toml": "^3.0.0",
     "wireit": "^0.14.9"
   }
 }

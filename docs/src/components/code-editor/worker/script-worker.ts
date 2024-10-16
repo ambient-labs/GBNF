@@ -35,7 +35,7 @@ const makeResolver = (): { promise: Promise<void>, resolve: () => void, reject: 
 //   });
 export class ScriptWorker {
   #worker?: Worker;
-  constructor(protected url: string, protected callback: (data: ({ type: 'log' | 'error', data: unknown[] })) => void) {
+  constructor(protected url: URL, protected callback: (data: ({ type: 'log' | 'error', data: unknown[] })) => void) {
     this.startWorker();
   }
 
@@ -74,6 +74,8 @@ export class ScriptWorker {
 
   startWorker = () => {
     this.#worker = new Worker(this.url, { type: 'module' });
+
+    // this.#worker = new Worker(this.url, { type: 'module' });
     // this.sharedWorker.port.start();
     // this.sharedWorker.port.addEventListener('message', e => {
     //   const { type, data, threadID } = JSON.parse(e.data);
