@@ -2,6 +2,8 @@ declare module '*.css?raw' { const content: string; export default content; }
 declare module '*.svg?raw' { const content: string; export default content; }
 declare module '*.js?url';
 declare module 'gbnf?url';
+declare module '*.js?worker';
+declare module '*.js?worker&url';
 
 import type * as pyodide from "pyodide";
 

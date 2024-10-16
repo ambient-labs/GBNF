@@ -18,8 +18,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
       docoddity:
-        specifier: ^0.4.9
-        version: 0.4.9(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5)
+        specifier: ^0.4.14
+        version: 0.4.14(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5)
       gbnf:
         specifier: workspace:*
         version: link:../packages/gbnf/javascript
@@ -36,6 +36,12 @@ importers:
         specifier: ^1.21.0
         version: 1.21.0
     devDependencies:
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.5
+      toml:
+        specifier: ^3.0.0
+        version: 3.0.0
       wireit:
         specifier: ^0.14.9
         version: 0.14.9
@@ -1749,8 +1755,8 @@ packages:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
 
-  docoddity@0.4.9:
-    resolution: {integrity: sha512-c/tWFVSLjGoRxHZzne2/4By3KoEO8FFjeqRnoyO0OI18Gc7g7E5XMcJYofxmAmW60LW/Fu8qNnULUSWOYHtlCg==}
+  docoddity@0.4.14:
+    resolution: {integrity: sha512-DBEEVeuVXirfzsfTC5LFyjPigCzG7x4qYNbe6L84yPG0UEYXN0xU1PtyaMIFgiPh8462ZwRmurcoCd9pTSzpGA==}
     engines: {node: '>=22.0.0', pnpm: '>=9.0.0'}
     hasBin: true
 
@@ -3466,6 +3472,9 @@ packages:
   toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
+
+  toml@3.0.0:
+    resolution: {integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==}
 
   tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
@@ -5497,7 +5506,7 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
-  docoddity@0.4.9(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5):
+  docoddity@0.4.14(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.4.5):
     dependencies:
       '@docsearch/js': 3.6.1(@algolia/client-search@4.24.0)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)
       '@shoelace-style/shoelace': 2.17.1(@types/react@16.14.62)
@@ -7499,6 +7508,8 @@ snapshots:
       is-number: 7.0.0
 
   toidentifier@1.0.1: {}
+
+  toml@3.0.0: {}
 
   tree-kill@1.2.2: {}
 

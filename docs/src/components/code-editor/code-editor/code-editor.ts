@@ -33,8 +33,7 @@ import { emit } from '../../../utils/emit.js';
 import { TAG_NAME as CodeEditorMultiTagName } from '../code-editor-multi/code-editor-multi.js';
 
 export const TAG_NAME = 'code-editor';
-
-const workerPath = new URL('../worker/worker.ts', import.meta.url).href;
+import workerPath from '../worker/worker.js?worker&url';
 
 export class CodeEditor extends LitElement {
   static styles = unsafeCSS(style);
