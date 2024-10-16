@@ -24,7 +24,8 @@
     "build": {
       "command": "rimraf build && docoddity build --buildDir build -v ./docoddity.vite.config.js",
       "dependencies": [
-        "../packages/gbnf/javascript:build"
+        "../packages/gbnf/javascript:build",
+        "build:py"
       ]
     }
   },
