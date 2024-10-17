@@ -55,6 +55,10 @@ jobs:
       #   with:
       #     detached: true
 
+      - name: 'Build integration tests'
+        working-directory: ${{ inputs.package }}
+        run: 'pnpm test:integration:write'
+
       - name: 'Integration Test'
         working-directory: ${{ inputs.package }}
         run: 'NODE_OPTIONS=--trace-deprecation pnpm test:integration'

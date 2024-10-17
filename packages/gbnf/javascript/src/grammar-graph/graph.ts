@@ -178,6 +178,7 @@ export class Graph {
   private previousCodePoints: number[] = [];
 
   public add = (src: ValidInput, _pointers?: Pointers,): Pointers => {
+    // console.log('add!!', src, typeof src);
     let pointers = _pointers || this.getInitialPointers();
     const codePoints = getInputAsCodePoints(src);
     for (let codePointPos = 0; codePointPos < codePoints.length; codePointPos++) {
