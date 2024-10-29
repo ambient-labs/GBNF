@@ -71,6 +71,10 @@ jobs:
         working-directory: "./docs"
         run: pnpm install
 
+      - name: Install Python dependencies
+        run: pip install -r ./dev-deps/python3.12/build.txt
+        working-directory: './packages/gbnf/python'
+
       - name: 'Build'
         working-directory: "./docs"
         run: 'pnpm build'
