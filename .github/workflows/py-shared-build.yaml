@@ -65,7 +65,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: make build_all
+      - run: pip install -r ./dev-deps/python3.12/build.txt && make build_all
         working-directory: ${{ inputs.package }}
 
       - name: Setup tmate session
