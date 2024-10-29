@@ -65,5 +65,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - run: make build_all
         working-directory: ${{ inputs.package }}
