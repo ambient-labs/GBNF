@@ -17,3 +17,6 @@ build_all:
 
 build_package:
 	python3 -m build
+
+upgrade_dev_dependencies:
+	./upgrade_dev_dependencies.sh
