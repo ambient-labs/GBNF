@@ -20,7 +20,7 @@ pytest==8.3.3
     #   pytest-mock
 pytest-asyncio==0.24.0
     # via -r dev-deps/test.in
-pytest-cov==5.0.0
+pytest-cov==6.0.0
     # via -r dev-deps/test.in
 pytest-mock==3.14.0
     # via -r dev-deps/test.in

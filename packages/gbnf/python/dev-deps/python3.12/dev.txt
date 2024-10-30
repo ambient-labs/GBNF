@@ -66,7 +66,7 @@ pytest==8.3.3
     #   pytest-cov
     #   pytest-describe
     #   pytest-mock
-pytest-cov==5.0.0
+pytest-cov==6.0.0
     # via -r dev-deps/dev.in
 pytest-describe==2.2.0
     # via -r dev-deps/dev.in

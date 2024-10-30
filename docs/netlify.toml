@@ -6,8 +6,11 @@ publish = "build"
 [build]
   command = """
     curl -LsSf https://astral.sh/uv/install.sh | sh &&
+    cd ../packages/gbnf/python &&
     uv venv --python 3.12 &&
+    . .venv/bin/activate &&
     uv pip install -U pip setuptools wheel &&
-    uv pip install -r ../packages/gbnf/python/dev-deps/python3.12/build.txt &&
+    uv pip install -r dev-deps/python3.12/build.txt &&
+    cd ../../../docs &&
     pnpm build
   """
