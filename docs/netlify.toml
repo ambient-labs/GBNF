@@ -1,0 +1,13 @@
+# Global settings
+base = "."
+publish = "build"
+
+# Build command
+[build]
+  command = """
+    curl -LsSf https://astral.sh/uv/install.sh | sh &&
+    uv venv --python 3.12 &&
+    uv pip install -U pip setuptools wheel &&
+    uv pip install -r ../packages/gbnf/python/dev-deps/python3.12/build.txt &&
+    pnpm build
+  """
