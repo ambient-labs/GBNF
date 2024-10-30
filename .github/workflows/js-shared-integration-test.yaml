@@ -46,14 +46,14 @@ jobs:
         working-directory: ${{ inputs.package }}
         run: pnpm install
 
+      - name: Build test-writer packages
+        if: inputs.package == './packages/gbnf/javascript'
+        working-directory: ${{ inputs.package }}
+        run: pnpm --filter test-writer build && pnpm add test-writer@workspace:*
+
       - name: Install Playwright Browsers
         working-directory: ${{ inputs.package }}
         run: pnpx playwright install  
-
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-      #   with:
-      #     detached: true
 
       - name: 'Integration Test'
         working-directory: ${{ inputs.package }}
