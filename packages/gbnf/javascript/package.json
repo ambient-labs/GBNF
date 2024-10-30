@@ -57,7 +57,8 @@
     "test:integration": {
       "command": "vitest --config ./vitest.config.integration.ts run",
       "dependencies": [
-        "build"
+        "build",
+        "test:integration:write"
       ]
     },
     "test:unit:watch": {
