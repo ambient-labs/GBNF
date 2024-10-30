@@ -1,0 +1,38 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "module": "esnext",
+    "target": "esnext",
+    "useDefineForClassFields": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "NodeNext",
+    "sourceMap": true,
+    "downlevelIteration": true,
+
+    "skipLibCheck": true,
+    "declaration": true,
+    "rootDir": "./src",
+    "lib": ["ESNext"],
+
+    "outDir": "./dist",
+    "types": [
+      "node",
+      "vitest/globals", 
+  ]
+  },
+  "include": [
+    "./src/**/*.ts"
+],
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "dist",
+    ".wireit",
+    "env",
+    "./src/**/*.test.ts"
+  ]
+}

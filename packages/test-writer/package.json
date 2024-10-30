@@ -1,0 +1,46 @@
+{
+  "name": "test-writer",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Builds integration tests for GBNF",
+  "type": "module",
+  "bin": {
+    "write-tests": "./dist/test-writer.mjs"
+  },
+  "scripts": {
+    "test:watch": "pnpm vitest --config=vitest.config.ts",
+    "test": "wireit",
+    "build": "wireit"
+  },
+  "wireit": {
+    "test": {
+      "command": "vitest run --config=vitest.config.ts"
+    },
+    "build": {
+      "command": "esbuild ./src/index.ts --bundle --format=esm --platform=node --outfile=dist/test-writer.mjs --external:'commander' --external:ejs --external:marked",
+      "output": [
+        "dist/**"
+      ],
+      "files": [
+        "src/**/*.ts",
+        "!src/**/*.test.ts",
+        "package.json",
+        "tsconfig.json"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3",
+    "wireit": "^0.14.9"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.1",
+    "commander": "^11.0.0",
+    "marked": "^14.1.3",
+    "mkdirp": "^3.0.1",
+    "pyodide": "^0.26.2",
+    "rimraf": "^5.0.5"
+  }
+}
