@@ -10,7 +10,8 @@ import * as url from 'url';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const NODE_MODULES_DIR = path.resolve(__dirname, './node_modules');
-const PYODIDE_PACKAGE_JSON = await readFile(path.resolve(NODE_MODULES_DIR, 'pyodide/package.json'), 'utf-8');
+const PATH_TO_PYODIDE_PACKAGE_JSON = path.resolve(NODE_MODULES_DIR, 'pyodide/package.json');
+const PYODIDE_PACKAGE_JSON = JSON.parse(await readFile(PATH_TO_PYODIDE_PACKAGE_JSON, 'utf-8'));
 // import { type DocoddityViteConfigArgs } from 'docoddity';
 
 export default async ({
@@ -58,7 +59,7 @@ export default async ({
     publicDir: 'public',
     define: {
       'import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES': JSON.stringify([path.join(assetPathRoot, wheelName)]),
-      'import.meta.env.PYODIDE_VERSION': PYODIDE_PACKAGE_JSON.version,
+      'import.meta.env.PYODIDE_VERSION': JSON.stringify(PYODIDE_PACKAGE_JSON.version),
     },
     plugins: [
       {
