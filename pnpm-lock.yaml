@@ -18,8 +18,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
       docoddity:
-        specifier: ^0.4.17
-        version: 0.4.17(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.6.3)
+        specifier: ^0.4.19
+        version: 0.4.19(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.6.3)
       gbnf:
         specifier: workspace:*
         version: link:../packages/gbnf/javascript
@@ -2008,8 +2008,8 @@ packages:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
 
-  docoddity@0.4.17:
-    resolution: {integrity: sha512-0wkrF9PVd8De09q/rLHvQVTc01IEmJ4bbiuhdbFtsaVgD20LuO0FfVPR4kFud7ZAV8LGk10IgCIWkqFKgsIvEA==}
+  docoddity@0.4.19:
+    resolution: {integrity: sha512-zIo9JpPBvHS4TWczjZB+UDDCgQqKS519qEEyn6tr1pN+tAWULBFeNwFlnPSO9I5sxYWpGq4VZPAyDWtzfvxIlg==}
     engines: {node: '>=22.0.0', pnpm: '>=9.0.0'}
     hasBin: true
 
@@ -6062,7 +6062,7 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
-  docoddity@0.4.17(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.6.3):
+  docoddity@0.4.19(@algolia/client-search@4.24.0)(@types/markdown-it@14.1.2)(@types/node@20.12.7)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)(typescript@5.6.3):
     dependencies:
       '@docsearch/js': 3.6.1(@algolia/client-search@4.24.0)(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(search-insights@2.17.2)
       '@shoelace-style/shoelace': 2.17.1(@types/react@16.14.62)

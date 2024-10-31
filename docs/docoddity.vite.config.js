@@ -6,16 +6,42 @@ import toml from 'toml';
 export default async ({
   sourceDir,
   targetDir: buildDir,
+  docoddityMode,
 }) => {
   // }: DocoddityViteConfigArgs) => {
   const rootDir = path.join(sourceDir, '..');
   const assetPathRoot = '/assets/packages/gbnf/python';
-  const assetsFullDirPath = path.join(buildDir, assetPathRoot);
+  const assetsFullDirPath = path.join(buildDir, docoddityMode === 'dev' ? 'public' : '', assetPathRoot);
+  // console.log('assetsFullDirPath', assetsFullDirPath);
   // const assetsFullDirPath = path.join(buildDir, '..', 'public', assetPathRoot);
   const pythonDir = path.join(rootDir, 'packages/gbnf/python');
   const pyproject = toml.parse(await readFile(path.join(pythonDir, 'pyproject.toml'), 'utf-8'));
   const version = pyproject.project.version;
   const wheelName = `gbnf-${version}-py3-none-any.whl`;
+  const copyPythonWheelToAssets = async () => {
+    await mkdir(assetsFullDirPath, { recursive: true });
+    // import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES = [
+    //   `${assetPath}/gbnf-${version}-py3-none-any.whl`,
+    // ];
+    console.log(`Copying gbnf-${version}-py3-none-any.whl to ${assetsFullDirPath}`);
+    await copyFile(
+      path.resolve(pythonDir, 'dist', wheelName),
+      path.join(assetsFullDirPath, wheelName),
+    );
+    // const files = [
+
+    //   "pyodide-lock.json",
+    //   "pyodide.asm.js",
+    //   "pyodide.asm.wasm",
+    //   "python_stdlib.zip",
+    // ];
+    // for (const file of files) {
+    //   await copyFile(
+    //     join("node_modules/pyodide", file),
+    //     join(assetsDir, file),
+    //   );
+    // }
+  }
   return {
     // optimizeDeps: { exclude: ["pyodide"] },
     publicDir: 'public',
@@ -25,30 +51,8 @@ export default async ({
     plugins: [
       {
         name: "bundle-python-gbnf",
-        generateBundle: async () => {
-          await mkdir(assetsFullDirPath, { recursive: true });
-          // import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES = [
-          //   `${assetPath}/gbnf-${version}-py3-none-any.whl`,
-          // ];
-          console.log(`Copying gbnf-${version}-py3-none-any.whl to ${assetsFullDirPath}`);
-          await copyFile(
-            path.resolve(pythonDir, 'dist', wheelName),
-            path.join(assetsFullDirPath, wheelName),
-          );
-          // const files = [
-
-          //   "pyodide-lock.json",
-          //   "pyodide.asm.js",
-          //   "pyodide.asm.wasm",
-          //   "python_stdlib.zip",
-          // ];
-          // for (const file of files) {
-          //   await copyFile(
-          //     join("node_modules/pyodide", file),
-          //     join(assetsDir, file),
-          //   );
-          // }
-        },
+        buildStart: copyPythonWheelToAssets,
+        generateBundle: copyPythonWheelToAssets,
       },
     ],
   }
