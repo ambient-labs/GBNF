@@ -13,7 +13,7 @@ import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/index.min.js
 import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/mode/javascript/javascript.js';
 import 'https://cdn.jsdelivr.net/npm/@vanillawc/wc-codemirror@2.1.0/mode/python/python.js';
 import style from './code-editor-multi.css?raw';
-import { broadcast, persist } from '../persist.js';
+import { broadcast, getLocalItem, persist } from '../persist.js';
 import { SlottedTextObserverController } from '../slot-controller.js';
 export const TAG_NAME = 'code-editor-multi';
 import { getTemplates } from './get-templates.js';
@@ -28,8 +28,11 @@ export class CodeEditorMulti extends LitElement {
   };
 
   @state() templates: Templates = {};
-  @property() language: string = '';
+  @property() language: string = getLocalItem('language') || 'javascript';
   @property({ type: Boolean }) autorun = false;
+  @property() args: string = JSON.stringify({
+    dependencies: import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES,
+  });
 
   selectLanguage = (e: Event) => {
     const target = e.target as HTMLSelectElement;
@@ -52,7 +55,15 @@ export class CodeEditorMulti extends LitElement {
   }
 
   get _language() {
+    console.log('language', this.language)
     return this.languages.includes(this.language) ? this.language : this.languages[0];
+  }
+
+  get _args() {
+    if (this.args) {
+      return JSON.parse(this.args);
+    }
+    return {};
   }
 
   protected render() {
@@ -62,6 +73,7 @@ export class CodeEditorMulti extends LitElement {
     }
     return html`
       <code-editor 
+      .args=${this._args}
       ?autorun=${autorun} 
       language="${language}"><sl-select slot="left" size="small" value="${language}" @sl-change=${this.selectLanguage}>
           ${languages.map((lang) => html`<sl-option value="${lang}">${lang}</sl-option>`)}

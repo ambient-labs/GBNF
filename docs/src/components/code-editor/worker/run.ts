@@ -2,7 +2,6 @@ import type { RunOptions, RunConsole } from "./types.js";
 import { runJavascript } from "./run-javascript.js";
 import { runPython } from "./run-python.js";
 
-
 export const run = async (options: RunOptions, console: RunConsole, ...args: unknown[]) => {
   if (options.kernel === 'javascript') {
     return runJavascript(options, console, ...args);

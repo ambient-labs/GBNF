@@ -23,7 +23,7 @@ self.onmessage = async (event: MessageEvent) => {
   };
 
 
-  const { type, ...data } = event.data;
+  const { type, args, ...data } = event.data;
   if (type === 'abort') {
     // consoleInfo('abort!!!')
     // const fn = fns.get(id);
@@ -35,7 +35,7 @@ self.onmessage = async (event: MessageEvent) => {
   } else if (type === 'start') {
     consoleInfo(`starting cell execution...`);
     try {
-      const result = await run(data, scriptConsole);
+      const result = await run(data, scriptConsole, ...args);
       self.postMessage(JSON.stringify({ type: 'result', data: result }));
     } catch (err: unknown) {
       consoleError('error', (err as any).message);

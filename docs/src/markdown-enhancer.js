@@ -36,6 +36,9 @@ const markdownEnhancer = async (md) => {
     if (language === 'multiple') {
       const contents = yaml.load(code);
       const fileDirectory = path.dirname(filepath);
+      // TODO: import.meta.env gets replaced at build time, 
+      // but I don't know how to populate it in an HTML string for a web component
+      // console.log('import.meta.env', import.meta.env);
       return `<code-editor-multi autorun>
         ${Object.entries(contents).map(([language, code]) => {
         try {

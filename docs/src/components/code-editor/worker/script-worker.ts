@@ -33,6 +33,7 @@ const makeResolver = (): { promise: Promise<void>, resolve: () => void, reject: 
 //   worker = new SharedWorker(new URL('./worker.js', import.meta.url), {
 //     type: 'module'
 //   });
+
 export class ScriptWorker {
   #worker?: Worker;
   constructor(protected url: URL, protected callback: (data: ({ type: 'log' | 'error', data: unknown[] })) => void) {
@@ -48,7 +49,7 @@ export class ScriptWorker {
     return this.#worker;
   }
 
-  run(script: string, language: 'javascript' | 'python') {
+  run(script: string, language: 'javascript' | 'python', ...args: unknown[]) {
     if (this.running) {
       throw new Error('already running');
     }
@@ -58,6 +59,7 @@ export class ScriptWorker {
       type: 'start',
       script,
       kernel: language,
+      args,
     });
     return promise;
   }

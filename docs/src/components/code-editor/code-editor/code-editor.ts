@@ -56,7 +56,10 @@ export class CodeEditor extends LitElement {
   theme: string = getLocalItem('theme') ?? 'Default';
 
   @property({ type: String })
-  language: string = getLocalItem('language') || 'javascript';
+  language!: string;
+
+  @property({ type: Object })
+  args: Record<string, unknown> = {};
 
   @state()
   protected mode: string = getHTMLMode();
@@ -141,7 +144,7 @@ export class CodeEditor extends LitElement {
       this.running = true;
       // this.output = [];
       try {
-        await this.worker.run(prepareScript(await getScript(this)), this._language);
+        await this.worker.run(prepareScript(await getScript(this)), this._language, this.args);
       } catch (e) {
         if (!(e instanceof AbortError)) {
           console.error('error', e);
