@@ -22,7 +22,7 @@ export default async ({
   // }: DocoddityViteConfigArgs) => {
   const rootDir = path.join(sourceDir, '..');
   const assetPathRoot = '/assets/packages/gbnf/python';
-  const assetsFullDirPath = path.join(buildDir, docoddityMode === 'dev' ? 'public' : '', assetPathRoot);
+  const assetsFullDirPath = docoddityMode === 'dev' ? path.join(sourceDir, 'public', assetPathRoot) : path.join(buildDir, assetPathRoot);
   // console.log('assetsFullDirPath', assetsFullDirPath);
   // const assetsFullDirPath = path.join(buildDir, '..', 'public', assetPathRoot);
   const pythonDir = path.join(rootDir, 'packages/gbnf/python');
