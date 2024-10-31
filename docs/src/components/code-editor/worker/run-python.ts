@@ -6,17 +6,21 @@ const _pyodide = loadPyodide({
   indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/',
 });
 
-const getPyodide = async () => {
+const getPyodide = async (dependencies: string[] = []) => {
   const pyodide = await _pyodide;
   await pyodide.loadPackage("micropip");
   const micropip = pyodide.pyimport("micropip");
   // await micropip.install(gbnfPythonURL);
-  await micropip.install('gbnf-0.0.5-py3-none-any.whl');
+  await micropip.install(dependencies);
   return pyodide;
 }
 
-export const runPython = async (options: RunOptions, console: RunConsole, ...args: unknown[]) => {
-  const pyodide = await getPyodide();
+export interface RunPythonOptions {
+  dependencies: string[];
+}
+
+export const runPython = async (options: RunOptions, console: RunConsole, { dependencies }: RunPythonOptions) => {
+  const pyodide = await getPyodide(dependencies);
 
   pyodide.setStdout({
     batched: text => {

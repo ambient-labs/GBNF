@@ -1,6 +1,8 @@
+import { type CodeEditor } from "./code-editor/code-editor.js";
+
 export const getLocalItem = <T>(key: string) => localStorage.getItem(getLocalKey(key)) as T | null;
 export const getLocalKey = (key: string) => `@ambient-labs/code-editor/${key}`;
-export const broadcast = <E extends HTMLElement, K extends keyof E>(tagName: string[], key: K, value: E[K], root: ShadowRoot | HTMLDocument = window.document) => {
+export const broadcast = <E extends CodeEditor, K extends keyof E>(tagName: string[], key: K, value: E[K], root: ShadowRoot | HTMLDocument = window.document) => {
   root.querySelectorAll(tagName[0]).forEach((el) => {
     if (tagName.length === 1) {
       (el as E)[key] = value;
@@ -13,7 +15,7 @@ export const broadcast = <E extends HTMLElement, K extends keyof E>(tagName: str
     }
   });
 };
-export function persist<E extends HTMLElement, K extends keyof E>(key: K, value: E[K], ...tagNames: (string | string[])[]) {
+export function persist<E extends CodeEditor, K extends keyof E>(key: K, value: E[K], ...tagNames: (string | string[])[]) {
   if (value === 'Default') {
     localStorage.removeItem(getLocalKey(key as string));
   } else {
