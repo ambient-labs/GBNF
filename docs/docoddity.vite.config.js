@@ -1,6 +1,17 @@
-import { copyFile, mkdir, readFile } from "fs/promises";
+import {
+  copyFile,
+  mkdir,
+  readFile,
+} from "fs/promises";
 import path from "path";
 import toml from 'toml';
+
+import * as url from 'url';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const NODE_MODULES_DIR = path.resolve(__dirname, './node_modules');
+const PATH_TO_PYODIDE_PACKAGE_JSON = path.resolve(NODE_MODULES_DIR, 'pyodide/package.json');
+const PYODIDE_PACKAGE_JSON = JSON.parse(await readFile(PATH_TO_PYODIDE_PACKAGE_JSON, 'utf-8'));
 // import { type DocoddityViteConfigArgs } from 'docoddity';
 
 export default async ({
@@ -11,7 +22,7 @@ export default async ({
   // }: DocoddityViteConfigArgs) => {
   const rootDir = path.join(sourceDir, '..');
   const assetPathRoot = '/assets/packages/gbnf/python';
-  const assetsFullDirPath = path.join(buildDir, docoddityMode === 'dev' ? 'public' : '', assetPathRoot);
+  const assetsFullDirPath = docoddityMode === 'dev' ? path.join(sourceDir, 'public', assetPathRoot) : path.join(buildDir, assetPathRoot);
   // console.log('assetsFullDirPath', assetsFullDirPath);
   // const assetsFullDirPath = path.join(buildDir, '..', 'public', assetPathRoot);
   const pythonDir = path.join(rootDir, 'packages/gbnf/python');
@@ -20,6 +31,7 @@ export default async ({
   const wheelName = `gbnf-${version}-py3-none-any.whl`;
   const copyPythonWheelToAssets = async () => {
     await mkdir(assetsFullDirPath, { recursive: true });
+    console.log('made dir', assetsFullDirPath);
     // import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES = [
     //   `${assetPath}/gbnf-${version}-py3-none-any.whl`,
     // ];
@@ -47,6 +59,7 @@ export default async ({
     publicDir: 'public',
     define: {
       'import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES': JSON.stringify([path.join(assetPathRoot, wheelName)]),
+      'import.meta.env.PYODIDE_VERSION': JSON.stringify(PYODIDE_PACKAGE_JSON.version),
     },
     plugins: [
       {
