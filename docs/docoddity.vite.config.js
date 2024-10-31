@@ -1,6 +1,16 @@
-import { copyFile, mkdir, readFile } from "fs/promises";
+import {
+  copyFile,
+  mkdir,
+  readFile,
+} from "fs/promises";
 import path from "path";
 import toml from 'toml';
+
+import * as url from 'url';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const NODE_MODULES_DIR = path.resolve(__dirname, './node_modules');
+const PYODIDE_PACKAGE_JSON = await readFile(path.resolve(NODE_MODULES_DIR, 'pyodide/package.json'), 'utf-8');
 // import { type DocoddityViteConfigArgs } from 'docoddity';
 
 export default async ({
@@ -20,6 +30,7 @@ export default async ({
   const wheelName = `gbnf-${version}-py3-none-any.whl`;
   const copyPythonWheelToAssets = async () => {
     await mkdir(assetsFullDirPath, { recursive: true });
+    console.log('made dir', assetsFullDirPath);
     // import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES = [
     //   `${assetPath}/gbnf-${version}-py3-none-any.whl`,
     // ];
@@ -47,6 +58,7 @@ export default async ({
     publicDir: 'public',
     define: {
       'import.meta.env.VITE_GBNF_PYTHON_DEPENDENCIES': JSON.stringify([path.join(assetPathRoot, wheelName)]),
+      'import.meta.env.PYODIDE_VERSION': PYODIDE_PACKAGE_JSON.version,
     },
     plugins: [
       {
