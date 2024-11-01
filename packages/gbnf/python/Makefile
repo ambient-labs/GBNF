@@ -3,6 +3,9 @@ SHELL := /bin/bash
 init:
 	pip install -r requirements.txt
 
+test:
+	make test_unit
+
 test_unit:
 	uvx pytest ./gbnf
 
