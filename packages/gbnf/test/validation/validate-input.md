@@ -4,6 +4,10 @@
 import GBNF, { InputParseError } from 'gbnf';
 ```
 
+```imports.python
+import pytest
+```
+
 ## It reports an error for an invalid input (%#): `%s`
 
 ```test_cases
@@ -228,6 +232,20 @@ baz ::= "baz"''', 'bazr', 3]
 ```test_cases_type.javascript
 [string, string, number][]
 ```
+
+```test_cases_type.python
+grammar, input, errorPos
+```
+
+```test_body.python
+graph = GBNF(grammar)
+with pytest.raises(InputParseError) as e:
+  graph.add(input)
+
+assert e.input == input
+assert e.error_pos = error_pos
+```
+
 
 ```test_body.javascript
 async ([grammar, input, errorPos]) => {

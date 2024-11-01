@@ -4,6 +4,10 @@
 import GBNF, { RuleType } from 'gbnf';
 ```
 
+```imports.python
+import pytest
+```
+
 ## It returns parse state for a grammar and initial string (%#): `%s` `%s`
 
 ```test_cases

@@ -80,19 +80,20 @@ describe('prepareTests', () => {
     vi.mocked(getTestSuiteFileContent).mockImplementation(async () => mockTestSuiteFileContent);
     const mockFileContents = 'mockFileContents';
     vi.mocked(readFile).mockResolvedValue(mockFileContents);
-    vi.mocked(glob).mockResolvedValue(['testFile']);
+    vi.mocked(glob).mockResolvedValue(['testFile.md']);
 
     const configPath = 'configPath';
     const targetDir = '/targetDir';
-    await prepareTests(configPath, targetDir);
-    expect(parseMarkdownTestFile).toBeCalledWith(mockFileContents, 'testFile');
-    expect(getTestSuiteFileContent).toBeCalledWith('Validation',
+    await prepareTests(configPath, targetDir, 'javascript');
+    expect(parseMarkdownTestFile).toBeCalledWith(mockFileContents, 'testFile.md');
+    expect(getTestSuiteFileContent).toBeCalledWith('testFile',
       {
         'It parses a grammar `%s`': { test_cases: [['foo', 'foo',]], test_body: { javascript: '(input, expectation) => { expect(input).toEqual(expectation); } ' } },
       },
-      'import GBNF from "gbnf"',
+      'javascript',
+      { 'javascript': 'import GBNF from "gbnf"' },
     );
-    expect(writeFile).toBeCalledWith(path.join(targetDir, 'validation.test.ts'), mockTestSuiteFileContent);
+    expect(writeFile).toBeCalledWith(path.join(targetDir, 'testfile.test.ts'), mockTestSuiteFileContent);
   });
 });
 

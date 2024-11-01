@@ -23,7 +23,7 @@ describe('getTestSuiteFileContent', () => {
           ].join('\n')
         }
       }
-    })).toEqual([
+    }, 'javascript')).toEqual([
       `import { expect, describe, test } from 'vitest';`,
       ``,
       `describe('Validation', () => {`,
@@ -46,9 +46,7 @@ describe('getTestSuiteFileContent', () => {
           ].join('\n')
         }
       }
-    },
-      'import GBNF from "gbnf"',
-    )).toEqual([
+    }, 'javascript', { 'javascript': 'import GBNF from "gbnf"' })).toEqual([
       `import { expect, describe, test } from 'vitest';`,
       `import GBNF from "gbnf";`,
       ``,
@@ -72,9 +70,7 @@ describe('getTestSuiteFileContent', () => {
           ].join('\n')
         }
       }
-    },
-      'import GBNF from "gbnf"',
-    )).toEqual([
+    }, 'javascript', { 'javascript': 'import GBNF from "gbnf"' })).toEqual([
       `import { expect, describe, test } from 'vitest';`,
       `import GBNF from "gbnf";`,
       ``,

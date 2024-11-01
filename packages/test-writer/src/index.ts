@@ -5,10 +5,9 @@ import { readFileSync, } from 'fs';
 import * as url from 'url';
 import path from 'path';
 import chokidar from 'chokidar';
-import { prepareTest, prepareTests } from './prepare-tests.js';
-import { rimraf } from 'rimraf';
-import { glob } from './glob.js';
 import { throttle } from './throttle.js';
+import { writeAllTests } from './write-all-tests.js';
+import { isLanguage } from './types.js';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const packageJSONPath = path.resolve(__dirname, '../package.json');
@@ -22,6 +21,7 @@ program
   .version(version)
   // .allowUnknownOption()
   .option('-w, --watch', 'Watch for changes', false)
+  .option('-l, --language <language>', 'The language to write tests for')
   .option('-d, --targetDir <targetDir>', 'The directory to write tests to', './integration-tests/.tmp')
   .option('-t, --testDir <testDir>', 'The directory to watch for tests', './');
 
@@ -29,25 +29,13 @@ program
 program.parse(process.argv);
 
 // Extract the custom options
-const { testDir, targetDir, watch } = program.opts();
+const { testDir, targetDir, watch, language } = program.opts();
+if (!isLanguage(language)) {
+  throw new Error(`Unsupported language: ${language}. Only javascript and python are supported.`);
+}
 
 // const targetDir = path.resolve('./integration-tests/.tmp');
 
-const removeAnyUnwantedFiles = async (targetDir: string, keepFiles: string[]) => {
-  const allFiles: string[] = await glob(path.join(targetDir, '**/*'));
-  const unwantedFiles = allFiles.filter(file => !keepFiles.includes(file));
-  await rimraf(unwantedFiles);
-};
-
-const writeAllTests = async (testDir: string, targetDir: string) => {
-  const start = performance.now();
-  const tests = await prepareTests(testDir, targetDir);
-  await removeAnyUnwantedFiles(targetDir, tests);
-  return {
-    duration: performance.now() - start,
-    tests,
-  };
-};
 
 if (watch) {
   console.info(`watching for changes: ${testDir}`);
@@ -58,7 +46,7 @@ if (watch) {
 
   const writeFile = throttle(async (path: string) => {
     // TODO: This is a hack, we blow everything away and rewrite all tests
-    const { duration, tests } = await writeAllTests(testDir, targetDir);
+    const { duration, tests } = await writeAllTests(testDir, targetDir, language);
     const numberOfTests = tests.length;
     console.info(`wrote ${numberOfTests} test${numberOfTests === 1 ? '' : 's'} in ${duration.toFixed(2)}ms`);
   }, 5);
@@ -70,10 +58,10 @@ if (watch) {
       console.log(`unlink: ${path}`);
       // TODO: This is a hack, we blow everything away and rewrite all tests
       console.info(`rewriting all tests, because there was a delete`);
-      await writeAllTests(testDir, targetDir);
+      await writeAllTests(testDir, targetDir, language);
     });
 } else {
-  const { duration, tests } = await writeAllTests(testDir, targetDir);
+  const { duration, tests } = await writeAllTests(testDir, targetDir, language);
   const numberOfTests = tests.length;
   console.info(`wrote ${numberOfTests} test${numberOfTests === 1 ? '' : 's'} in ${duration.toFixed(2)}ms`);
 }

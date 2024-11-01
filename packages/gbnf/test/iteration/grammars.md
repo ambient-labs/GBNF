@@ -38,6 +38,10 @@ if (testDefs.length === 0) {
 }
 ```
 
+```imports.python
+import pytest
+```
+
 ## (%#) It parses a known valid grammar `%s`
 
 ```test_cases
