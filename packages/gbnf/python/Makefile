@@ -4,7 +4,10 @@ init:
 	pip install -r requirements.txt
 
 test:
-	uvx pytest .
+	make test_unit
+
+test_unit:
+	uvx pytest ./gbnf
 
 lint:
 	uvx ruff check . --fix
@@ -20,3 +23,12 @@ build_package:
 
 upgrade_dev_dependencies:
 	./upgrade_dev_dependencies.sh
+
+build_test_writer:
+	cd ../../test-writer && pnpm build
+
+write_integration_tests:
+	make build_test_writer && rm -rf ./tests/generated && ../../test-writer/dist/test-writer.mjs --testDir ../test --targetDir ./tests/generated --language python
+
+test_integration:
+	make build_test_writer && rm -rf ./tests/generated && write-tests --testDir ../test --targetDir ./integration-tests/generated

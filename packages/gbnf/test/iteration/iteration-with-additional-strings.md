@@ -7,6 +7,10 @@ import GBNF, {
 } from 'gbnf';
 ```
 
+```imports.python
+import pytest
+```
+
 ## (%#) It throws if encountering a grammar `%s` with starting `%s` and additional `%s`
 
 ```test_cases

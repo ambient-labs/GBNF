@@ -49,7 +49,7 @@
       "command": "pnpm test:unit && pnpm test:integration "
     },
     "test:integration:write": {
-      "command": "rimraf ./integration-tests/generated && write-tests --testDir ../test --targetDir ./integration-tests/generated",
+      "command": "rimraf ./integration-tests/generated && write-tests --testDir ../test --targetDir ./integration-tests/generated --language javascript",
       "dependencies": [
         "../../test-writer:build"
       ]

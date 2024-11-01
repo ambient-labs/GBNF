@@ -4,7 +4,19 @@
 import GBNF, { GrammarParseError } from 'gbnf';
 ```
 
-## It parses a grammar (%#): `%s`
+```imports.python
+import pytest
+```
+
+## It parses a grammar
+
+```test_name.javascript
+It parses a grammar (%#): `%s`
+```
+
+```test_name.python
+it_parses_a_grammar
+```
 
 ```test_cases
 '''root ::= "foo"'''
@@ -31,12 +43,26 @@ foo ::= "foo" | "bar" | ([a-z])?
 '''
 ```
 
+```test_cases_names.python
+("grammar")
+```
+
+```test_body_args.python
+(grammar)
+```
+
+```test_body.python
+graph = GBNF(grammar)
+assert graph
+```
+
 ```test_body.javascript
 (_grammar) => {
    const grammar = _grammar.trim().split('\\\\n').join('\\n');
   expect(GBNF(grammar)).toBeTruthy();
 }
 ```
+
 
 ## It reports an error for an invalid grammar (%#): `%s`
 
@@ -68,6 +94,20 @@ foo ::= "foo"
 [string, number, string][]
 ```
 
+```test_cases_type.python
+(grammar, error_pos, error_reason)
+```
+
+
+```test_body.python
+graph = GBNF(grammar)
+with pytest.raises(InputParseError) as e:
+  graph.add(input)
+
+assert e.input == input
+assert e.error_pos = error_pos
+```
+
 ```test_body.javascript
 async ([_grammar, errorPos, errorReason]) => {
   const grammar = _grammar.trim().split('\\\\n').join('\\n');
@@ -76,4 +116,3 @@ async ([_grammar, errorPos, errorReason]) => {
   }).toThrowError(new GrammarParseError(grammar, errorPos, errorReason));
 }
 ```
-

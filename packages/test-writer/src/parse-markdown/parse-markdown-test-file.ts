@@ -37,14 +37,21 @@ export const parseMarkdownTestFile = async (contents: string, testFile = '') => 
           testSuites[currentSuiteName].tests[currentTestName].test_cases = await parseTestCases(text, testFile);
         }
 
-      } else if (lang[0] === 'test_cases_type') {
-        testSuites[currentSuiteName].tests[currentTestName].test_cases_type = {
+      } else if ([
+        'test_cases_type',
+        'test_body',
+        'test_name',
+        'test_body_args',
+        'test_cases_names',
+      ].includes(lang[0])) {
+        if (!testSuites[currentSuiteName].tests[currentTestName]) {
+          testSuites[currentSuiteName].tests[currentTestName] = {};
+        }
+        testSuites[currentSuiteName].tests[currentTestName][lang[0]] = {
           [lang[1]]: token.text,
         };
-      } else if (lang[0] === 'test_body') {
-        testSuites[currentSuiteName].tests[currentTestName].test_body = {
-          [lang[1]]: token.text,
-        };
+      } else {
+        throw new Error(`Unknown key: "${lang[0]}" with text "${token.text}"`);
       }
     }
   }
