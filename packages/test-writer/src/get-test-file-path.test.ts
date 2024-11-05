@@ -7,22 +7,22 @@ import { getTestFilePath } from './get-test-file-path.js';
 
 describe('getTestFilePath', () => {
   test('returns the correct path', () => {
-    expect(getTestFilePath('Suite', 'targetDir', 'javascript')).toBe('targetDir/suite.test.ts');
+    expect(getTestFilePath('suite', 'javascript')).toBe('suite.test.ts');
   });
 
   test('replaces spaces with hyphens', () => {
-    expect(getTestFilePath('Suite Name', 'targetDir', 'javascript')).toBe('targetDir/suite-name.test.ts');
-  });
-
-  test('converts to lowercase', () => {
-    expect(getTestFilePath('SUITE NAME', 'targetDir', 'javascript')).toBe('targetDir/suite-name.test.ts');
+    expect(getTestFilePath('suite name', 'javascript')).toBe('suite-name.test.ts');
   });
 
   test('replaces underscores with hyphens', () => {
-    expect(getTestFilePath('SUITE_NAME', 'targetDir', 'javascript')).toBe('targetDir/suite-name.test.ts');
+    expect(getTestFilePath('suite_name', 'javascript')).toBe('suite-name.test.ts');
   });
 
   test('replaces multiple spaces with hyphens', () => {
-    expect(getTestFilePath('SUITE   NAME   WITH   ______ SPACES', 'targetDir', 'javascript')).toBe('targetDir/suite-name-with-spaces.test.ts');
+    expect(getTestFilePath('suite   name   with   ______ spaces', 'javascript')).toBe('suite-name-with-spaces.test.ts');
+  });
+
+  test('maintains file path', () => {
+    expect(getTestFilePath('Path/To/Some/Suite', 'javascript')).toBe('Path/To/Some/Suite.test.ts');
   });
 });

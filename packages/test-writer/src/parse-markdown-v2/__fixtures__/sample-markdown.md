@@ -36,7 +36,7 @@ def foo_test(grammar):
   assert grammar == grammar
 ```
 
-```json $cases2
+```json $cases2 
 ["root ::= 1"]
 ```
 ```python $cases2
@@ -67,3 +67,4 @@ test('Some other test', () => {
 def some_test():
   assert 1 == 1
 ```
+
