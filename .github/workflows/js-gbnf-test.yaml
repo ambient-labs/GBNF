@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'packages/gbnf/javascript/**'
+      - 'packages/gbnf/test/**'
       - '.github/workflows/js-gbnf-test.yaml'
       - '.github/workflows/js-shared-unit-test.yaml'
       - '.github/workflows/js-shared-integration-test.yaml'

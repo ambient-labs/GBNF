@@ -3,14 +3,13 @@ import type { Language } from './types.js';
 
 const getTSTestFilePath = (
   suiteName: string,
-) => `${suiteName.replaceAll(/[ _]+/g, '-')}.test.ts`.toLowerCase();
+) => `${suiteName.replaceAll(/[ _]+/g, '-')}.test.ts`;
 
 const getPYTestFilePath = (
   suiteName: string,
-) => `${suiteName.replaceAll(/[ _]+/g, '_')}_test.py`.toLowerCase();
+) => `${suiteName.replaceAll(/[ _]+/g, '_')}_test.py`;
 
 export const getTestFilePath = (
   suiteName: string,
-  targetDir: string,
   language: Language,
-) => path.join(targetDir, language === 'javascript' ? getTSTestFilePath(suiteName) : getPYTestFilePath(suiteName));
+) => language === 'javascript' ? getTSTestFilePath(suiteName) : getPYTestFilePath(suiteName);

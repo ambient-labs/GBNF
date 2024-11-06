@@ -29,13 +29,13 @@ program
 program.parse(process.argv);
 
 // Extract the custom options
-const { testDir, targetDir, watch, language } = program.opts();
+const { testDir, targetDir: _targetDir, watch, language } = program.opts();
+const targetDir = path.resolve(_targetDir);
 if (!isLanguage(language)) {
   throw new Error(`Unsupported language: ${language}. Only javascript and python are supported.`);
 }
 
 // const targetDir = path.resolve('./integration-tests/.tmp');
-
 
 if (watch) {
   console.info(`watching for changes: ${testDir}`);
@@ -46,9 +46,14 @@ if (watch) {
 
   const writeFile = throttle(async (path: string) => {
     // TODO: This is a hack, we blow everything away and rewrite all tests
-    const { duration, tests } = await writeAllTests(testDir, targetDir, language);
-    const numberOfTests = tests.length;
-    console.info(`wrote ${numberOfTests} test${numberOfTests === 1 ? '' : 's'} in ${duration.toFixed(2)}ms`);
+    try {
+      const { duration, tests } = await writeAllTests(testDir, targetDir, language);
+      const numberOfTests = tests.length;
+      console.info(`wrote ${numberOfTests} test${numberOfTests === 1 ? '' : 's'} in ${duration.toFixed(2)}ms`);
+    } catch (err) {
+      console.error(`Error writing all tests:\n\n${err}`);
+      throw err;
+    }
   }, 5);
 
   watcher
@@ -58,7 +63,11 @@ if (watch) {
       console.log(`unlink: ${path}`);
       // TODO: This is a hack, we blow everything away and rewrite all tests
       console.info(`rewriting all tests, because there was a delete`);
-      await writeAllTests(testDir, targetDir, language);
+      try {
+        await writeAllTests(testDir, targetDir, language);
+      } catch (err) {
+        console.error(`Error Writing all tests:\n\n${err}`);
+      }
     });
 } else {
   const { duration, tests } = await writeAllTests(testDir, targetDir, language);

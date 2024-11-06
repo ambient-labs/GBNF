@@ -8,8 +8,8 @@ const _pyodide = loadPyodide({
   indexURL: path.resolve(NODE_MODULES_DIR, 'pyodide'),
 });
 
-export const runPyodide = async (code: string) => {
-  const pyodide = await _pyodide;
+export const runPython = async (code: string, dependencies: string[] = []) => {
+  const pyodide = await getPyodide(dependencies);
   const result = await pyodide.runPythonAsync(code);
   // console.log('result', result);
   if (result) {
@@ -26,4 +26,12 @@ export const runPyodide = async (code: string) => {
   } else {
     throw new Error(`No result from Pyodide for code: ${code}`);
   }
+}
+
+const getPyodide = async (dependencies: string[]) => {
+  const pyodide = await _pyodide;
+  await pyodide.loadPackage("micropip", { messageCallback: () => { }, errorCallback: () => { } });
+  const micropip = pyodide.pyimport("micropip");
+  await micropip.install(dependencies);
+  return pyodide;
 }

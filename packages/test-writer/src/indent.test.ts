@@ -24,6 +24,6 @@ describe('indent', () => {
   });
 
   test('should indent a string a specific amount', () => {
-    expect(indent('foo\nbar', 4)).toEqual(['    foo', '    bar']);
+    expect(indent('foo\nbar', 2, 2)).toEqual(['    foo', '    bar']);
   });
 });
