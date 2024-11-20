@@ -9,12 +9,21 @@
   },
   "scripts": {
     "test:watch": "pnpm vitest --config=vitest.config.ts",
-    "test": "wireit",
+    "lint": "wireit",
+    "test": "pnpm test:unit",
+    "test:unit": "wireit",
+    "build:check": "wireit",
     "build": "wireit"
   },
   "wireit": {
-    "test": {
+    "lint": {
+      "command": "eslint -c .eslintrc.cjs src --ext .ts"
+    },
+    "test:unit": {
       "command": "vitest run --config=vitest.config.ts"
+    },
+    "build:check": {
+      "command": "path-exists ./dist/test-writer.mjs"
     },
     "build": {
       "command": "esbuild ./src/index.ts --bundle --format=esm --platform=node --outfile=dist/test-writer.mjs --external:'commander' --external:ejs --external:marked",
@@ -30,9 +39,14 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^20.12.7",
+    "@types/node": "latest",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
     "esbuild": "^0.24.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "path-exists-cli": "^2.0.0",
     "typescript": "^5.6.3",
+    "vitest": "^2.1.5",
     "wireit": "^0.14.9"
   },
   "dependencies": {
