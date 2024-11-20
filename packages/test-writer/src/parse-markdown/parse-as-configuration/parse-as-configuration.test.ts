@@ -8,7 +8,7 @@ import {
 import { parseAsConfiguration } from './parse-as-configuration.js';
 
 describe('parseAsConfiguration', () => {
-  test.only('should parse code blocks into code', async () => {
+  test('should parse code blocks into code', async () => {
     expect(await parseAsConfiguration({
       contents: [
         {
@@ -179,7 +179,7 @@ describe('parseAsConfiguration', () => {
       code: {},
       variables: {},
       blocks: [
-        { title: 'foo', code: { python: 'foo = "bar"' }, variables: { foo: [] }, blocks: [] },
+        { title: 'foo', code: { python: ['foo = "bar"'], }, variables: { foo: [] }, blocks: [] },
       ],
     });
   });

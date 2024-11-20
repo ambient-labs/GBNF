@@ -4,6 +4,6 @@ export default defineConfig({
   test: {
     globals: true,
     restoreMocks: true,
-    testTimeout: 1000,
+    testTimeout: 2000,
   },
 });

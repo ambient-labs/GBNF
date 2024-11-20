@@ -19,4 +19,5 @@ const isObj = (config: unknown): config is Record<string, unknown> => typeof con
 export const isTestConfigCollection = (config: unknown): config is TestConfigCollection => isObj(config) && Object.values(config).every(isTestConfig);
 export const isTestConfig = (config: unknown): config is TestConfig => isObj(config) && 'test_cases' in config && 'test_body' in config;
 export const isSuiteConfig = (config: unknown): config is SuiteConfig => isObj(config) && 'tests' in config && isTestConfigCollection(config['tests']);
-export const isLanguage = (language: string): language is 'javascript' | 'python' => ['javascript', 'python'].includes(language);
+export const isLanguage = (language: unknown): language is Language => typeof language === 'string' && ['javascript', 'python',].includes(language);
+export const isTestFiles = (testFiles: unknown): testFiles is string[] => Array.isArray(testFiles) && testFiles.every((file) => typeof file === 'string');

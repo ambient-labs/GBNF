@@ -1,6 +1,6 @@
 import path from 'path';
-import { writeFile as _writeFile } from 'fs/promises';
-import { mkdirp } from 'mkdirp';
+import { writeFile as _writeFile, } from 'fs/promises';
+import { mkdirp, } from 'mkdirp';
 
 export const writeFile = async (filePath: string, content: string) => {
   try {

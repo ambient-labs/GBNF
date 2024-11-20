@@ -7,7 +7,7 @@ export interface Block {
 export type HeadingBlock = Block & {
   title: string;
   blocks: HeadingBlock[];
-}
+};
 
 export interface Configuration extends Block {
   blocks: HeadingBlock[];

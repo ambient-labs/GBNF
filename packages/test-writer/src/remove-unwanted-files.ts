@@ -1,7 +1,7 @@
 import path from 'path';
-import { rimraf } from 'rimraf';
-import { glob } from './glob.js';
-import { stat } from 'fs/promises';
+import { rimraf, } from 'rimraf';
+import { glob, } from './glob.js';
+import { stat, } from 'fs/promises';
 
 export const removeUnwantedFiles = async (targetDir: string, keepFiles: string[]) => {
   const allFiles: string[] = await glob(path.join(targetDir, '**/*'));

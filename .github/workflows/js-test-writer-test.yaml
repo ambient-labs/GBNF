@@ -1,0 +1,34 @@
+name: 'Tests // JS / gbnf'
+on:
+  pull_request:
+    paths:
+      - 'packages/test-writer/**'
+      - 'packages/test-writer/test/**'
+      - '.github/workflows/js-test-writer-test.yaml'
+      - '.github/workflows/js-shared-unit-test.yaml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.json'
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  lint:
+    name: "Test Writer / Lint"
+    uses: ./.github/workflows/js-shared-lint.yaml
+    with:
+      package: ./packages/test-writer
+
+  unit-test:
+    name: "Test Writer / Unit Test"
+    uses: ./.github/workflows/js-shared-unit-test.yaml
+    with:
+      package: ./packages/test-writer
+
+  build:
+    name: "Test Writer / Build"
+    uses: ./.github/workflows/js-shared-build.yaml
+    with:
+      package: ./packages/test-writer

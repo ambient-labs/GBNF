@@ -1,5 +1,4 @@
-import path from 'path';
-import type { Language } from './types.js';
+import type { Language, } from './types.js';
 
 const getTSTestFilePath = (
   suiteName: string,
