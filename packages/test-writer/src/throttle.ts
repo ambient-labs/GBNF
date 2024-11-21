@@ -1,4 +1,4 @@
-export function throttle<T extends any[], R>(
+export function throttle<T extends unknown[], R>(
   fn: (...args: T) => Promise<R>,
   delay: number
 ): (...args: T) => Promise<void> {
@@ -10,9 +10,9 @@ export function throttle<T extends any[], R>(
       lastArgs = args;
 
       if (!timeoutId) {
-        timeoutId = setTimeout(async () => {
+        timeoutId = setTimeout(() => {
           if (lastArgs) {
-            await fn(...lastArgs);
+            void fn(...lastArgs);
           }
           timeoutId = null;
           lastArgs = null;

@@ -5,6 +5,9 @@ export const hydrateVariables = (lines: string | string[], variables: Record<str
       if (!(variable in variables)) {
         throw new Error(`No variable found for ${variable}`);
       }
+      if (typeof variable !== 'string') {
+        throw new Error(`Variable ${variable} is not a string`);
+      }
       if (typeof variables[variable] === 'string') {
         return variables[variable];
       }

@@ -160,7 +160,7 @@ describe('parseConfigurationIntoTestFile', () => {
         'def describe_foo(self):',
         '  def test_foo(self):',
         '    self.assertTrue(True)',
-        '  ',
+        '',
         '  def describe_bar(self):',
         '    def test_bar(self):',
         '      self.assertTrue(True)',
@@ -379,14 +379,16 @@ describe('parseConfigurationIntoTestFile', () => {
         '',
         'describe(\'Nested\', () => {',
         'console.log("foo3")',
+        '',
         'console.log("bar-top")',
+        '',
         'console.log("baz")',
         '});',
         '});',
       ].join('\n'));
     });
 
-    test.only('it should parse the configuration into a test file for python', () => {
+    test('it should parse the configuration into a test file for python', () => {
       expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'print("foo")',
         'print("bar-top")',

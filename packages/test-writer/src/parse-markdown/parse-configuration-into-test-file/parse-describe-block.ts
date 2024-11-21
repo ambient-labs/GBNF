@@ -1,9 +1,9 @@
-import { indent } from '../../indent.js';
-import { parsePythonTestName } from '../../parse-python-test-name.js';
-import type { Language } from '../../types.js';
-import type { Configuration } from '../parse-as-configuration/index.js';
-import { Block } from '../parse-as-configuration/types.js';
-import { hydrateVariables } from './hydrate-variables.js';
+import { indent, } from '../../indent.js';
+import { parsePythonTestName, } from '../../parse-python-test-name.js';
+import type { Language, } from '../../types.js';
+import type { Configuration, } from '../parse-as-configuration/index.js';
+import { Block, } from '../parse-as-configuration/types.js';
+import { hydrateVariables, } from './hydrate-variables.js';
 
 const getDescribeBlock = (title: string, language: Language, contents: string[]): string[] => {
   if (language === 'javascript') {
@@ -47,8 +47,8 @@ const flatten = (chunks: (string | undefined)[], includeEmpty = true): string[] 
   }) as string[];
   return filteredChunks.reduce((acc, chunk, i) => {
     if (i === filteredChunks.length - 1 || !includeEmpty) {
-      return [...acc, ...chunk.split('\n')];
+      return [...acc, ...chunk.split('\n'),];
     }
-    return [...acc, ...chunk.split('\n'), ''];
+    return [...acc, ...chunk.split('\n'), '',];
   }, [] as string[]);
 };

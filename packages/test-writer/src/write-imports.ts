@@ -1,4 +1,4 @@
-import type { Language } from './types.js';
+import type { Language, } from './types.js';
 
 export const writeImports = (language: Language, imports: string) => {
   if (language === 'javascript') {

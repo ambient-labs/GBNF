@@ -1,4 +1,4 @@
-import type { Language } from './types.js';
+import type { Language, } from './types.js';
 
 export const getTestCases = (language: Language, testCases: unknown[], testCasesType: Record<string, string> = {}) => {
   if (language === 'javascript') {
