@@ -6,8 +6,22 @@ import {
   vi,
 } from 'vitest';
 import { parseAsConfiguration } from './parse-as-configuration.js';
+import { parseCodeBlockContents } from './parse-code-block-contents.js';
+// import type * as _parseCodeBlockContents from './parse-code-block-contents.js';
+
+vi.mock('./parse-code-block-contents.js', async () => {
+  // const actual = await vi.importActual('./parse-code-block-contents.js') as typeof _parseCodeBlockContents;
+  return {
+    // ...actual,
+    parseCodeBlockContents: vi.fn().mockImplementation(m => m),
+  };
+});
 
 describe('parseAsConfiguration', () => {
+  afterEach(() => {
+    // vi.restoreAllMocks();
+  });
+
   test('should parse code blocks into code', async () => {
     expect(await parseAsConfiguration({
       contents: [
@@ -35,6 +49,7 @@ describe('parseAsConfiguration', () => {
   });
 
   test('should parse code blocks into variables', async () => {
+    vi.mocked(parseCodeBlockContents).mockImplementation(async m => JSON.parse(m.contents));
     expect(await parseAsConfiguration({
       contents: [
         {

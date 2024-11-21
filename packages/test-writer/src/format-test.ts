@@ -1,13 +1,6 @@
-import { format, } from 'prettier';
 import type { Language, } from './types.js';
 import { formatPython, } from './format-python.js';
-
-const formatJavascript = (str: string) => format(str, {
-  semi: true,
-  singleQuote: true,
-  trailingComma: 'es5',
-  parser: 'typescript',
-});
+import { formatJavascript, } from './format-javascript.js';
 
 export const formatTest = async (language: Language, str: string, testFile: string): Promise<string> => {
   try {
