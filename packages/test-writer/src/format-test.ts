@@ -4,10 +4,14 @@ import { formatJavascript, } from './format-javascript.js';
 
 export const formatTest = async (language: Language, str: string, testFile: string): Promise<string> => {
   try {
-    const formattedTest: string = await (language === 'javascript' ? formatJavascript(str) : formatPython(str));
-    return formattedTest;
+    return await (language === 'javascript' ? formatJavascript(str) : formatPython(str));
   } catch (err) {
-    console.error(`[formatTest] Error formatting test.\n\nContents:\n\n${str}\n\nError:\n\n${JSON.stringify(err)}`);
+    console.error([
+      `[formatTest] Error formatting test. Contents:`,
+      str,
+      'Error:',
+      err instanceof Error ? err.message : JSON.stringify(err),
+    ].join('\n\n'));
     throw new Error(`Error formatting test file: ${testFile}`);
   }
 };

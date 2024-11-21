@@ -26,7 +26,10 @@ export const processTest = async (testFile: string, sourceDir: string, targetDir
     await writeFile(targetTestFilePath, formattedTest);
     return [targetTestFilePath,];
   } catch (err: unknown) {
-    console.error(`[processTest] Error processing test "${testFile}".\n\n${JSON.stringify(err)}`);
+    console.error([
+      `[processTest] Error processing test "${testFile}".`,
+      err instanceof Error ? err.message : JSON.stringify(err),
+    ].join('\n\n'));
     return [];
   }
 };

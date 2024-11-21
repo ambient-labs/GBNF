@@ -1,6 +1,6 @@
 ```python
 import pytest
-from gbnf import GBNF
+from gbnf import GBNF, InputParseError
 ```
 
 ```javascript
@@ -23,12 +23,11 @@ test.for($cases_positive as [string, string][])('It parses a grammar and input (
 ```
 
 ```python
-@pytest.mark.parameterize(("grammar", "input"), $cases_positive)
+@pytest.mark.parameterize( ("grammar", "input"), $cases_positive)
 def test_it_parses_a_grammar(grammar, input):
   graph = GBNF(grammar, input)
-  assert graph
+  assert bool(graph) is True
 ```
-
 
 ```python cases_negative
 [
@@ -267,5 +266,5 @@ def test_it_reports_an_error_for_an_invalid_grammar(grammar, error_pos, error_re
     graph.add(input)
 
   assert e.input == input
-  assert e.error_pos = error_pos
+  assert e.error_pos == error_pos
 ```
