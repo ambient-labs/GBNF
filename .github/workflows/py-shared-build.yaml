@@ -31,10 +31,10 @@ jobs:
         with:
           version: 9
 
-      - run: uv venv --python 3.12 .venv/dev && source .venv/dev/bin/activate && uv pip install -r pyproject.toml
-        working-directory: ${{ inputs.package }}
-
-      - run: source .venv/dev/bin/activate && uv pip install -U pip setuptools wheel 
+      - run: uv venv --python 3.12 .venv/dev \
+          && source .venv/dev/bin/activate \
+          && uv pip install -r pyproject.toml \
+          && uv pip install -U pip setuptools wheel build
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
