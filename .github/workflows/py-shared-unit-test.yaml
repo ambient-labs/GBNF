@@ -39,7 +39,7 @@ jobs:
           cache: pip
           cache-dependency-path: ${{ inputs.package}}/dev-deps/python${{ matrix.pyversion }}/test.txt
 
-      - run: 	uv venv --python ${{ matrix.pyversion }} .venv/dev source .venv/dev/bin/activate uv pip install -r pyproject.toml
+      - run: 	uv venv --python ${{ matrix.pyversion }} .venv/dev && source .venv/dev/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
