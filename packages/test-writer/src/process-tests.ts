@@ -15,8 +15,6 @@ export const processTests = async (
     }
     return includedTests.some(includedTest => testFile.includes(includedTest));
   });
-  console.log('testFiles', testFiles);
-  throw new Error('testFiles');
   if (testFiles.length === 0) {
     throw new Error(`No test files found for ${includedTests.join(', ')}`);
   }
