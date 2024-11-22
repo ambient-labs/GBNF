@@ -6,8 +6,15 @@ authors = [{ name = "Ambient Labs", email = "maintainers@gbnf.dev" }]
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-"pythonmonkey"
+    "pythonmonkey",
 ]
 classifiers = [
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "pytest-watcher>=0.4.3",
+    "pytest-describe>=2.2.0",
 ]
 
