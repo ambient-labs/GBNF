@@ -31,4 +31,4 @@ test:
 	make test_unit
 
 test_unit:
-	uvx pytest ./gbnf
+	uv run pytest ./gbnf

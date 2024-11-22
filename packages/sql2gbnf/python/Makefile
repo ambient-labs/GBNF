@@ -10,7 +10,7 @@ test:
 	make copy_js_package && source .venv/dev/bin/activate && pytest .
 
 test_unit:
-	uvx pytest ./sql2gbnf
+	uv run pytest ./sql2gbnf
 
 lint:
 	uvx ruff check . --fix

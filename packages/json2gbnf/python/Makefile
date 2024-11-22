@@ -10,7 +10,7 @@ test:
 	make copy_js_package && source .venv/dev/bin/activate && pytest .
 
 test_unit:
-	uvx pytest ./json2gbnf
+	uv run pytest ./json2gbnf
 
 lint:
 	uvx ruff check . --fix
