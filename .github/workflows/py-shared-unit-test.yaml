@@ -23,13 +23,9 @@ jobs:
           - pyversion: "3.11"
             enable_coverage: true
           - pyversion: "3.12"
+
     steps:
       - uses: actions/checkout@v4
-      # - uses: actions/setup-python@v4
-      #   with:
-      #     python-version: ${{ matrix.pyversion }}
-      #     cache: pip
-      #     cache-dependency-path: ${{ inputs.package }}/${{ format('python{0}', matrix.pyversion) }}/test.txt
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
@@ -39,23 +35,12 @@ jobs:
         with:
           # python-version-file: ".python-version"
           # python-version-file: "pyproject.toml"
-          python-version: 3.11
+          python-version: ${{ matrix.pyversion }}
           cache: pip
-          cache-dependency-path: ${{ inputs.package}}/dev-deps/python3.11/lint.txt
+          cache-dependency-path: ${{ inputs.package}}/dev-deps/python${{ matrix.pyversion }}/test.txt
 
       - run: make init && make install_dependencies
         working-directory: ${{ inputs.package }}
-
-      # - run: python -m pip install -U pip setuptools wheel 
-      #   working-directory: ${{ inputs.package }}
-
-      # - name: Install dev dependencies
-      #   run: pip install -r dev-deps/${{ format('python{0}', matrix.pyversion) }}/test.txt
-      #   working-directory: ${{ inputs.package }}
-
-      # - name: Install dependencies
-      #   run: pip install .
-      #   working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
         with:
