@@ -3,3 +3,6 @@ LICENSE
 __pycache__
 sql2gbnf/js
 dist
+build
+dist
+*.egg-info
