@@ -3,7 +3,7 @@ from .rules_builder import RulesBuilder, GrammarParseError
 ValidInput = str | int | float | list[int | float]
 
 
-def GBNF(grammar: str, initial_string: ValidInput = ""):
+def GBNF(grammar: str, _initial_string: ValidInput = ""):
     #   const grammar = typeof input === 'string' ? input : input.toString();
 
     rules_builder = RulesBuilder(grammar)
@@ -12,7 +12,7 @@ def GBNF(grammar: str, initial_string: ValidInput = ""):
         raise GrammarParseError(grammar, 0, "No rules were found")
     if symbol_ids.get("root") is None:
         raise GrammarParseError(grammar, 0, "Grammar does not contain a 'root' symbol")
-    root_id = symbol_ids.get("root")
+    # root_id = symbol_ids.get("root")
 
     # stacked_rules = list(map(build_rule_stack, rules))
     # graph = Graph(grammar, stacked_rules, root_id)
