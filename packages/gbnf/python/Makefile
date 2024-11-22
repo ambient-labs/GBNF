@@ -31,13 +31,20 @@ write_integration_tests:
 		--language python
 
 test_integration_watch:
-	uv run ptw ./tests/generated .
+	source .venv/dev/bin/activate \
+	&& uv run ptw ./tests/generated .
 
 test_integration:
-	uv run pytest ./tests/generated
+	source .venv/dev/bin/activate \
+	&& uv run pytest ./tests/generated
 
 test:
 	make test_unit
 
 test_unit:
 	uv run pytest ./gbnf
+
+test_unit_watch:
+	source .venv/dev/bin/activate \
+	&& uv run ptw ./gbnf
+
