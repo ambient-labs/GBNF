@@ -70,6 +70,12 @@ jobs:
       - run: make test_unit
         working-directory: ${{ inputs.package }}
 
+      - name: Setup tmate session
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - name: Upload coverage to Codecov  # https://github.com/codecov/codecov-action
         uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d
         if: ${{ inputs.enable_coverage }}

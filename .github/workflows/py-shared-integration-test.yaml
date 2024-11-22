@@ -83,3 +83,9 @@ jobs:
 
       - run: make test_integration
         working-directory: ${{ inputs.package }}
+
+      - name: Setup tmate session
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
