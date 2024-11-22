@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 init:
-	pip install -r requirements.txt
+	uv venv --python python3.12
 
 lint:
 	uvx ruff check . --fix
