@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: ${{ matrix.pyversion }}
 
-      - run: 	uv venv --python ${{ matrix.pyversion }} .venv/dev && source .venv/dev/bin/activate && uv pip install -r pyproject.toml
+      - run: 	uv venv --python ${{ matrix.pyversion }} .venv && source .venv/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
