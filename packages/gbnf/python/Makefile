@@ -1,13 +1,7 @@
 SHELL := /bin/bash
 
 init:
-	pip install -r requirements.txt
-
-test:
-	make test_unit
-
-test_unit:
-	uvx pytest ./gbnf
+	uv venv --python python3.12
 
 lint:
 	uvx ruff check . --fix
@@ -32,3 +26,9 @@ write_integration_tests:
 
 test_integration:
 	make build_test_writer && rm -rf ./tests/generated && write-tests --testDir ../test --targetDir ./integration-tests/generated
+
+test:
+	make test_unit
+
+test_unit:
+	uvx pytest ./gbnf

@@ -6,11 +6,13 @@ on:
       - 'packages/gbnf/test/**'
       - '.github/workflows/py-gbnf-test.yaml'
       - '.github/workflows/py-shared-unit-test.yaml'
-      - '.github/workflows/py-shared-integration-test.yaml'
+      - '.github/workflows/py-shared-lint.yaml'
+      - '.github/workflows/py-shared-build.yaml'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
       - 'tsconfig.json'
+      - 'uv.lock'
 
 env:
   FORCE_COLOR: "1"

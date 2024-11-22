@@ -9,6 +9,9 @@ upgrade_dev_deps:
 test:
 	make copy_js_package && source .venv/dev/bin/activate && pytest .
 
+test_unit:
+	uvx pytest ./sql2gbnf
+
 lint:
 	uvx ruff check . --fix
 
