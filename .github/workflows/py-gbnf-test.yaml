@@ -24,6 +24,21 @@ jobs:
     with:
       package: ./packages/gbnf/python
 
+  integration-test:
+    name: "Integration Test ${{ matrix.pyversion }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
+          # - pyversion: "3.12"
+          - pyversion: "3.11"
+            enable_coverage: true
+          - pyversion: "3.12"
+    uses: ./.github/workflows/py-shared-integration-test.yaml
+    with:
+      package: ./packages/gbnf/python
+
   unit-test:
     name: "Unit Test ${{ matrix.pyversion }}"
     strategy:
