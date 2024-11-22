@@ -46,7 +46,7 @@ jobs:
         working-directory: ${{ inputs.package }}
         run: pnpm install
 
-      - name: Build test-writer packages
+      - name: Build integration tests
         if: inputs.package == './packages/gbnf/javascript'
         working-directory: ${{ inputs.package }}
         run: pnpm --filter test-writer build && pnpm add test-writer@workspace:*
