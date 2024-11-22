@@ -43,19 +43,19 @@ jobs:
           cache: pip
           cache-dependency-path: ${{ inputs.package}}/dev-deps/python3.11/lint.txt
 
-      - run: python3 -m venv .venv/dev && source .venv/dev/bin/activate
+      - run: make init && make install_dependencies
         working-directory: ${{ inputs.package }}
 
-      - run: python -m pip install -U pip setuptools wheel 
-        working-directory: ${{ inputs.package }}
+      # - run: python -m pip install -U pip setuptools wheel 
+      #   working-directory: ${{ inputs.package }}
 
-      - name: Install dev dependencies
-        run: pip install -r dev-deps/${{ format('python{0}', matrix.pyversion) }}/test.txt
-        working-directory: ${{ inputs.package }}
+      # - name: Install dev dependencies
+      #   run: pip install -r dev-deps/${{ format('python{0}', matrix.pyversion) }}/test.txt
+      #   working-directory: ${{ inputs.package }}
 
-      - name: Install dependencies
-        run: pip install .
-        working-directory: ${{ inputs.package }}
+      # - name: Install dependencies
+      #   run: pip install .
+      #   working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
         with:
@@ -83,7 +83,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: make test
+      - run: make test_unit
         working-directory: ${{ inputs.package }}
 
       - name: Upload coverage to Codecov  # https://github.com/codecov/codecov-action
@@ -93,3 +93,9 @@ jobs:
           verbose: true
           files: ${{ inputs.package }}/coverage.xml
           fail_ci_if_error: false  # https://github.com/codecov/codecov-action/issues/557
+
+      - name: Setup tmate session
+       if: failure()
+       uses: mxschmitt/action-tmate@v3
+       with:
+         detached: true
