@@ -6,6 +6,7 @@ on:
       - 'packages/gbnf/test/**'
       - '.github/workflows/py-gbnf-test.yaml'
       - '.github/workflows/py-shared-unit-test.yaml'
+      - '.github/workflows/py-shared-integration-test.yaml'
       - '.github/workflows/py-shared-lint.yaml'
       - '.github/workflows/py-shared-build.yaml'
       - 'package.json'
