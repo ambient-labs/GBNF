@@ -98,7 +98,7 @@ line-ending = "auto"
 
 [tool.uv]
 dev-dependencies = [
-    "pytest>=8.3.3",
     "pytest-describe>=2.2.0",
     "pytest-watcher>=0.4.3",
+    "pytest>=8.3.3",
 ]

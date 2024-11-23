@@ -22,13 +22,29 @@ build_test_writer:
 	cd ../../test-writer && pnpm build
 
 write_integration_tests:
-	make build_test_writer && rm -rf ./tests/generated && ../../test-writer/dist/test-writer.mjs --testDir ../test --targetDir ./tests/generated --language python
+	make build_test_writer \
+	&& rm -rf ./tests/generated \
+	&& ../../test-writer/dist/test-writer.mjs \
+		validation/validate-grammar.md \
+		--testDir ../test \
+		--targetDir ./tests/generated \
+		--language python
+
+test_integration_watch:
+	source .venv/dev/bin/activate \
+	&& uv run ptw ./tests/generated .
 
 test_integration:
-	make build_test_writer && rm -rf ./tests/generated && write-tests --testDir ../test --targetDir ./integration-tests/generated
+	source .venv/dev/bin/activate \
+	&& uv run pytest ./tests/generated
 
 test:
 	make test_unit
 
 test_unit:
 	uv run pytest ./gbnf
+
+test_unit_watch:
+	source .venv/dev/bin/activate \
+	&& uv run ptw ./gbnf
+

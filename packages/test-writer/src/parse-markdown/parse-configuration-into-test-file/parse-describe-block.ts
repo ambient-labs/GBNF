@@ -14,7 +14,7 @@ const getDescribeBlock = (title: string, language: Language, contents: string[])
     ];
   }
   return [
-    `def describe_${parsePythonTestName(title)}(self):`,
+    `def describe_${parsePythonTestName(title)}():`,
     ...indent(contents),
   ];
 };

@@ -1,0 +1,91 @@
+on:
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        description: "Path to package"
+        type: string
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  integration-test:
+    name: 'Integration Test ${{ matrix.pyversion }}'
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
+          # - pyversion: "3.12"
+          - pyversion: "3.11"
+            enable_coverage: true
+          - pyversion: "3.12"
+    steps:
+      - uses: actions/checkout@v4
+      # - uses: actions/setup-python@v4
+      #   with:
+      #     python-version: ${{ matrix.pyversion }}
+      #     cache: pip
+      #     cache-dependency-path: ${{ inputs.package }}/${{ format('python{0}', matrix.pyversion) }}/test.txt
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          # python-version-file: ".python-version"
+          # python-version-file: "pyproject.toml"
+          python-version: ${{ matrix.pyversion }}
+          cache: pip
+          cache-dependency-path: ${{ inputs.package}}/dev-deps/python${{ matrix.pyversion }}/test.txt
+
+      - run: make init
+        working-directory: ${{ inputs.package }}
+
+      - name: Install dependencies
+        run: make install_dependencies
+        working-directory: ${{ inputs.package }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - name: Get pnpm store directory
+        
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build integration tests
+        if: inputs.package == './packages/gbnf/python'
+        working-directory: ${{ inputs.package }}
+        run: cd ../../ && pnpm --filter test-writer build && cd - && make test_integration_watch
+
+      - run: make test_integration
+        working-directory: ${{ inputs.package }}
+
+      - name: Setup tmate session
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true

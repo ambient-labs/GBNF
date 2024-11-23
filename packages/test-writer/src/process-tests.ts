@@ -9,6 +9,7 @@ export const processTests = async (
   language: Language,
   includedTests: string[],
 ): Promise<string[]> => {
+  // const foundTests = await glob(path.join(testDirectoryPath, `**/*.md`));
   const testFiles: string[] = (await glob(path.join(testDirectoryPath, `**/*.md`))).filter(testFile => {
     if (includedTests.length === 0) {
       return true;

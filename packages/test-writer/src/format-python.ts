@@ -1,6 +1,17 @@
 import { runPython, } from './pyodide.js';
 
-export const formatPython = (code: string) => runPython([
-  'import black',
-  `black.format_str("""${code}""", mode=black.FileMode())`,
-].join('\n'), ['black',]);
+const buildPythonInput = (code: string): string => {
+  const parsedCode = code.split('\"').join('\\"').split('\\n').join('\\\\n');
+  return [
+    'import black',
+    `black.format_str("""${parsedCode}""", mode=black.FileMode())`,
+  ].join('\n');
+};
+
+export const formatPython = async (code: string): Promise<string> => {
+  const result = await runPython(buildPythonInput(code), ['black',]);
+  if (typeof result === 'string') {
+    return result;
+  }
+  throw new Error(`Error formatting Python code: ${JSON.stringify(result)}`);
+};
