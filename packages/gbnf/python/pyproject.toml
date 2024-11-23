@@ -95,3 +95,10 @@ skip-magic-trailing-comma = false
 
 # Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "pytest-describe>=2.2.0",
+    "pytest-watcher>=0.4.3",
+]
