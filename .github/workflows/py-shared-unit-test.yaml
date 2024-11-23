@@ -5,7 +5,14 @@ on:
         required: true
         description: "Path to package"
         type: string
-
+      pyversion:
+        required: true
+        description: "Python version to use"
+        type: string
+      enable_coverage:
+        required: true
+        description: "Whether to enable coverage"
+        type: boolean
 env:
   FORCE_COLOR: "1"
 
@@ -29,9 +36,9 @@ jobs:
       - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.pyversion }}
+          python-version: ${{ inputs.pyversion }}
 
-      - run: 	uv venv --python ${{ matrix.pyversion }} && source .venv/bin/activate && uv pip install -r pyproject.toml
+      - run: 	uv venv --python ${{ inputs.pyversion }} && source .venv/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
@@ -65,7 +72,7 @@ jobs:
 
       - name: Upload coverage to Codecov  # https://github.com/codecov/codecov-action
         uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d
-        if: matrix.enable_coverage
+        if: ${{ inputs.enable_coverage }}
         with:
           verbose: true
           files: ${{ inputs.package }}/coverage.xml
