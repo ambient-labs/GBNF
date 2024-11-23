@@ -11,7 +11,7 @@ env:
 
 jobs:
   unit-test:
-    name: 'Unit Test ${{ matrix.pyversion }}'
+    name: 'Test'
     runs-on: ubuntu-latest
 
     strategy:
@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: ${{ matrix.pyversion }}
 
-      - run: 	uv venv --python ${{ matrix.pyversion }} .venv && source .venv/bin/activate && uv pip install -r pyproject.toml
+      - run: 	uv venv --python ${{ matrix.pyversion }} && source .venv/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
