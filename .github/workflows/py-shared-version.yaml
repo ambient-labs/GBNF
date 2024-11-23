@@ -23,15 +23,12 @@ jobs:
 
       - name: 'Automated Version Bump'
         id: version-bump
-        uses: 'phips28/gh-action-bump-version@master'
+        uses: ambient-labs/pyproject-bump-version@v0.0.1
         with:
-          tag-prefix: ${{ inputs.tag_prefix }}
-          # skip-commit:  'true'
-          skip-push:  'true'
-          # skip-tag:  'true'
-        env:
-          PACKAGEJSON_DIR:  ${{ inputs.package }}
-          version-type:  'patch'
+          file_to_bump: "${{ inputs.package }}/pyproject.toml"
+          bump_type: "micro"
+          main_branch: "main"
+          python_version: "3.12"
 
       - name: 'New Tag'
         env:
@@ -57,7 +54,7 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+          NEW_TAG: ${{steps.version-bump.outputs.newTag }}
 
       - name: Setup tmate session
         if: failure()
