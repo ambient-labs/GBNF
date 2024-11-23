@@ -77,5 +77,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
 
+      - name: Setup tmate session
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
 permissions:
   contents: read

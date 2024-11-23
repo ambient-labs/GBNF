@@ -1,0 +1,22 @@
+name: Version GBNF (Python)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/py-gbnf-version.yaml'
+      - 'packages/gbnf/python/**/*.py'
+      - 'packages/gbnf/python/README.md'
+      - 'packages/gbnf/python/**/*.gbnf'
+      - '!packages/gbnf/python/**/*.test.py'
+      # - '!packages/gbnf/python/package.json'
+
+jobs:
+  version:
+    uses: ./.github/workflows/shared-version.yaml
+    with:
+      package: "./packages/gbnf/python"
+      tag_prefix: "py/gbnf-v"
+    secrets: inherit
