@@ -15,7 +15,7 @@ on:
 
 jobs:
   version:
-    uses: ./.github/workflows/js-shared-version.yaml
+    uses: ./.github/workflows/shared-version.yaml
     with:
       package: "./packages/json2gbnf/javascript"
       tag_prefix: "js/json2gbnf-v"
