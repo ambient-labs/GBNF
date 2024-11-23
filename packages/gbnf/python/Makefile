@@ -13,7 +13,7 @@ build_all:
 	make copy_assets && make build_package
 
 build_package:
-	python3 -m build
+	uv run --with build -m build
 
 upgrade_dev_dependencies:
 	./upgrade_dev_dependencies.sh
@@ -31,4 +31,4 @@ test:
 	make test_unit
 
 test_unit:
-	uvx pytest ./gbnf
+	uv run pytest ./gbnf

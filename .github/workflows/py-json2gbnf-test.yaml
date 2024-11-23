@@ -35,6 +35,8 @@ jobs:
     uses: ./.github/workflows/py-shared-unit-test.yaml
     with:
       package: ./packages/json2gbnf/python
+      pyversion: ${{ matrix.pyversion }}
+      enable_coverage: ${{ matrix.enable_coverage }}
 
   build:
     name: "Python / JSON2GBNF / Build"

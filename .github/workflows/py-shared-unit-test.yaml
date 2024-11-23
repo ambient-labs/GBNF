@@ -5,40 +5,40 @@ on:
         required: true
         description: "Path to package"
         type: string
-
+      pyversion:
+        required: true
+        description: "Python version to use"
+        type: string
+      enable_coverage:
+        required: true
+        description: "Whether to enable coverage"
+        type: boolean
 env:
   FORCE_COLOR: "1"
 
 jobs:
   unit-test:
-    name: 'Unit Test ${{ matrix.pyversion }}'
+    name: 'Test'
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-          # - pyversion: "3.12"
-          - pyversion: "3.11"
-            enable_coverage: true
-          - pyversion: "3.12"
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
-        # with:
-        #   enable-cache: true
-        #   cache-suffix: "optional-suffix"
+        with:
+          enable-cache: true
+          cache-suffix: "optional-suffix"
 
       - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.pyversion }}
+          python-version: ${{ inputs.pyversion }}
 
-      - run: 	uv venv --python ${{ matrix.pyversion }} .venv/dev && source .venv/dev/bin/activate && uv pip install -r pyproject.toml
+      - run: 	uv venv --python ${{ inputs.pyversion }} && source .venv/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
@@ -72,7 +72,7 @@ jobs:
 
       - name: Upload coverage to Codecov  # https://github.com/codecov/codecov-action
         uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d
-        if: matrix.enable_coverage
+        if: ${{ inputs.enable_coverage }}
         with:
           verbose: true
           files: ${{ inputs.package }}/coverage.xml

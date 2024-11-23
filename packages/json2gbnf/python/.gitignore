@@ -3,3 +3,6 @@ LICENSE
 __pycache__
 json2gbnf/js
 .venv.bk
+build
+dist
+*.egg-info
