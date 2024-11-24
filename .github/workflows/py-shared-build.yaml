@@ -1,6 +1,10 @@
 on:
   workflow_call:
     inputs:
+      pyversion:
+        required: true
+        description: "Python version"
+        type: string
       package:
         required: true
         description: "Path to package"
@@ -25,13 +29,13 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.12
+          python-version: ${{ inputs.pyversion }}
 
       - uses: pnpm/action-setup@v2
         with:
           version: 9
 
-      - run: uv venv --python 3.12 .venv && source .venv/bin/activate && uv pip install -r pyproject.toml && uv pip install -U pip setuptools wheel build
+      - run: uv venv --python ${{ inputs.pyversion }} .venv && source .venv/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4

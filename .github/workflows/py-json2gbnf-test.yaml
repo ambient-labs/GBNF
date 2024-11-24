@@ -43,6 +43,7 @@ jobs:
     uses: ./.github/workflows/py-shared-build.yaml
     with:
       package: ./packages/json2gbnf/python
+      pyversion: "3.12"
 
 
 permissions:

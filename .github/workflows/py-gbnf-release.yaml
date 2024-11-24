@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/py-shared-release.yaml
 
     with:
+      pyversion: "3.12"
       package: "./packages/gbnf/python"
       files: |
         packages/gbnf/python/dist/gbnf-*.tar.gz

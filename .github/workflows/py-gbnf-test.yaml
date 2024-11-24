@@ -62,6 +62,7 @@ jobs:
     uses: ./.github/workflows/py-shared-build.yaml
     with:
       package: ./packages/gbnf/python
+      pyversion: "3.12" 
 
 
 permissions:

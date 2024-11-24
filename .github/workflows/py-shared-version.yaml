@@ -23,38 +23,15 @@ jobs:
 
       - name: 'Automated Version Bump'
         id: version-bump
-        uses: ambient-labs/pyproject-bump-version@v0.0.1
+        uses: ambient-labs/bump-repo-version@main
         with:
           file_to_bump: "${{ inputs.package }}/pyproject.toml"
-          bump_type: "micro"
+          bump_type: "patch"
           main_branch: "main"
           python_version: "3.12"
-
-      - name: 'New Tag'
-        env:
-          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
-        run: echo "new tag $NEW_TAG"
-
-      - name: 'Pull, rebase, and push'
-        run: |
-          git remote set-url origin https://${{ secrets.GH_TOKEN}}@github.com/ambient-labs/GBNF.git
-          
-          retries=0
-          until [ "$retries" -ge 3 ]
-          do
-            git pull --rebase && git push origin HEAD:main && git push origin tag $NEW_TAG && break
-            retries=$((retries+1))
-            echo "Retrying in 5 seconds..."
-            sleep 5
-          done
-          
-          if [ "$retries" -ge 3 ]; then
-            echo "Failed after 3 retries. Exiting."
-            exit 1
-          fi
+          tag_prefix: ${{ inputs.tag_prefix }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NEW_TAG: ${{steps.version-bump.outputs.newTag }}
 
       - name: Setup tmate session
         if: failure()
