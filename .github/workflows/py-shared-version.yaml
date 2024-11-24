@@ -23,12 +23,14 @@ jobs:
 
       - name: 'Automated Version Bump'
         id: version-bump
-        uses: ambient-labs/pyproject-bump-version@v0.0.1
+        uses: ambient-labs/pyproject-bump-version@main
         with:
           file_to_bump: "${{ inputs.package }}/pyproject.toml"
           bump_type: "micro"
           main_branch: "main"
           python_version: "3.12"
+          tag-prefix: ${{ inputs.tag_prefix }}
+          skip-push:  'true'
 
       - name: 'New Tag'
         env:
