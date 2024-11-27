@@ -1,13 +1,10 @@
 SHELL := /bin/bash
 
 init:
-	source .venv/dev/bin/activate && pip install -r requirements.txt
-
-upgrade_dev_deps:
-	source .venv/dev/bin/activate && ./upgrade-dev-dependencies.sh && pip install -r dev-deps/python3.11/dev.txt
+	uv venv --python python3.12 && uv sync
 
 test:
-	make copy_js_package && source .venv/dev/bin/activate && pytest .
+	make copy_js_package && source .venv/bin/activate && pytest .
 
 test_unit:
 	uv run pytest ./sql2gbnf
@@ -22,7 +19,7 @@ build_all:
 	make copy_assets && make build_package
 
 build_package:
-	source .venv/dev/bin/activate && make copy_js_package && python3 -m build
+	make copy_js_package &&	uv run --with build -m build 
 
 copy_js_package:
 	rm -rf sql2gbnf/js && mkdir -p sql2gbnf/js && cd ../javascript/ && pnpm build && cp -R dist/. ../python/sql2gbnf/js
