@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 init:
-	uv venv --python python3.12
+	uv venv --python python3.12 && uv sync
 
 test:
 	make copy_js_package && source .venv/bin/activate && pytest .

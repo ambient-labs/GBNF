@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 init:
-	uv venv --python python3.12
+	uv venv --python python3.12 && uv sync
 
 lint:
 	uvx ruff check . --fix
