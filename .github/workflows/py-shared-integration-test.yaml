@@ -46,9 +46,9 @@ jobs:
       - run: make init
         working-directory: ${{ inputs.package }}
 
-      - name: Install dependencies
-        run: make install_dependencies
-        working-directory: ${{ inputs.package }}
+      # - name: Install dependencies
+      #   run: make install_dependencies
+      #   working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
         with:
