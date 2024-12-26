@@ -38,6 +38,7 @@ jobs:
     uses: ./.github/workflows/py-shared-integration-test.yaml
     with:
       package: ./packages/gbnf/python
+      pyversion: ${{ matrix.pyversion }}
 
   unit-test:
     name: "Unit Test ${{ matrix.pyversion }}"

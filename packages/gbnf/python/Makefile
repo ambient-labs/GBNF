@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 init:
-	uv venv --python python3.12
+	uv venv --python python3.12 && uv sync
 
 lint:
 	uvx ruff check . --fix
@@ -31,7 +31,7 @@ write_integration_tests:
 		--language python
 
 test_integration_watch:
-	uv run ptw ./tests/generated .
+	uv run ptw --now ./tests/generated/**/*_test.py
 
 test_integration:
 	uv run pytest ./tests/generated
@@ -40,8 +40,7 @@ test:
 	make test_unit
 
 test_unit:
-	uv run pytest ./gbnf
+	uv run pytest ./gbnf/**/*_test.py
 
 test_unit_watch:
-	uv run ptw ./gbnf
-
+	uv run ptw --now ./gbnf/**/*_test.py

@@ -15,7 +15,7 @@ env:
 
 jobs:
   integration-test:
-    name: 'Integration Test ${{ matrix.pyversion }}'
+    name: 'Integration Test'
     runs-on: ubuntu-latest
 
     strategy:
