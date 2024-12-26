@@ -1,5 +1,4 @@
-from colorize import colorize, Color
-import pytest
+from colorize import Color, colorize
 
 
 def test_colorize_strings():
