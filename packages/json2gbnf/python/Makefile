@@ -4,7 +4,7 @@ init:
 	uv venv --python python3.12
 
 test:
-	make copy_js_package && source .venv/bin/activate && pytest .
+	make copy_js_package && pytest .
 
 test_unit:
 	uv run pytest ./json2gbnf
