@@ -5,6 +5,10 @@ on:
         required: true
         description: "Path to package"
         type: string
+      pyversion:
+        required: true
+        description: "Python version to use"
+        type: string
 
 env:
   FORCE_COLOR: "1"
@@ -16,38 +20,22 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-          # - pyversion: "3.12"
-          - pyversion: "3.11"
-            enable_coverage: true
-          - pyversion: "3.12"
+
     steps:
       - uses: actions/checkout@v4
-      # - uses: actions/setup-python@v4
-      #   with:
-      #     python-version: ${{ matrix.pyversion }}
-      #     cache: pip
-      #     cache-dependency-path: ${{ inputs.package }}/${{ format('python{0}', matrix.pyversion) }}/test.txt
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-suffix: "optional-suffix"
 
       - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
-          # python-version-file: ".python-version"
-          # python-version-file: "pyproject.toml"
-          python-version: ${{ matrix.pyversion }}
-          cache: pip
-          cache-dependency-path: ${{ inputs.package}}/dev-deps/python${{ matrix.pyversion }}/test.txt
+          python-version: ${{ inputs.pyversion }}
 
-      - run: make init
-        working-directory: ${{ inputs.package }}
-
-      - name: Install dependencies
-        run: make install_dependencies
+      - run: 	uv venv --python ${{ inputs.pyversion }} && source .venv/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
@@ -79,7 +67,7 @@ jobs:
       - name: Build integration tests
         if: inputs.package == './packages/gbnf/python'
         working-directory: ${{ inputs.package }}
-        run: cd ../../ && pnpm --filter test-writer build && cd - && make test_integration_watch
+        run: cd ../../ && pnpm --filter test-writer build && cd - && make write_integration_tests
 
       - run: make test_integration
         working-directory: ${{ inputs.package }}
