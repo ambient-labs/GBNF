@@ -1,6 +1,6 @@
 [project]
 name = "gbnf"
-version = "0.0.6"
+version = "0.0.7"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
@@ -29,19 +29,19 @@ unfixable = []
 [tool.uv]
 dev-dependencies = [ "pytest-describe>=2.2.0", "pytest-watcher>=0.4.3", "pytest>=8.3.3",]
 
-[tool.pytest.ini_options]
-minversion = "6.0"
-testpaths = [ "gbnf/**/*_test.py",]
-
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
 
-[tool.setuptools.packages.find]
-where = [ ".",]
-include = [ "gbnf*",]
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [ "gbnf/**/*_test.py",]
 
 [tool.ruff.lint.per-file-ignores]
 "**/*_test.py" = [ "T201", "RUF012", "PERF203", "FLY002", "ARG001", "B008", "ARG002", "A002", "A001",]
+
+[tool.setuptools.packages.find]
+where = [ ".",]
+include = [ "gbnf*",]
