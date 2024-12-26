@@ -3,11 +3,8 @@ SHELL := /bin/bash
 init:
 	uv venv --python python3.12
 
-test:
-	make copy_js_package && pytest .
-
 test_unit:
-	uv run pytest ./json2gbnf
+	make copy_js_package && uv run pytest ./json2gbnf
 
 lint:
 	uvx ruff check . --fix
