@@ -1,4 +1,4 @@
-from colorize import Color, colorize
+from .colorize import Color, colorize
 
 
 def test_colorize_strings():
