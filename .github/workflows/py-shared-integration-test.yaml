@@ -79,7 +79,7 @@ jobs:
       - name: Build integration tests
         if: inputs.package == './packages/gbnf/python'
         working-directory: ${{ inputs.package }}
-        run: cd ../../ && pnpm --filter test-writer build && cd - && make test_integration
+        run: cd ../../ && pnpm --filter test-writer build && cd - && make write_integration_tests
 
       - run: make test_integration
         working-directory: ${{ inputs.package }}
