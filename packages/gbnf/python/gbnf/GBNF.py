@@ -1,4 +1,4 @@
-from .rules_builder import RulesBuilder, GrammarParseError
+from .rules_builder import GrammarParseError, RulesBuilder
 
 ValidInput = str | int | float | list[int | float]
 

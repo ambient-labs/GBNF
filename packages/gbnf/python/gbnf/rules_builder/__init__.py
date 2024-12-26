@@ -1,8 +1,8 @@
-from .rules_builder import RulesBuilder
 from .errors import GrammarParseError, InputParseError
+from .rules_builder import RulesBuilder
 
 __all__ = [
-    "RulesBuilder",
     "GrammarParseError",
     "InputParseError",
+    "RulesBuilder",
 ]

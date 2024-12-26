@@ -20,20 +20,22 @@ jobs:
 
     strategy:
       fail-fast: false
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-suffix: "optional-suffix"
 
       - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.pyversion }}
-          cache: pip
-          cache-dependency-path: ${{ inputs.package}}/dev-deps/python${{ inputs.pyversion }}/test.txt
 
-      - run: make init
+      - run: 	uv venv --python ${{ inputs.pyversion }} && source .venv/bin/activate && uv pip install -r pyproject.toml
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4
@@ -65,7 +67,7 @@ jobs:
       - name: Build integration tests
         if: inputs.package == './packages/gbnf/python'
         working-directory: ${{ inputs.package }}
-        run: cd ../../ && pnpm --filter test-writer build && cd - && make test_integration_watch
+        run: cd ../../ && pnpm --filter test-writer build && cd - && make write_integration_tests
 
       - run: make test_integration
         working-directory: ${{ inputs.package }}
