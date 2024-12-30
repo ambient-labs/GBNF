@@ -1,4 +1,6 @@
 from __future__ import annotations
+from dataclasses import dataclass, field
+
 
 from collections.abc import Callable
 from enum import Enum
@@ -35,12 +37,19 @@ Range = tuple[int, int]
 
 class RuleChar:
     type: RuleType = RuleType.CHAR
-    value: list[int | Range]
+    value: list[int | Range] = field(default_factory=list)
+
+    def __init__(self, value: list[int | Range]):
+        self.value = value
 
 
 class RuleCharExclude:
     type: RuleType = RuleType.CHAR_EXCLUDE
-    value: list[int | Range]
+
+    value: list[int | Range] = field(default_factory=list)
+
+    def __init__(self, value: list[int | Range]):
+        self.value = value
 
 
 class RuleEnd:
