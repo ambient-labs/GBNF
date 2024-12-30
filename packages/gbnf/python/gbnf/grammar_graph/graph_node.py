@@ -3,8 +3,7 @@ from __future__ import annotations
 from typing import Generic, TypedDict, TypeVar
 
 from .grammar_graph_types import PrintOpts, UnresolvedRule
-
-# from .print import printGraphNode
+from .print import print_graph_node
 from .rule_ref import RuleRef
 
 
@@ -21,12 +20,12 @@ class GraphNode(Generic[T]):
     rule: T
     next: GraphNode | None
     meta: GraphNodeMeta
-    __id__: str | None
+    __id__: str | None = None
 
     def __init__(
         self,
         rule: T,
-        meta: GraphNodeMeta,
+        meta: GraphNodeMeta | None,
         next_node: GraphNode | None = None,
     ):
         self.rule = rule
@@ -44,9 +43,7 @@ class GraphNode(Generic[T]):
         return self.__id__
 
     def print(self, opts: PrintOpts) -> str:
-        _ = opts
-        # return printGraphNode(self, opts)
-        return "GraphNode"
+        return print_graph_node(self, opts)
 
 
 GraphNodeRuleRef = GraphNode[RuleRef]
