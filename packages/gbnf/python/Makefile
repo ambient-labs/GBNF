@@ -43,4 +43,4 @@ test_unit:
 	uv run pytest ./gbnf/**/*_test.py
 
 test_unit_watch:
-	uv run ptw --now ./gbnf/**/*_test.py
+	uv run ptw --now .

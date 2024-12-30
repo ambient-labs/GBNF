@@ -1,4 +1,3 @@
-import pytest
 
 from .get_input_as_code_points import get_input_as_code_points
 
