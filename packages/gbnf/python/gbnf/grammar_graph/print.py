@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .graph_node import GraphNode, PrintOpts
@@ -35,7 +35,8 @@ export const printGraphPointer = (pointer: GraphPointer) => (
   Color.RED,
 );
 
-export const printGraphNode = (node: GraphNode) => ({ pointers, showPosition = false, colorize: col, }: PrintOpts): string => {
+export const printGraphNode = (node: GraphNode) => ({
+pointers, showPosition = false, colorize: col, }: PrintOpts): string => {
   const rule = node.rule;
 
   const parts: (string | number)[] = [];

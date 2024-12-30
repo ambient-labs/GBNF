@@ -1,20 +1,21 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
-import pytest
 from unittest.mock import patch
+
+import pytest
 
 from .graph_node import GraphNode, GraphNodeMeta, PrintOpts
 from .rule_ref import RuleRef
 
-
 if TYPE_CHECKING:
-    from .print import print_graph_node
+    pass
 
 
 @pytest.fixture(autouse=True)
 def mock_print_graph_node():
     with patch(
-        "gbnf.grammar_graph.graph_node.print_graph_node"
+        "gbnf.grammar_graph.graph_node.print_graph_node",
     ) as mock_print_graph_node:
         mock_print_graph_node.return_value = "mocked_response"
         yield mock_print_graph_node
@@ -41,7 +42,7 @@ def describe_graph_node():
 
     def test_delegate_print_to_the_print_graph_node_function(mock_print_graph_node):
         node = GraphNode(rule, meta)
-        opts: PrintOpts = {"colorize": lambda x, y: str(x), "showPosition": False}
+        opts: PrintOpts = {"colorize": lambda x, _y: str(x), "showPosition": False}
         node.print(opts)
 
         mock_print_graph_node.assert_called_with(node, opts)
