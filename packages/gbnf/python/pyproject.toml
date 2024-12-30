@@ -1,6 +1,6 @@
 [project]
 name = "gbnf"
-version = "0.0.7"
+version = "0.0.8"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
@@ -21,14 +21,15 @@ Homepage = "https://github.com/ambient-labs/GBNF/packages/gbnf"
 [tool.ruff]
 line-length = 120
 preview = true
+
+[tool.uv]
+dev-dependencies = [ "pytest-describe>=2.2.0", "pytest-watcher>=0.4.3", "pytest>=8.3.3",]
+
 [tool.ruff.lint]
 extend-select = [ "A", "ARG", "B", "BLE", "COM", "E", "F", "FA", "FIX", "FLY", "FURB", "G", "I", "ICN", "ISC", "INP", "PERF", "PGH", "PIE", "PT", "PTH", "RET", "RSE", "RUF", "SLOT", "T20", "TD", "TID", "UP", "W", "YTT",]
 ignore = [ "TD002", "TD003", "TID252", "FIX002", "BLE001", "FLY002",]
 fixable = [ "ALL",]
 unfixable = []
-
-[tool.uv]
-dev-dependencies = [ "pytest-describe>=2.2.0", "pytest-watcher>=0.4.3", "pytest>=8.3.3",]
 
 [tool.ruff.format]
 quote-style = "double"
