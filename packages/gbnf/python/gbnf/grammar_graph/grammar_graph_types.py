@@ -47,7 +47,7 @@ class RuleEnd:
     type: RuleType = RuleType.END
 
 
-type UnresolvedRule = RuleChar | RuleCharExclude | RuleRef | RuleEnd
+UnresolvedRule = RuleChar | RuleCharExclude | RuleRef | RuleEnd
 
 # RuleRefs should never be exposed to the end user.
 ResolvedRule = RuleCharExclude | RuleChar | RuleEnd
