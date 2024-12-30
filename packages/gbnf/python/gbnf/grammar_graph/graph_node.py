@@ -1,11 +1,11 @@
 from __future__ import annotations
-from typing import Optional, TypedDict
 
-from .colorize import colorize
+from typing import Generic, TypedDict, TypeVar
+
+from .grammar_graph_types import PrintOpts, UnresolvedRule
 
 # from .print import printGraphNode
-# from .rule_ref import RuleRef
-from .grammar_graph_types import UnresolvedRule, PrintOpts
+from .rule_ref import RuleRef
 
 
 class GraphNodeMeta(TypedDict):
@@ -14,26 +14,26 @@ class GraphNodeMeta(TypedDict):
     stepId: int
 
 
-# type GraphNodeRuleRef = GraphNode<RuleRef>;
+T = TypeVar("T", bound=UnresolvedRule)
 
 
-class GraphNode:
-    rule: UnresolvedRule
-    next: Optional["GraphNode"]
+class GraphNode(Generic[T]):
+    rule: T
+    next: GraphNode | None
     meta: GraphNodeMeta
-    __id__: Optional[str]
+    __id__: str | None
 
     def __init__(
         self,
-        rule: UnresolvedRule,
+        rule: T,
         meta: GraphNodeMeta,
-        next: Optional[GraphNode] = None,
+        next_node: GraphNode | None = None,
     ):
         self.rule = rule
         if meta is None:
             raise ValueError("Meta is undefined")
         self.meta = meta
-        self.next = next
+        self.next = next_node
 
     @property
     def id(self) -> str:
@@ -44,5 +44,9 @@ class GraphNode:
         return self.__id__
 
     def print(self, opts: PrintOpts) -> str:
+        _ = opts
         # return printGraphNode(self, opts)
         return "GraphNode"
+
+
+GraphNodeRuleRef = GraphNode[RuleRef]

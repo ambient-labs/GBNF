@@ -1,21 +1,21 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, TypedDict, Callable
-from enum import Enum
 
-"""
-import type { Colorize, } from "./colorize.js";
-import type { GenericSet, } from "./generic-set.js";
-import type { GraphPointer, } from "./graph-pointer.js";
-import { RuleRef, } from "./rule-ref.js";
-export const customInspectSymbol = Symbol.for('nodejs.util.inspect.custom');
-"""
+from collections.abc import Callable
+from enum import Enum
+from typing import TYPE_CHECKING, TypedDict
+
+from .rule_ref import RuleRef
 
 if TYPE_CHECKING:
-    from .colorize import colorize
+    """
+    import type { Colorize, } from "./colorize.js";
+    import type { GenericSet, } from "./generic-set.js";
+    import type { GraphPointer, } from "./graph-pointer.js";
+    import { RuleRef, } from "./rule-ref.js";
+    """
 
     # from .generic_set import GenericSet
     # from .graph_pointer import GraphPointer
-from .rule_ref import RuleRef
 
 
 class PrintOpts(TypedDict):
