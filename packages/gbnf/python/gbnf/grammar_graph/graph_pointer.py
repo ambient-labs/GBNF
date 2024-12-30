@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, TypeVar
 
-from .grammar_graph_types import UnresolvedRule
 
 if TYPE_CHECKING:
     from .graph_node import GraphNode
+from .grammar_graph_types import UnresolvedRule
 
 T = TypeVar("T", bound=UnresolvedRule)
 

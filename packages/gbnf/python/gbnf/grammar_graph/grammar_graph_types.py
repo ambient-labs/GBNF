@@ -15,9 +15,6 @@ if TYPE_CHECKING:
     import { RuleRef, } from "./rule-ref.js";
     """
 
-    # from .generic_set import GenericSet
-    # from .graph_pointer import GraphPointer
-
 
 class PrintOpts(TypedDict):
     # pointers: Pointers
