@@ -1,5 +1,6 @@
 import pytest
-from .rule_ref import RuleRef, GraphNode
+
+from .rule_ref import GraphNode, RuleRef
 
 
 def describe_rule_ref():
@@ -15,6 +16,6 @@ def describe_rule_ref():
 
     def test_throws_an_error_if_trying_to_get_nodes_before_setting(self):
         ruleRef = RuleRef(123)
-        with pytest.raises(ValueError) as context:
-            ruleRef.nodes
+        with pytest.raises(ValueError, match="Nodes are not set") as context:
+            _ = ruleRef.nodes
         assert str(context.value) == "Nodes are not set"
