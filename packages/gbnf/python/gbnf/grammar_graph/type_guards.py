@@ -1,14 +1,15 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any
-from .rule_ref import RuleRef
-from .grammar_graph_types import RuleType
+
 from .grammar_graph_types import (
-    Range,
     RuleChar,
     RuleCharExclude,
     RuleEnd,
+    RuleType,
     UnresolvedRule,
 )
+from .rule_ref import RuleRef
 
 if TYPE_CHECKING:
     from .graph_pointer import GraphPointer
@@ -20,7 +21,8 @@ if TYPE_CHECKING:
 
 def is_rule(rule: Any) -> bool:
     return rule is not None and isinstance(
-        rule, (RuleChar, RuleCharExclude, RuleEnd, RuleRef)
+        rule,
+        (RuleChar | RuleCharExclude | RuleEnd | RuleRef),
     )
 
 
@@ -46,11 +48,11 @@ def is_rule_char_exclude(rule: UnresolvedRule) -> bool:
     )
 
 
-def is_range(range: Any) -> bool:
+def is_range(inpt: Any) -> bool:
     return (
-        isinstance(range, list)
-        and len(range) == 2
-        and all(isinstance(n, int) for n in range)
+        isinstance(inpt, list)
+        and len(inpt) == 2
+        and all(isinstance(n, int) for n in inpt)
     )
 
 

@@ -1,8 +1,8 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any, Optional
 
-from typing import Generic, TypedDict, TypeVar
-from .grammar_graph_types import PrintOpts, UnresolvedRule
+from typing import TYPE_CHECKING, Generic, TypeVar
+
+from .grammar_graph_types import UnresolvedRule
 
 if TYPE_CHECKING:
     from .graph_node import GraphNode
@@ -12,10 +12,10 @@ T = TypeVar("T", bound=UnresolvedRule)
 
 class GraphPointer(Generic[T]):
     node: GraphNode[T]
-    parent: Optional[GraphPointer] = None
+    parent: GraphPointer | None = None
     id: str
 
-    def __init__(self, node: GraphNode[T], parent: Optional[GraphPointer] = None):
+    def __init__(self, node: GraphNode[T], parent: GraphPointer | None = None):
         if node is None:
             raise ValueError("Node is undefined")
         self.node = node

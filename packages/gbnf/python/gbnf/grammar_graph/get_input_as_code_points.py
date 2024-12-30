@@ -1,4 +1,3 @@
-from typing import TYPE_CHECKING
 
 from .grammar_graph_types import ValidInput
 

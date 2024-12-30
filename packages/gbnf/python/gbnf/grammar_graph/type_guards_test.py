@@ -1,10 +1,8 @@
 from __future__ import annotations
-import pytest
+
 from typing import TYPE_CHECKING
 
-from .graph_node import GraphNode
-from .graph_pointer import GraphPointer
-from .rule_ref import RuleRef
+import pytest
 
 from .grammar_graph_types import (
     # Range,
@@ -14,23 +12,26 @@ from .grammar_graph_types import (
     RuleEnd,
     # UnresolvedRule,
 )
+from .graph_node import GraphNode
+from .graph_pointer import GraphPointer
+from .rule_ref import RuleRef
 
 if TYPE_CHECKING:
     # from .graph_pointer import GraphPointer
     pass
 
 from .type_guards import (
-    is_graph_pointer_rule_ref,
-    is_graph_pointer_rule_end,
     is_graph_pointer_rule_char,
     is_graph_pointer_rule_char_exclude,
+    is_graph_pointer_rule_end,
+    is_graph_pointer_rule_ref,
+    is_range,
     is_rule,
-    # is_rule_type,
-    is_rule_ref,
-    is_rule_end,
     is_rule_char,
     is_rule_char_exclude,
-    is_range,
+    is_rule_end,
+    # is_rule_type,
+    is_rule_ref,
 )
 
 
@@ -60,7 +61,7 @@ def describe_rule_type_guards():
     def describe_is_graph_pointer_rule_char():
         def test_it_returns_true():
             node = GraphNode(
-                RuleChar(value=[97]), {"stackId": 1, "pathId": 2, "stepId": 3}
+                RuleChar(value=[97]), {"stackId": 1, "pathId": 2, "stepId": 3},
             )
             pointer = GraphPointer(node)
             assert is_graph_pointer_rule_char(pointer)
