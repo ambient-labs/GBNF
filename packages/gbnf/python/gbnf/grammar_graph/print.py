@@ -1,98 +1,105 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
+from .colorize import Color
+from .get_parent_stack_id import get_parent_stack_id
+
 if TYPE_CHECKING:
-    from .graph_node import GraphNode, PrintOpts
+    from .grammar_graph_types import PrintOpts
+    from .graph_node import GraphNode
+    from .graph_pointer import GraphPointer
+
+from .type_guards import is_range, is_rule_char, is_rule_ref
 
 
-def print_graph_node(node: GraphNode, opts: PrintOpts) -> str:
-    _ = node
-    _ = opts
-    return "GraphNode"
+def print_graph_pointer(pointer: GraphPointer) -> Callable[[PrintOpts], str]:
+    def print_graph_pointer_inner(opts: PrintOpts) -> str:
+        col = opts["colorize"]
+        return col(
+            f"*{get_parent_stack_id(pointer, col)}",
+            Color.RED,
+        )
+
+    return print_graph_pointer_inner
 
 
-"""
-import { Color, } from "./colorize.js";
-import { getParentStackId, } from "./get-parent-stack-id.js";
-import type { GraphNode, } from "./graph-node.js";
-import type { GraphPointer, } from "./graph-pointer.js";
-import {
-  type PrintOpts,
-} from "./types.js";
-import {
-  isRange,
-  isRuleChar,
-  isRuleRef,
-} from './type-guards.js';
+def print_graph_node(node: GraphNode) -> Callable[[PrintOpts], str]:
+    def print_graph_node_inner(opts: PrintOpts) -> str:
+        pointers = opts.get("pointers", set())
+        col = opts["colorize"]
+        show_position = opts.get("show_position", False)
+        rule = node.rule
+        parts: list[str] = []
+        if show_position:
+            parts.extend(
+                [col("{", Color.BLUE), col(node.id, Color.GRAY), col("}", Color.BLUE)],
+            )
 
-export const printGraphPointer = (pointer: GraphPointer) => (
-  {
-    colorize: col,
-  }: Omit<PrintOpts, 'pointers' | 'showPosition'>
-): string => col(
-  `*${getParentStackId(pointer, col)}`,
-  Color.RED,
-);
+        if is_rule_char(rule):
+            parts.extend(
+                [
+                    col("[", Color.GRAY),
+                    col(
+                        "".join(
+                            [
+                                (
+                                    "".join(
+                                        [col(get_char(val), Color.YELLOW) for val in v],
+                                    )
+                                    if is_range(v)
+                                    else get_char(v)
+                                )
+                                for v in rule.value
+                            ],
+                        ),
+                        Color.YELLOW,
+                    ),
+                    col("]", Color.GRAY),
+                ],
+            )
 
-export const printGraphNode = (node: GraphNode) => ({
-pointers, showPosition = false, colorize: col, }: PrintOpts): string => {
-  const rule = node.rule;
+        elif is_rule_ref(rule):
+            parts.extend(
+                [
+                    col("Ref(", Color.GRAY),
+                    col(rule.value, Color.GREEN),
+                    col(")", Color.GRAY),
+                ],
+            )
 
-  const parts: (string | number)[] = [];
-  if (showPosition) {
-    parts.push(
-      col('{', Color.BLUE),
-      col(node.id, Color.GRAY),
-      col('}', Color.BLUE),
-    );
-  }
-  if (isRuleChar(rule)) {
-    parts.push(
-      col('[', Color.GRAY),
-      col(rule.value.map(v => {
-        if (isRange(v)) {
-          return v.map(val => col(String.fromCharCode(val), Color.YELLOW));
-        }
-        return getChar(v);
-      }).join(''), Color.YELLOW),
-      col(']', Color.GRAY),
-    );
-  } else if (isRuleRef(rule)) {
-    parts.push(col('Ref(', Color.GRAY) + col(`${rule.value}`, Color.GREEN) + col(')', Color.GRAY));
-  } else {
-    parts.push(col(rule.type, Color.YELLOW));
-  }
+        else:
+            parts.append(col(rule.type, Color.YELLOW))
 
-  if (pointers) {
-    for (const pointer of pointers) {
-      const pointerParts: string[] = [];
-      if (pointer.node === node) {
-        pointerParts.push(
-          pointer.print({ colorize: col, }),
-        );
-      }
-      if (pointerParts.length) {
-        parts.push(col('[', Color.GRAY));
-        parts.push(...pointerParts);
-        parts.push(col(']', Color.GRAY));
-      }
-    }
-  }
-  return [
-    parts.join(''),
-    node.next?.print({ pointers, colorize: col, showPosition, }),
-  ].filter(Boolean).join(col('-> ', Color.GRAY));
-};
+        if pointers:
+            for pointer in pointers:
+                pointer_parts: list[str] = []
+                if pointer.node == node:
+                    pointer_parts.append(pointer.print(opts))
 
-const getChar = (charCode: number) => {
-  const char = String.fromCharCode(charCode);
-  switch (char) {
-    case '\n':
-      return '\\n';
-    default:
-      return char;
-  }
-};
+                if len(pointer_parts) > 0:
+                    parts.extend(
+                        [
+                            col("[", Color.GRAY),
+                            col("".join(pointer_parts), Color.YELLOW),
+                            col("]", Color.GRAY),
+                        ],
+                    )
 
-"""
+        parts_to_return = [
+            "".join(parts),
+        ]
+        if node.next:
+            parts_to_return.append(node.next.print(opts))
+
+        return col("-> ", Color.GRAY).join(parts_to_return)
+
+    return print_graph_node_inner
+
+
+def get_char(char_code: int) -> str:
+    char = chr(char_code)
+    if char == "\n":
+        return "\\n"
+    return char

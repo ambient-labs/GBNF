@@ -7,19 +7,11 @@ from typing import TYPE_CHECKING, TypedDict
 
 from .rule_ref import RuleRef
 
-if TYPE_CHECKING:
-    """
-    import type { Colorize, } from "./colorize.js";
-    import type { GenericSet, } from "./generic-set.js";
-    import type { GraphPointer, } from "./graph-pointer.js";
-    import { RuleRef, } from "./rule-ref.js";
-    """
-
 
 class PrintOpts(TypedDict):
-    # pointers: Pointers
+    pointers: set[GraphPointer]
     colorize: Callable[[str | int, str], str]
-    showPosition: bool
+    show_position: bool
 
 
 class RuleType(Enum):
@@ -54,13 +46,17 @@ class RuleEnd:
 
 UnresolvedRule = RuleChar | RuleCharExclude | RuleRef | RuleEnd
 
-# RuleRefs should never be exposed to the end user.
-ResolvedRule = RuleCharExclude | RuleChar | RuleEnd
-"""ResolvedGraphPointer = GraphPointer<ResolvedRule>"""
 
 # ValidInput can either be a string, or a number indicating a code point.
 # It CANNOT be a number representing a number; a number intended as input (like "8")
 # should be passed in as a string.
 ValidInput = str | int | list[int]
 
-"""Pointers = set[ResolvedGraphPointer, str]"""
+
+if TYPE_CHECKING:
+    from .graph_pointer import GraphPointer
+
+    # RuleRefs should never be exposed to the end user.
+    ResolvedRule = RuleCharExclude | RuleChar | RuleEnd
+    ResolvedGraphPointer = GraphPointer[ResolvedRule]
+    Pointers = set[ResolvedGraphPointer]
