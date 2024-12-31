@@ -1,4 +1,4 @@
-import { vi, describe, it, expect } from 'vitest';
+import { vi, describe, it, expect, afterEach } from 'vitest';
 import { KEY_TRANSLATION, getSerializedRuleKey } from './get-serialized-rule-key.js';
 
 import {
@@ -51,7 +51,7 @@ describe('getSerializedRuleKey', () => {
     expect(getSerializedRuleKey(rule)).toBe(`${KEY_TRANSLATION[RuleType.CHAR]}-[97]`);
   });
 
-  it('returns type and value for character rules', () => {
+  it('returns type and value for character exclude rules', () => {
     const rule: RuleCharExclude = { type: RuleType.CHAR_EXCLUDE, value: [97] };
     vi.mocked(isRuleCharExcluded).mockReturnValue(true);
     expect(getSerializedRuleKey(rule)).toBe(`${KEY_TRANSLATION[RuleType.CHAR_EXCLUDE]}-[97]`);
