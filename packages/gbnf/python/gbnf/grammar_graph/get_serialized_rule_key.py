@@ -3,14 +3,13 @@ from __future__ import annotations
 import json
 
 from .grammar_graph_types import (
-    RuleType,
-    UnresolvedRule,
     RuleChar,
     RuleCharExclude,
     RuleRef,
+    RuleType,
+    UnresolvedRule,
 )
 from .type_guards import is_rule_char, is_rule_char_exclude, is_rule_end, is_rule_ref
-
 
 KEY_TRANSLATION = {
     RuleType.END: 0,

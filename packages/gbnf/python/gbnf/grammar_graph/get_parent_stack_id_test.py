@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING
-
-from .grammar_graph_types import RuleEnd
-from .get_parent_stack_id import get_parent_stack_id
 
 from .colorize import Color
-from .graph_pointer import GraphPointer
+from .get_parent_stack_id import get_parent_stack_id
+from .grammar_graph_types import RuleEnd
 from .graph_node import GraphNode
+from .graph_pointer import GraphPointer
 
 
 def s(str: str) -> str:

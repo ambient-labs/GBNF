@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, TypeVar
 
-
 if TYPE_CHECKING:
     from .graph_node import GraphNode
 from .grammar_graph_types import UnresolvedRule
