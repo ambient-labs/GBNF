@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from .colorize import Color
-from .graph_pointer import GraphPointer
+
+if TYPE_CHECKING:
+    from .graph_pointer import GraphPointer
 
 
 def get_parent_stack_id(

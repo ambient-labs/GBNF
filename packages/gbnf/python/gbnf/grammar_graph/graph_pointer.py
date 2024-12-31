@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, TypeVar
 
+from .print import print_graph_pointer
+
 if TYPE_CHECKING:
     from .graph_node import GraphNode
-from .grammar_graph_types import UnresolvedRule
+from .grammar_graph_types import PrintOpts, UnresolvedRule
 
 T = TypeVar("T", bound=UnresolvedRule)
 
@@ -24,3 +26,6 @@ class GraphPointer(Generic[T]):
     @property
     def rule(self) -> T:
         return self.node.rule
+
+    def print(self, opts: PrintOpts) -> str:
+        return print_graph_pointer(self)(opts)
