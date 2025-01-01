@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import field
 from enum import Enum
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict
 
 from .rule_ref import RuleRef
 
@@ -23,7 +23,20 @@ class RuleType(Enum):
 Range = tuple[int, int]
 
 
-class RuleChar:
+class Rule:
+    type: RuleType
+    value: Any | None
+
+    @property
+    def __dict__(self):
+        if self.value is None:
+            return {
+                "type": self.type,
+            }
+        return {"type": self.type, "value": self.value}
+
+
+class RuleChar(Rule):
     type: RuleType = RuleType.CHAR
     value: list[int | Range] = field(default_factory=list)
 
@@ -31,7 +44,7 @@ class RuleChar:
         self.value = value
 
 
-class RuleCharExclude:
+class RuleCharExclude(Rule):
     type: RuleType = RuleType.CHAR_EXCLUDE
 
     value: list[int | Range] = field(default_factory=list)
@@ -40,7 +53,7 @@ class RuleCharExclude:
         self.value = value
 
 
-class RuleEnd:
+class RuleEnd(Rule):
     type: RuleType = RuleType.END
 
 
