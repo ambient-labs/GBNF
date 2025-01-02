@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import pytest
 
 from .build_error_position import build_error_position
