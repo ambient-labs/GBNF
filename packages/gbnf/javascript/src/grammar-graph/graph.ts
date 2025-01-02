@@ -27,10 +27,9 @@ import { getInputAsCodePoints, } from "./get-input-as-code-points.js";
 type RootNode = Map<number, GraphNode>;
 const makePointers = () => new GenericSet<ResolvedGraphPointer, string>(p => p.id);
 export class Graph {
-  roots = new Map<number, RootNode>();
+  private roots = new Map<number, RootNode>();
   // rootId: number;
   #rootNode?: RootNode;
-  pointers?: Pointers;
   grammar: string;
 
   constructor(grammar: string, stackedRules: UnresolvedRule[][][], rootId: number) {
@@ -78,7 +77,7 @@ export class Graph {
     }
   }
 
-  getRootNode = (value: number): RootNode => {
+  private getRootNode = (value: number): RootNode => {
     const rootNode = this.roots.get(value);
     if (!rootNode) {
       throw new Error(`Root node not found for value: ${value}`);
@@ -86,6 +85,7 @@ export class Graph {
     return rootNode;
   };
 
+  // TODO: Make this private
   get rootNode(): RootNode {
     if (!this.#rootNode) {
       throw new Error('Root node is not defined');
@@ -99,7 +99,7 @@ export class Graph {
     this.#rootNode = rootNode;
   }
 
-  getInitialPointers = (): Pointers => {
+  private getInitialPointers = (): Pointers => {
     const pointers = makePointers();
 
     for (const { node, parent, } of this.fetchNodesForRootNode(this.rootNode)) {
@@ -111,13 +111,13 @@ export class Graph {
     return pointers;
   };
 
-  setValid(pointers: GraphPointer[], valid: boolean) {
+  private setValid(pointers: GraphPointer[], valid: boolean) {
     for (const pointer of pointers) {
       pointer.valid = valid;
     }
   }
 
-  parse(currentPointers: Pointers, codePoint: number): Pointers {
+  private parse(currentPointers: Pointers, codePoint: number): Pointers {
     for (const { rule, rulePointers, } of this.iterateOverPointers(currentPointers)) {
       if (isRuleChar(rule)) {
         const valid = rule.value.reduce((
@@ -163,7 +163,7 @@ export class Graph {
     return nextPointers;
   }
 
-  * resolvePointer(unresolvedPointer: GraphPointer): IterableIterator<ResolvedGraphPointer> {
+  private * resolvePointer(unresolvedPointer: GraphPointer): IterableIterator<ResolvedGraphPointer> {
     for (const resolvedPointer of unresolvedPointer.resolve()) {
       if (isRuleRef(resolvedPointer.node.rule)) {
         throw new Error('Encountered a reference rule when building pointers to the graph');
@@ -178,7 +178,7 @@ export class Graph {
   private previousCodePoints: number[] = [];
 
   public add = (src: ValidInput, _pointers?: Pointers,): Pointers => {
-    // console.log('add!!', src, typeof src);
+    console.log('add!', src, typeof src);
     let pointers = _pointers || this.getInitialPointers();
     const codePoints = getInputAsCodePoints(src);
     for (let codePointPos = 0; codePointPos < codePoints.length; codePointPos++) {
@@ -195,7 +195,7 @@ export class Graph {
   // generator that yields either the node, or if a reference rule, the referenced node
   // we need these function, as distinct from leveraging the logic in GraphPointer,
   // because that needs a rule ref with already defined nodes; this function is used to _set_ those nodes
-  * fetchNodesForRootNode(
+  private * fetchNodesForRootNode(
     rootNodes: Map<number, GraphNode>,
     parent?: GraphPointer,
   ): IterableIterator<{ node: GraphNode; parent?: GraphPointer; }> {
@@ -215,7 +215,7 @@ export class Graph {
     return this.print({ colors: true, });
   }
 
-  print = ({ pointers, colors = false, }: { pointers?: Pointers; colors?: boolean } = {}) => {
+  public print = ({ pointers, colors = false, }: { pointers?: Pointers; colors?: boolean } = {}) => {
     const nodes: GraphNode[][] = Array.from(this.roots.values()).map(nodes => Array.from(nodes.values()));
     const graphView = nodes.reduce<string[]>((acc, rootNode) => acc.concat(rootNode.map(node => node.print({
       pointers,
@@ -225,7 +225,7 @@ export class Graph {
     return `\n${graphView.join('\n')}`;
   };
 
-  * iterateOverPointers(pointers: Pointers): IterableIterator<{ rule: UnresolvedRule; rulePointers: GraphPointer[]; }> {
+  private * iterateOverPointers(pointers: Pointers): IterableIterator<{ rule: UnresolvedRule; rulePointers: GraphPointer[]; }> {
     const seenRules = new Map<UnresolvedRule, GraphPointer[]>();
     for (const pointer of pointers) {
       const rule = pointer.rule;

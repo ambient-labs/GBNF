@@ -27,15 +27,20 @@ ValidInput = str | int | list[int]
 
 
 class InputParseError(Exception):
-    def __init__(self, src: ValidInput, pos: int):
+    def __init__(
+        self,
+        most_recent_input: ValidInput,
+        pos: int,
+        _previous_input: ValidInput = "",
+    ):
         msg = "\n".join(
             [
                 INPUT_PARSER_ERROR_HEADER_MESSAGE,
-                *build_error_position(get_input_as_string(src), pos),
+                *build_error_position(get_input_as_string(most_recent_input), pos),
             ],
         )
         super().__init__(msg)
-        self.src = src
+        self.src = most_recent_input
         self.pos = pos
         self.name = "InputParseError"
 
