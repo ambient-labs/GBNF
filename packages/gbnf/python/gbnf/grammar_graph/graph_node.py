@@ -43,7 +43,7 @@ class GraphNode(Generic[T]):
         return self.__id__
 
     def print(self, opts: PrintOpts) -> str:
-        return print_graph_node(self, opts)
+        return print_graph_node(self)(opts)
 
 
 GraphNodeRuleRef = GraphNode[RuleRef]
