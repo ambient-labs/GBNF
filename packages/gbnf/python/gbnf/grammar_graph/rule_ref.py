@@ -1,4 +1,3 @@
-
 # import type { GraphNode, } from "./graph-node.js";
 GraphNode = object
 
@@ -19,3 +18,6 @@ class RuleRef:
     @nodes.setter
     def nodes(self, nodes: set[GraphNode]) -> None:
         self.__nodes__ = nodes
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, RuleRef) and self.value == other.value

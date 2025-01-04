@@ -1,11 +1,11 @@
 from time import perf_counter
 
 from ..utils.errors import GrammarParseError
-from .gbnf_types import InternalRuleType
 from .is_word_char import is_word_char
 from .parse_char import parse_char
 from .parse_name import parse_name
 from .parse_space import parse_space
+from .rules_builder_types import InternalRuleType
 
 
 class RulesBuilder:
