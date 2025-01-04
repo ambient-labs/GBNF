@@ -5,10 +5,20 @@ from .is_word_char import is_word_char
 from .parse_char import parse_char
 from .parse_name import parse_name
 from .parse_space import parse_space
-from .rules_builder_types import InternalRuleType
+from .rules_builder_types import (
+    InternalRuleDef,
+    InternalRuleType,
+)
 
 
 class RulesBuilder:
+    pos: int
+    symbol_ids: dict[str, int]
+    rules: list[list[InternalRuleDef]]
+    src: str
+    start: float
+    time_limit: float
+
     def __init__(self, src, limit=1000):
         self.pos = 0
         self.symbol_ids = {}
@@ -18,7 +28,7 @@ class RulesBuilder:
         self.time_limit = limit
         self.parse(src)
 
-    def parse(self, src):
+    def parse(self, src: str):
         self.pos = parse_space(src, 0, True)
         while self.pos < len(src):
             self.parse_rule(src)
@@ -39,7 +49,7 @@ class RulesBuilder:
                                     f"Undefined rule identifier '{key}'",
                                 )
 
-    def parse_rule(self, src):
+    def parse_rule(self, src: str):
         name = parse_name(src, self.pos)
         self.pos = parse_space(src, self.pos + len(name), False)
         rule_id = self.get_symbol_id(name, len(name))
@@ -70,24 +80,24 @@ class RulesBuilder:
             )
         self.pos = parse_space(src, self.pos, True)
 
-    def get_symbol_id(self, src, length):
+    def get_symbol_id(self, src: str, length: int) -> int:
         key = src[:length]
         if key not in self.symbol_ids:
             self.symbol_ids[key] = len(self.symbol_ids)
         return self.symbol_ids[key]
 
-    def generate_symbol_id(self, base_name):
+    def generate_symbol_id(self, base_name: str) -> int:
         next_id = len(self.symbol_ids)
         new_name = f"{base_name}_{next_id}"
         self.symbol_ids[new_name] = next_id
         return next_id
 
-    def add_rule(self, rule_id, rule):
+    def add_rule(self, rule_id: int, rule: list[InternalRuleDef]):
         while len(self.rules) <= rule_id:
             self.rules.append([])
         self.rules[rule_id] = rule
 
-    def check_duration(self):
+    def check_duration(self) -> None:
         if perf_counter() - self.start > self.time_limit:
             raise GrammarParseError(
                 self.src,
@@ -95,7 +105,9 @@ class RulesBuilder:
                 f"Duration of {self.time_limit} exceeded",
             )
 
-    def parse_sequence(self, rule_name, out_elements, depth=0):
+    def parse_sequence(
+        self, rule_name: str, out_elements: list[InternalRuleDef], depth: int = 0
+    ) -> None:
         is_nested = depth != 0
         src = self.src
         last_sym_start = len(out_elements)
@@ -201,7 +213,7 @@ class RulesBuilder:
             else:
                 break
 
-    def parse_alternates(self, rule_name, rule_id, depth=0):
+    def parse_alternates(self, rule_name: str, rule_id: int, depth: int = 0) -> None:
         src = self.src
         rule = []
         self.parse_sequence(rule_name, rule, depth)
