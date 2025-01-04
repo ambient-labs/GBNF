@@ -20,44 +20,60 @@ class InternalRuleDefWithNumericValue:
 
 @dataclass
 class InternalRuleDefChar:
-    type: InternalRuleType
     value: list[int]
 
 
 @dataclass
+class InternalRuleDefCharAlt:
+    value: list[int]
+
+
+class InternalRuleDefAlt:
+    pass
+
+
+@dataclass
 class InternalRuleDefCharNot:
-    type: InternalRuleType
     value: list[int]
 
 
 @dataclass
 class InternalRuleDefAltChar:
-    type: InternalRuleType
+    value: int
+
+
+@dataclass
+class InternalRuleDefCharRngUpper:
     value: int
 
 
 @dataclass
 class InternalRuleDefReference:
-    type: InternalRuleType
     value: int
 
 
 @dataclass
 class InternalRuleDefEnd:
-    type: InternalRuleType
+    pass
 
 
 @dataclass
 class InternalRuleDefWithoutValue:
-    type: InternalRuleType
+    pass
 
 
 InternalRuleDef = (
     InternalRuleDefChar
+    | InternalRuleDefEnd
     | InternalRuleDefCharNot
     | InternalRuleDefWithNumericValue
     | InternalRuleDefWithoutValue
+    | InternalRuleDefAlt
+    | InternalRuleDefCharRngUpper
+    | InternalRuleDefCharAlt
+    | InternalRuleDefAltChar
 )
+
 InternalRuleDefCharOrAltChar = InternalRuleDefChar | InternalRuleDefAltChar
 
 SymbolIds = dict[str, int]
@@ -73,35 +89,28 @@ def is_rule_def(rule):
 
 
 def is_rule_def_alt(rule):
-    return getattr(rule, "type", None) == InternalRuleType.ALT
+    return isinstance(rule, InternalRuleDefAlt)
 
 
 def is_rule_def_ref(rule):
-    return getattr(rule, "type", None) == InternalRuleType.RULE_REF
+    return isinstance(rule, InternalRuleDefReference)
 
 
 def is_rule_def_end(rule):
-    return getattr(rule, "type", None) == InternalRuleType.END
+    return isinstance(rule, InternalRuleDefEnd)
 
 
 def is_rule_def_char(rule):
-    return getattr(rule, "type", None) == InternalRuleType.CHAR
+    return isinstance(rule, InternalRuleDefChar)
 
 
 def is_rule_def_char_not(rule):
-    return getattr(rule, "type", None) == InternalRuleType.CHAR_NOT
+    return isinstance(rule, InternalRuleDefCharNot)
 
 
 def is_rule_def_char_alt(rule):
-    return getattr(rule, "type", None) == InternalRuleType.CHAR_ALT
+    return isinstance(rule, InternalRuleDefAltChar)
 
 
 def is_rule_def_char_rng_upper(rule):
-    return getattr(
-        rule,
-        "type",
-        None,
-    ) == InternalRuleType.CHAR_RNG_UPPER and isinstance(
-        getattr(rule, "value", None),
-        int,
-    )
+    return isinstance(rule, InternalRuleDefCharRngUpper)

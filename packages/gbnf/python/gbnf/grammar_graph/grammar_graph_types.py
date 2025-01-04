@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
-from dataclasses import field
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import TYPE_CHECKING, Any, TypedDict
 
@@ -36,12 +37,21 @@ class Rule:
         return {"type": self.type, "value": self.value}
 
 
+@dataclass
 class RuleChar(Rule):
     type: RuleType = RuleType.CHAR
     value: list[int | Range] = field(default_factory=list)
 
     def __init__(self, value: list[int | Range]):
         self.value = value
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, RuleChar) and json.dumps(self.value) == json.dumps(
+            other.value,
+        )
+
+    def __repr__(self) -> str:
+        return f"RuleChar(value={self.value})"
 
 
 class RuleCharExclude(Rule):
@@ -52,9 +62,23 @@ class RuleCharExclude(Rule):
     def __init__(self, value: list[int | Range]):
         self.value = value
 
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, RuleCharExclude) and json.dumps(
+            self.value,
+        ) == json.dumps(other.value)
+
+    def __repr__(self) -> str:
+        return f"RuleCharExclude(value={self.value})"
+
 
 class RuleEnd(Rule):
     type: RuleType = RuleType.END
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, RuleEnd)
+
+    def __repr__(self) -> str:
+        return "RuleEnd()"
 
 
 UnresolvedRule = RuleChar | RuleCharExclude | RuleRef | RuleEnd
