@@ -7,8 +7,34 @@ from .parse_name import parse_name
 from .parse_space import parse_space
 from .rules_builder_types import (
     InternalRuleDef,
+    InternalRuleDefAlt,
+    InternalRuleDefChar,
+    InternalRuleDefCharAlt,
+    InternalRuleDefCharNot,
+    InternalRuleDefCharRngUpper,
+    InternalRuleDefEnd,
+    InternalRuleDefReference,
     InternalRuleType,
 )
+
+
+def get_out_elements(
+    type_of_rule: InternalRuleType, startchar_value: int,
+) -> InternalRuleDef:
+    if type_of_rule == InternalRuleType.CHAR:
+        return InternalRuleDefChar(value=[startchar_value])
+    if type_of_rule == InternalRuleType.CHAR_NOT:
+        return InternalRuleDefCharNot(value=[startchar_value])
+    if type_of_rule == InternalRuleType.CHAR_RNG_UPPER:
+        return InternalRuleDefCharRngUpper(value=startchar_value)
+    if type_of_rule == InternalRuleType.ALT:
+        return InternalRuleDefAlt()
+    if type_of_rule == InternalRuleType.END:
+        return InternalRuleDefEnd()
+    if type_of_rule == InternalRuleType.CHAR_ALT:
+        return InternalRuleDefCharAlt(value=startchar_value)
+
+    raise ValueError(f"Invalid type: {type_of_rule}")
 
 
 class RulesBuilder:
@@ -17,9 +43,9 @@ class RulesBuilder:
     rules: list[list[InternalRuleDef]]
     src: str
     start: float
-    time_limit: float
+    time_limit: int
 
-    def __init__(self, src, limit=1000):
+    def __init__(self, src: str, limit: int = 1000):
         self.pos = 0
         self.symbol_ids = {}
         self.rules = []
@@ -28,7 +54,7 @@ class RulesBuilder:
         self.time_limit = limit
         self.parse(src)
 
-    def parse(self, src: str):
+    def parse(self, src: str) -> None:
         self.pos = parse_space(src, 0, True)
         while self.pos < len(src):
             self.parse_rule(src)
@@ -36,20 +62,17 @@ class RulesBuilder:
         # Validate the state to ensure that all rules are defined
         for rule in self.rules:
             for elem in rule:
-                if elem["type"] == InternalRuleType.RULE_REF:
-                    if (
-                        elem["value"] >= len(self.rules)
-                        or not self.rules[elem["value"]]
-                    ):
+                if isinstance(elem, InternalRuleDefReference):
+                    if elem.value >= len(self.rules) or not self.rules[elem.value]:
                         for key, value in self.symbol_ids.items():
-                            if value == elem["value"]:
+                            if value == elem.value:
                                 raise GrammarParseError(
                                     src,
                                     self.pos,
                                     f"Undefined rule identifier '{key}'",
                                 )
 
-    def parse_rule(self, src: str):
+    def parse_rule(self, src: str) -> None:
         name = parse_name(src, self.pos)
         self.pos = parse_space(src, self.pos + len(name), False)
         rule_id = self.get_symbol_id(name, len(name))
@@ -92,7 +115,7 @@ class RulesBuilder:
         self.symbol_ids[new_name] = next_id
         return next_id
 
-    def add_rule(self, rule_id: int, rule: list[InternalRuleDef]):
+    def add_rule(self, rule_id: int, rule: list[InternalRuleDef]) -> None:
         while len(self.rules) <= rule_id:
             self.rules.append([])
         self.rules[rule_id] = rule
@@ -106,7 +129,10 @@ class RulesBuilder:
             )
 
     def parse_sequence(
-        self, rule_name: str, out_elements: list[InternalRuleDef], depth: int = 0
+        self,
+        rule_name: str,
+        out_elements: list[InternalRuleDef],
+        depth: int = 0,
     ) -> None:
         is_nested = depth != 0
         src = self.src
@@ -120,7 +146,9 @@ class RulesBuilder:
                     self.check_duration()
                     value, inc_pos = parse_char(src, self.pos)
                     out_elements.append(
-                        {"type": InternalRuleType.CHAR, "value": [value]},
+                        InternalRuleDefChar(
+                            value=[value],
+                        ),
                     )
                     self.pos += inc_pos
                 self.pos = parse_space(src, self.pos + 1, is_nested)
@@ -140,26 +168,15 @@ class RulesBuilder:
                     )
                     startchar_value, inc_pos = parse_char(src, self.pos)
                     self.pos += inc_pos
-                    out_elements.append(
-                        {
-                            "type": type_,
-                            "value": (
-                                [startchar_value]
-                                if type_
-                                in (InternalRuleType.CHAR, InternalRuleType.CHAR_NOT)
-                                else startchar_value
-                            ),
-                        },
-                    )
+                    out_elements.append(get_out_elements(type_, startchar_value))
 
                     if src[self.pos] == "-" and src[self.pos + 1] != "]":
                         self.pos += 1
                         endchar_value, inc_pos = parse_char(src, self.pos)
                         out_elements.append(
-                            {
-                                "type": InternalRuleType.CHAR_RNG_UPPER,
-                                "value": endchar_value,
-                            },
+                            InternalRuleDefCharRngUpper(
+                                value=endchar_value,
+                            ),
                         )
                         self.pos += inc_pos
                 self.pos = parse_space(src, self.pos + 1, is_nested)
@@ -171,7 +188,9 @@ class RulesBuilder:
 
                 last_sym_start = len(out_elements)
                 out_elements.append(
-                    {"type": InternalRuleType.RULE_REF, "value": ref_rule_id},
+                    InternalRuleDefReference(
+                        value=ref_rule_id,
+                    ),
                 )
             elif src[self.pos] == "(":
                 self.pos = parse_space(src, self.pos + 1, True)
@@ -179,7 +198,9 @@ class RulesBuilder:
                 self.parse_alternates(rule_name, sub_rule_id, depth + 1)
                 last_sym_start = len(out_elements)
                 out_elements.append(
-                    {"type": InternalRuleType.RULE_REF, "value": sub_rule_id},
+                    InternalRuleDefReference(
+                        value=sub_rule_id,
+                    ),
                 )
                 if src[self.pos] != ")":
                     raise GrammarParseError(
@@ -199,15 +220,19 @@ class RulesBuilder:
                 sub_rule = out_elements[last_sym_start:]
                 if src[self.pos] in "*+":
                     sub_rule.append(
-                        {"type": InternalRuleType.RULE_REF, "value": sub_rule_id},
+                        InternalRuleDefReference(
+                            value=sub_rule_id,
+                        ),
                     )
-                sub_rule.append({"type": InternalRuleType.ALT})
+                sub_rule.append(InternalRuleDefAlt())
                 if src[self.pos] == "+":
                     sub_rule.extend(out_elements[last_sym_start:])
-                sub_rule.append({"type": InternalRuleType.END})
+                sub_rule.append(InternalRuleDefEnd())
                 self.add_rule(sub_rule_id, sub_rule)
                 out_elements[last_sym_start:] = [
-                    {"type": InternalRuleType.RULE_REF, "value": sub_rule_id},
+                    InternalRuleDefReference(
+                        value=sub_rule_id,
+                    ),
                 ]
                 self.pos = parse_space(src, self.pos + 1, is_nested)
             else:
@@ -220,8 +245,8 @@ class RulesBuilder:
         # Ensure that self.pos is within bounds before checking src[self.pos]
         while self.pos < len(src) and src[self.pos] == "|":
             self.check_duration()
-            rule.append({"type": InternalRuleType.ALT})
+            rule.append(InternalRuleDefAlt())
             self.pos = parse_space(src, self.pos + 1, True)
             self.parse_sequence(rule_name, rule, depth)
-        rule.append({"type": InternalRuleType.END})
+        rule.append(InternalRuleDefEnd())
         self.add_rule(rule_id, rule)

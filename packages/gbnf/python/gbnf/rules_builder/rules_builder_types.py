@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
 
 
 class InternalRuleType(Enum):
@@ -19,52 +20,77 @@ class InternalRuleDefWithNumericValue:
 
 
 @dataclass
-class InternalRuleDefChar:
+class InternalBase:
+    def __eq__(self, other):
+        return isinstance(other, self.__class__)
+
+
+@dataclass
+class InternalBaseWithValue:
+    value: Any
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.value == other.value
+
+
+@dataclass
+class InternalBaseWithInt(InternalBaseWithValue):
+    value: int
+
+
+@dataclass
+class InternalBaseWithListOfInts(InternalBaseWithValue):
     value: list[int]
 
 
 @dataclass
-class InternalRuleDefCharAlt:
-    value: list[int]
-
-
-class InternalRuleDefAlt:
+class InternalRuleDefChar(InternalBaseWithListOfInts):
     pass
 
 
 @dataclass
-class InternalRuleDefCharNot:
-    value: list[int]
+class InternalRuleDefCharAlt(InternalBaseWithInt):
+    pass
 
 
-@dataclass
-class InternalRuleDefAltChar:
-    value: int
-
-
-@dataclass
-class InternalRuleDefCharRngUpper:
-    value: int
-
-
-@dataclass
-class InternalRuleDefReference:
-    value: int
-
-
-@dataclass
-class InternalRuleDefEnd:
+class InternalRuleDefAlt(InternalBase):
     pass
 
 
 @dataclass
-class InternalRuleDefWithoutValue:
+class InternalRuleDefCharNot(InternalBaseWithListOfInts):
+    pass
+
+
+@dataclass
+class InternalRuleDefAltChar(InternalBaseWithInt):
+    pass
+
+
+@dataclass
+class InternalRuleDefCharRngUpper(InternalBaseWithInt):
+    pass
+
+
+@dataclass
+class InternalRuleDefReference(InternalBaseWithInt):
+    pass
+
+
+@dataclass
+class InternalRuleDefEnd(InternalBase):
+    pass
+
+
+@dataclass
+class InternalRuleDefWithoutValue(InternalBase):
     pass
 
 
 InternalRuleDef = (
     InternalRuleDefChar
     | InternalRuleDefEnd
+    | InternalRuleDefReference
     | InternalRuleDefCharNot
     | InternalRuleDefWithNumericValue
     | InternalRuleDefWithoutValue
