@@ -1,6 +1,6 @@
 import pytest
 
-from .errors import GrammarParseError
+from ..utils.errors import GrammarParseError
 from .parse_name import PARSE_NAME_ERROR, parse_name
 
 

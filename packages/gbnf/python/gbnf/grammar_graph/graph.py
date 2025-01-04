@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     )
 
 
-from ..rules_builder.errors import InputParseError
+from ..utils.errors import InputParseError
 from ..utils.is_point_in_range import is_point_in_range
 from .colorize import colorize
 from .get_input_as_code_points import get_input_as_code_points

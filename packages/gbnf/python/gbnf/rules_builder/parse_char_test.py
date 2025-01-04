@@ -1,6 +1,6 @@
 import pytest
 
-from .errors import GrammarParseError
+from ..utils.errors import GrammarParseError
 from .parse_char import parse_char
 
 
@@ -36,8 +36,14 @@ def test_parse_char_complex(description, escaped_char, code_point, inc_pos):
     assert parse_char(grammar, len('root ::= "')) == (code_point, inc_pos)
 
 
-def test_parse_char_throws():
+@pytest.mark.parametrize(
+    ("input", "pos"),
+    [
+        ("", 0),
+        ("a", 1),
+        ("a", 2),
+    ],
+)
+def test_parse_char_raises(input, pos):
     with pytest.raises(GrammarParseError):
-        parse_char("", 0)
-    with pytest.raises(GrammarParseError):
-        parse_char("a", 1)
+        parse_char(input, pos)

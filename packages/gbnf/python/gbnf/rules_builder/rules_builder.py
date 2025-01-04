@@ -1,6 +1,6 @@
 from time import perf_counter
 
-from .errors import GrammarParseError
+from ..utils.errors import GrammarParseError
 from .gbnf_types import InternalRuleType
 from .is_word_char import is_word_char
 from .parse_char import parse_char
