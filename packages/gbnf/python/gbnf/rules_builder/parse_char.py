@@ -1,4 +1,4 @@
-from .errors import GrammarParseError
+from ..utils.errors import GrammarParseError
 
 
 def parse_char(src: str, pos: int):

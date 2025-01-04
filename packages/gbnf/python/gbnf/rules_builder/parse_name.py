@@ -1,4 +1,4 @@
-from .errors import GrammarParseError
+from ..utils.errors import GrammarParseError
 from .is_word_char import is_word_char
 
 PARSE_NAME_ERROR = "Failed to find a valid name"

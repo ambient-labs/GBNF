@@ -9,7 +9,7 @@ def build_error_position(src: str, pos: int) -> list[str]:
     lines = src.split("\n")
 
     line_idx = 0
-    while lines[line_idx] and pos > len(lines[line_idx]) - 1:
+    while lines[line_idx] and pos > len(lines[line_idx]) - 1 and pos < len(src):
         pos -= len(lines[line_idx])
         line_idx += 1
 

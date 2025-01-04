@@ -1,4 +1,6 @@
-import { parseChar } from "./parse-char";
+import { describe, test, expect } from "vitest";
+import { GrammarParseError } from "../utils/errors/grammar-parse-error.js";
+import { parseChar } from "./parse-char.js";
 
 describe('parseChar', () => {
   test.each([
@@ -84,7 +86,7 @@ describe('parseChar', () => {
   });
 
   test('it throws on invalid input', () => {
-    expect(() => parseChar('', 0)).toThrow();
-    expect(() => parseChar('a', 1)).toThrow();
+    expect(() => parseChar('', 0)).toThrow(GrammarParseError);
+    expect(() => parseChar('a', 1)).toThrow(GrammarParseError);
   });
 });
