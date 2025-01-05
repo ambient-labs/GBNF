@@ -123,10 +123,8 @@ class Graph:
             pointer.valid = valid
 
     def __parse__(self, current_pointers: Pointers, code_point: int) -> Pointers:
-        print("code_point", code_point)
         for rule, rule_pointers in self.__iterate_over_pointers__(current_pointers):
             if is_rule_char(rule):
-                print("rule char")
                 valid = False
                 for possible_code_point in rule.value:
                     if valid is True:
@@ -139,7 +137,6 @@ class Graph:
                 self.__set_valid__(rule_pointers, valid)
 
             elif is_rule_char_exclude(rule):
-                print("rule char exclude")
                 valid = True
                 for possible_code_point in rule.value:
                     if valid is False:
@@ -153,7 +150,6 @@ class Graph:
                 self.__set_valid__(rule_pointers, valid)
 
             elif not is_rule_end(rule):
-                print("rule end")
                 raise ValueError(f"Unsupported rule: {rule}")
 
         # a pointer's id is the sum of its node's id and its parent's id chain.

@@ -86,9 +86,11 @@ def describe_graph():
                     rule=RuleRef(value=0),
                     meta=MagicMock(),
                 ),
-            )
+            ),
         ]
 
-        with pytest.raises(ValueError) as exc_info:
+        with pytest.raises(
+            ValueError, match="Encountered a reference rule in the graph",
+        ) as exc_info:
             list(graph.__iterate_over_pointers__(mock_pointers))
         assert "Encountered a reference rule in the graph" in str(exc_info.value)

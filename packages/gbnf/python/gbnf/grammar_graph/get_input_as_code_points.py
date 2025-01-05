@@ -18,7 +18,7 @@ def get_input_as_code_points(src: ValidInput) -> list[int]:
         for c in src:
             if type(c) is not int:
                 raise ValueError(
-                    f"code_point must be an integer for {c} if src is a list"
+                    f"code_point must be an integer for {c} if src is a list",
                 )
         return src
 
