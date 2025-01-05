@@ -37,7 +37,6 @@ class ParseState:
     def rules(self) -> Iterable[ResolvedRule]:
         rules = set()
         for pointer in self.__pointers__:
-            print("pointer", pointer)
             rule = pointer.rule
             key = json.dumps(rule.__dict__, cls=CustomJSONEncoder)
             if key not in rules:

@@ -1,4 +1,5 @@
 from collections import OrderedDict
+
 from .graph_pointer import GraphPointer
 
 

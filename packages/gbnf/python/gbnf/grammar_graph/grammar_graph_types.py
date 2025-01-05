@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class PrintOpts(TypedDict):
-    pointers: "Pointers"
+    pointers: Pointers
     colorize: Callable[[str | int, str], str]
     show_position: bool
 

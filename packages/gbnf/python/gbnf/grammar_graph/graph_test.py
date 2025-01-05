@@ -69,7 +69,7 @@ def describe_graph():
                     RuleCharExclude(value=[1]),
                     RuleEnd(),
                 ]
-            ]
+            ],
         )
 
         result = list(graph.__iterate_over_pointers__(mock_pointers))
