@@ -12,8 +12,11 @@ wheels = [
 
 [[package]]
 name = "gbnf"
-version = "0.0.27"
+version = "0.0.28"
 source = { editable = "." }
+dependencies = [
+    { name = "pytest-watcher" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -23,6 +26,7 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "pytest-watcher", specifier = ">=0.4.3" }]
 
 [package.metadata.requires-dev]
 dev = [

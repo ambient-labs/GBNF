@@ -4,9 +4,10 @@ from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
 from .grammar_graph_types import Rule
+from .pointers import Pointers
 
 if TYPE_CHECKING:
-    from .grammar_graph_types import Pointers, ResolvedRule
+    from .grammar_graph_types import ResolvedRule
     from .graph import Graph
 
 import json

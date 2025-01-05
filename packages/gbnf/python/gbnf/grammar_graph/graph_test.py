@@ -14,6 +14,7 @@ from .grammar_graph_types import (
 from .graph import Graph
 from .graph_node import GraphNode
 from .graph_pointer import GraphPointer
+from .pointers import Pointers
 
 
 def describe_graph():
@@ -55,25 +56,27 @@ def describe_graph():
 
     def test_should_iterate_over_pointers():
         graph = Graph(grammar, stackedRules, root_id)
-        mock_pointers = [
-            GraphPointer(
-                node=GraphNode(rule=r, meta=MagicMock()),
-            )
-            for r in [
-                RuleChar(value=[65, 66, 67]),
-                RuleChar(value=[68, 69, 70]),
-                RuleChar(value=[71, 72, 73]),
-                RuleChar(value=[74, 75, 76]),
-                RuleCharExclude(value=[1]),
-                RuleEnd(),
-            ]
-        ]
+        mock_pointers = Pointers(
+            *[
+                GraphPointer(
+                    node=GraphNode(rule=r, meta=MagicMock()),
+                )
+                for r in [
+                    RuleChar(value=[65, 66, 67]),
+                    RuleChar(value=[68, 69, 70]),
+                    RuleChar(value=[71, 72, 73]),
+                    RuleChar(value=[74, 75, 76]),
+                    RuleCharExclude(value=[1]),
+                    RuleEnd(),
+                ]
+            ],
+        )
 
         result = list(graph.__iterate_over_pointers__(mock_pointers))
         assert len(result) == 6
         for rule, pointers in result:
             assert isinstance(rule, UnresolvedRule)
-            assert isinstance(pointers, set)
+            assert isinstance(pointers, Pointers)
             assert len(pointers) >= 1
             for pointer in pointers:
                 assert pointer in mock_pointers
@@ -90,7 +93,8 @@ def describe_graph():
         ]
 
         with pytest.raises(
-            ValueError, match="Encountered a reference rule in the graph",
+            ValueError,
+            match="Encountered a reference rule in the graph",
         ) as exc_info:
             list(graph.__iterate_over_pointers__(mock_pointers))
         assert "Encountered a reference rule in the graph" in str(exc_info.value)

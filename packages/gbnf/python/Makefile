@@ -26,15 +26,16 @@ write_integration_tests:
 	&& rm -rf ./tests/generated \
 	&& ../../test-writer/dist/test-writer.mjs \
 		validation \
+		iteration/iteration \
 		--testDir ../test \
 		--targetDir ./tests/generated \
 		--language python
 
-# test_integration_watch:
-# 	uv run ptw --now ./tests/generated
-
 test_integration:
 	uv run pytest ./tests/generated
+
+# test_integration_watch:
+# 	uv run ptw --now tests/generated
 
 test:
 	make test_unit
