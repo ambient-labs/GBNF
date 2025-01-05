@@ -31,7 +31,7 @@ write_integration_tests:
 		--language python
 
 test_integration_watch:
-	uv run ptw --now ./tests/generated/**/*_test.py
+	uv run ptw --now ./tests/generated
 
 test_integration:
 	uv run pytest ./tests/generated
