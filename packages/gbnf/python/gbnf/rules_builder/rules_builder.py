@@ -5,7 +5,6 @@ from .is_word_char import is_word_char
 from .parse_char import parse_char
 from .parse_name import parse_name
 from .parse_space import parse_space
-from .symbol_ids import SymbolIds
 from .rules_builder_types import (
     InternalRuleDef,
     InternalRuleDefAlt,
@@ -16,6 +15,7 @@ from .rules_builder_types import (
     InternalRuleDefEnd,
     InternalRuleDefReference,
 )
+from .symbol_ids import SymbolIds
 
 
 def get_out_elements(

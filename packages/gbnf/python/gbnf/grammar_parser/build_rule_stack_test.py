@@ -12,8 +12,8 @@ from ..grammar_graph.rule_ref import RuleRef
 from ..rules_builder.rules_builder_types import (
     InternalRuleDef,
     InternalRuleDefAlt,
-    InternalRuleDefCharAlt,
     InternalRuleDefChar,
+    InternalRuleDefCharAlt,
     InternalRuleDefCharNot,
     InternalRuleDefCharRngUpper,
     InternalRuleDefEnd,

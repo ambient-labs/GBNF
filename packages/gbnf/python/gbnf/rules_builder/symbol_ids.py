@@ -3,9 +3,6 @@ class SymbolIds:
     __pos__: dict[str, int]
     __reverse_map__: dict[int, str]
 
-    def __len__(self):
-        return len(self.__map__)
-
     def __init__(self):
         self.__map__ = {}
         self.__pos__ = {}

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-import json
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import TYPE_CHECKING, Any, TypedDict
 
-from .rule_ref import RuleRef
 from ..utils.validate_non_empty import validate_non_empty
+from .rule_ref import RuleRef
 
 
 class PrintOpts(TypedDict):
@@ -41,7 +39,7 @@ class RuleWithValue(Rule):
 @dataclass
 class RuleWithListOfIntsOrRanges(RuleWithValue):
     value: list[int | Range] = field(
-        default_factory=lambda: [], metadata={"validate": validate_non_empty}
+        default_factory=list, metadata={"validate": validate_non_empty},
     )
 
     def __post_init__(self):

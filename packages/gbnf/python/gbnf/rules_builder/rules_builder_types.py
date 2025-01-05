@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any
 
 from ..utils.validate_non_empty import validate_non_empty
@@ -32,7 +31,7 @@ class InternalBaseWithInt(InternalBaseWithValue):
 @dataclass
 class InternalBaseWithListOfInts(InternalBaseWithValue):
     value: list[int] = field(
-        default_factory=lambda: [], metadata={"validate": validate_non_empty}
+        default_factory=list, metadata={"validate": validate_non_empty},
     )
 
     def __post_init__(self):

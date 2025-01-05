@@ -33,7 +33,7 @@ def make_char_rule(
     value = cast(list[int | Range], rule_def.value)
     if is_rule_def_char_not(rule_def):
         return RuleCharExclude(value=value)
-    elif is_rule_def_char(rule_def):
+    if is_rule_def_char(rule_def):
         return RuleChar(value=value)
 
     raise ValueError(f"Unsupported rule type for make_char_rule: {rule_def}")
@@ -73,7 +73,7 @@ def build_rule_stack(linear_rules: list[InternalRuleDef]) -> list[list[Unresolve
                         cast(
                             Range,
                             [prev_value, cast(InternalRuleDefCharRngUpper, rule).value],
-                        )
+                        ),
                     )
                 if is_rule_def_char_alt(rule):
                     rule = cast(InternalRuleDefCharAlt, rule)

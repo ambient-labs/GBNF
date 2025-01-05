@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast, Any
+from typing import Any, cast
 from unittest.mock import MagicMock
 
 from .grammar_graph_types import RuleChar
@@ -10,8 +10,6 @@ from .graph_pointer import GraphPointer
 
 # if TYPE_CHECKING:
 #     from .grammar_graph_types import Pointers
-
-
 from .parse_state import ParseState
 
 

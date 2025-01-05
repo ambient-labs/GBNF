@@ -5,8 +5,8 @@ import json
 from .grammar_graph_types import (
     RuleChar,
     RuleCharExclude,
-    RuleRef,
     RuleEnd,
+    RuleRef,
     UnresolvedRule,
 )
 from .type_guards import is_rule_char, is_rule_char_exclude, is_rule_end, is_rule_ref
