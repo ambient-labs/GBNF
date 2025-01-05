@@ -76,7 +76,6 @@ def describe_graph():
         assert len(result) == 6
         for rule, pointers in result:
             assert isinstance(rule, UnresolvedRule)
-            assert isinstance(pointers, Pointers)
             assert len(pointers) >= 1
             for pointer in pointers:
                 assert pointer in mock_pointers

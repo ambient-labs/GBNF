@@ -20,6 +20,7 @@ export interface RunPythonOptions {
 }
 
 export const runPython = async (options: RunOptions, console: RunConsole, { dependencies }: RunPythonOptions) => {
+  return 'foobar!';
   const pyodide = await getPyodide(dependencies);
 
   pyodide.setStdout({

@@ -1,7 +1,11 @@
+import type { CodeBlock, } from "../parse-markdown-contents/types.js";
 
 export interface Block {
   code: Record<string, string[]>;
-  variables: Record<string, unknown>;
+  variables: Record<string, {
+    parsed: unknown;
+    block: CodeBlock;
+  }>;
 }
 
 export type HeadingBlock = Block & {

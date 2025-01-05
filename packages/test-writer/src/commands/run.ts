@@ -1,5 +1,6 @@
 // vitest --config ./vitest.config.integration.ts run
 import { Command, } from "commander";
+import { log, } from '../log.js';
 // import {
 //   build,
 // } from "../lib/build.js";
@@ -11,5 +12,5 @@ export const registerScript = (program: Command) => program.command('run')
   .option('-t, --targetDir <string>', 'Output directory', './build')
   .option('-v, --viteConfig <string>', 'Optional vite config')
   .action(() => {
-    console.log('run');
+    log('run');
   });

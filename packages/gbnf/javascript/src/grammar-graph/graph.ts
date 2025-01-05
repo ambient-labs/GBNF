@@ -114,7 +114,7 @@ export class Graph {
   }
 
   private parse(currentPointers: Pointers, codePoint: number): Pointers {
-    for (const { rule, rulePointers, } of this.iterateOverPointers(currentPointers)) {
+    for (const { rule, graphPointers, } of this.iterateOverPointers(currentPointers)) {
       if (isRuleChar(rule)) {
         const valid = rule.value.reduce((
           isValid,
@@ -128,7 +128,7 @@ export class Graph {
           }
           return codePoint === possibleCodePoint;
         }, false);
-        this.setValid(rulePointers, valid);
+        this.setValid(graphPointers, valid);
       } else if (isRuleCharExcluded(rule)) {
         const valid = rule.value.reduce((
           isValid,
@@ -139,7 +139,7 @@ export class Graph {
           }
           return isRange(possibleCodePoint) ? !isPointInRange(codePoint, possibleCodePoint) : codePoint !== possibleCodePoint;
         }, true);
-        this.setValid(rulePointers, valid);
+        this.setValid(graphPointers, valid);
       } else if (!isRuleEnd(rule)) {
         throw new Error(`Unsupported rule: ${JSON.stringify(rule)}`);
       }
@@ -172,7 +172,6 @@ export class Graph {
   }
 
   public add = (src: ValidInput, _pointers?: Pointers,): Pointers => {
-    console.log('add!', src, typeof src);
     let pointers = _pointers || this.getInitialPointers();
     const codePoints = getInputAsCodePoints(src);
     for (let codePointPos = 0; codePointPos < codePoints.length; codePointPos++) {
@@ -219,7 +218,7 @@ export class Graph {
     return `\n${graphView.join('\n')}`;
   };
 
-  private * iterateOverPointers(pointers: Pointers): IterableIterator<{ rule: UnresolvedRule; rulePointers: GraphPointer[]; }> {
+  private * iterateOverPointers(pointers: Pointers): IterableIterator<{ rule: UnresolvedRule; graphPointers: GraphPointer[]; }> {
     const seenRules = new Map<UnresolvedRule, GraphPointer[]>();
     for (const pointer of pointers) {
       const rule = pointer.rule;
@@ -235,8 +234,8 @@ export class Graph {
       }
     }
 
-    for (const [rule, rulePointers,] of seenRules.entries()) {
-      yield { rule, rulePointers, };
+    for (const [rule, graphPointers,] of seenRules.entries()) {
+      yield { rule, graphPointers, };
     }
   }
 }

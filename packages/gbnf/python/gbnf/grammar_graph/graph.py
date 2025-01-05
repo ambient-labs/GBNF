@@ -21,6 +21,8 @@ from .get_serialized_rule_key import get_serialized_rule_key
 from .graph_node import GraphNode
 from .graph_pointer import GraphPointer
 from .rule_ref import RuleRef
+from collections import OrderedDict
+
 from .type_guards import (
     is_range,
     is_rule_char,
@@ -33,7 +35,7 @@ RootNode = dict[int, GraphNode]
 
 
 class Graph:
-    __roots__: dict[int, RootNode]
+    __roots__: OrderedDict[int, RootNode]
     grammar: str
     __rootNode__: RootNode | None
     previous_code_points: list[int]
@@ -44,7 +46,7 @@ class Graph:
         stacked_rules: list[list[list[UnresolvedRule]]],
         root_id: int,
     ):
-        self.__roots__ = {}
+        self.__roots__ = OrderedDict()
         self.grammar = grammar
         self.previous_code_points = []
         rule_refs: list[RuleRef] = []
@@ -112,12 +114,12 @@ class Graph:
                 pointers.add(resolvedPointer)
         return pointers
 
-    def __set_valid__(self, pointers: Pointers, valid: bool):
+    def __set_valid__(self, pointers: list[GraphPointer], valid: bool):
         for pointer in pointers:
             pointer.valid = valid
 
     def __parse__(self, current_pointers: Pointers, code_point: int) -> Pointers:
-        for rule, rule_pointers in self.__iterate_over_pointers__(current_pointers):
+        for rule, graph_pointers in self.__iterate_over_pointers__(current_pointers):
             if is_rule_char(rule):
                 valid = False
                 for possible_code_point in rule.value:
@@ -128,7 +130,7 @@ class Graph:
                             valid = True
                     elif code_point == possible_code_point:
                         valid = True
-                self.__set_valid__(rule_pointers, valid)
+                self.__set_valid__(graph_pointers, valid)
 
             elif is_rule_char_exclude(rule):
                 valid = True
@@ -141,7 +143,7 @@ class Graph:
                     else:
                         if code_point == possible_code_point:
                             valid = False
-                self.__set_valid__(rule_pointers, valid)
+                self.__set_valid__(graph_pointers, valid)
 
             elif not is_rule_end(rule):
                 raise ValueError(f"Unsupported rule: {rule}")
@@ -198,9 +200,9 @@ class Graph:
         self.previous_code_points.extend(code_points)
         return pointers
 
-    #   // generator that yields either the node, or if a reference rule, the referenced node
-    #   // we need these function, as distinct from leveraging the logic in GraphPointer,
-    #   // because that needs a rule ref with already defined nodes; this function is used to _set_ those nodes
+    # generator that yields either the node, or if a reference rule, the referenced node
+    # we need these function, as distinct from leveraging the logic in GraphPointer,
+    # because that needs a rule ref with already defined nodes; this function is used to _set_ those nodes
     def __fetch_nodes_for_root_node__(
         self,
         root_nodes: dict[int, GraphNode],
@@ -241,16 +243,18 @@ class Graph:
     def __iterate_over_pointers__(
         self,
         pointers: Pointers,
-    ) -> Iterable[tuple[UnresolvedRule, Pointers]]:
-        seen_rules: dict[UnresolvedRule, Pointers] = {}
+    ) -> Iterable[tuple[UnresolvedRule, list[GraphPointer]]]:
+        seen_rules: OrderedDict[UnresolvedRule, list[GraphPointer]] = OrderedDict()
         for pointer in pointers:
             rule = pointer.rule
             if is_rule_ref(rule):
                 raise ValueError("Encountered a reference rule in the graph")
+
             seen_rule = seen_rules.get(rule)
             if seen_rule is None:
-                seen_rule = Pointers(pointer)
+                seen_rule = [pointer]
                 seen_rules[rule] = seen_rule
-            else:
-                seen_rule.add(pointer)
-        yield from seen_rules.items()
+            seen_rule.append(pointer)
+
+        for rule, graph_pointers in seen_rules.items():
+            yield rule, graph_pointers

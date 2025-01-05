@@ -1,4 +1,4 @@
-import { runPython, } from './pyodide.js';
+import { runPythonAsync, } from './pyodide.js';
 
 const buildPythonInput = (code: string): string => {
   const parsedCode = code.split('\"').join('\\"').split('\\n').join('\\\\n');
@@ -9,7 +9,9 @@ const buildPythonInput = (code: string): string => {
 };
 
 export const formatPython = async (code: string): Promise<string> => {
-  const result = await runPython(buildPythonInput(code), ['black',]);
+  const result = await runPythonAsync(buildPythonInput(code), [
+    'black',
+  ]);
   if (typeof result === 'string') {
     return result;
   }

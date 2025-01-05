@@ -63,15 +63,18 @@ class GraphPointer(Generic[T]):
             if resolved:
                 if not self.node.next:
                     raise ValueError(f"No next node: {self.node}")
-                yield from GraphPointer(self.node.next, self.parent).resolve()
+                for p in GraphPointer(self.node.next, self.parent).resolve():
+                    yield p
             else:
                 for node in self.node.rule.nodes:
-                    yield from GraphPointer(node, self).resolve()
+                    for p in GraphPointer(node, self).resolve():
+                        yield p
         elif is_graph_pointer_rule_end(self):
             if not self.parent:
                 yield self
             else:
-                yield from self.parent.resolve(True)
+                for p in self.parent.resolve(True):
+                    yield p
         elif is_graph_pointer_rule_char(self) or is_graph_pointer_rule_char_exclude(
             self,
         ):
@@ -99,7 +102,8 @@ class GraphPointer(Generic[T]):
             if not self.node.next:
                 raise ValueError(f"No next node: {self.node}")
             pointer = GraphPointer(self.node.next, self.parent)
-            yield from pointer.resolve()
+            for p in pointer.resolve():
+                yield p
 
     def __repr__(self):
         return f"<GraphPointer {id(self)} {self.node}>"

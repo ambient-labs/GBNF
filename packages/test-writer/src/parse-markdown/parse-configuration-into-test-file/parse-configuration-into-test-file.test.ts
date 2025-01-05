@@ -8,7 +8,7 @@ import {
 import { parseConfigurationIntoTestFile } from './parse-configuration-into-test-file.js';
 import { Configuration } from '../parse-as-configuration/index.js';
 
-describe('parseConfigurationIntoTestFile', () => {
+describe('await parseConfigurationIntoTestFile', () => {
   describe('single describe block', () => {
     const singleDescribeBlock: Configuration = {
       blocks: [
@@ -29,8 +29,8 @@ describe('parseConfigurationIntoTestFile', () => {
       variables: {},
     };
 
-    test('it should parse the configuration into a test file for javascript', () => {
-      expect(parseConfigurationIntoTestFile(singleDescribeBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', async () => {
+      expect(await parseConfigurationIntoTestFile(singleDescribeBlock, 'javascript')).toEqual([
         `import { test, expect } from 'vitest';`,
         '',
         'describe(\'foo\', () => {',
@@ -39,8 +39,8 @@ describe('parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', () => {
-      expect(parseConfigurationIntoTestFile(singleDescribeBlock, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', async () => {
+      expect(await parseConfigurationIntoTestFile(singleDescribeBlock, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
         'def describe_foo(self):',
@@ -79,8 +79,8 @@ describe('parseConfigurationIntoTestFile', () => {
       variables: {},
     };
 
-    test('it should parse the configuration into a test file for javascript', () => {
-      expect(parseConfigurationIntoTestFile(multipleDescribeBlocks, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', async () => {
+      expect(await parseConfigurationIntoTestFile(multipleDescribeBlocks, 'javascript')).toEqual([
         `import { test, expect } from 'vitest';`,
         '',
         'describe(\'foo\', () => {',
@@ -93,8 +93,8 @@ describe('parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', () => {
-      expect(parseConfigurationIntoTestFile(multipleDescribeBlocks, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', async () => {
+      expect(await parseConfigurationIntoTestFile(multipleDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
         'def describe_foo(self):',
@@ -139,8 +139,8 @@ describe('parseConfigurationIntoTestFile', () => {
       variables: {},
     };
 
-    test('it should parse the configuration into a test file for javascript', () => {
-      expect(parseConfigurationIntoTestFile(nestedDescribeBlocks, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', async () => {
+      expect(await parseConfigurationIntoTestFile(nestedDescribeBlocks, 'javascript')).toEqual([
         `import { test, expect } from 'vitest';`,
         '',
         'describe(\'foo\', () => {',
@@ -153,8 +153,8 @@ describe('parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', () => {
-      expect(parseConfigurationIntoTestFile(nestedDescribeBlocks, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', async () => {
+      expect(await parseConfigurationIntoTestFile(nestedDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
         'def describe_foo(self):',
@@ -193,8 +193,8 @@ describe('parseConfigurationIntoTestFile', () => {
         },
       };
 
-      test('it should parse the configuration into a test file for javascript', () => {
-        expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+      test('it should parse the configuration into a test file for javascript', async () => {
+        expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
           `import { test, expect } from 'foo';`,
           '',
           'describe(\'Header\', () => {',
@@ -203,8 +203,8 @@ describe('parseConfigurationIntoTestFile', () => {
         ].join('\n'));
       });
 
-      test('it should parse the configuration into a test file for python', () => {
-        expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+      test('it should parse the configuration into a test file for python', async () => {
+        expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
           'from foo import TestCase, main, expectedFailure',
           '',
           'def describe_header(self):',
@@ -245,8 +245,8 @@ describe('parseConfigurationIntoTestFile', () => {
       },
     };
 
-    test('it should parse the configuration into a test file for javascript', () => {
-      expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', async () => {
+      expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
         'describe(\'Header\', () => {',
         'describe(\'Nested\', () => {',
         'test(\'nested\', () => { console.log("foo"); console.log("bar"); console.log("baz"); });',
@@ -255,8 +255,8 @@ describe('parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', () => {
-      expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', async () => {
+      expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'def describe_header(self):',
         '  def describe_nested(self):',
         '    def test_nested(self):',
@@ -303,8 +303,8 @@ describe('parseConfigurationIntoTestFile', () => {
       },
     };
 
-    test('it should parse the configuration into a test file for javascript', () => {
-      expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', async () => {
+      expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
         'console.log("foo")',
         '',
         'describe(\'Header\', () => {',
@@ -317,8 +317,8 @@ describe('parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', () => {
-      expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', async () => {
+      expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'print("foo")',
         '',
         'def describe_header(self):',
@@ -368,8 +368,8 @@ describe('parseConfigurationIntoTestFile', () => {
       ],
     };
 
-    test('it should parse the configuration into a test file for javascript', () => {
-      expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', async () => {
+      expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
         'console.log("foo")',
         'console.log("bar-top")',
         '',
@@ -388,8 +388,8 @@ describe('parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', () => {
-      expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', async () => {
+      expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'print("foo")',
         'print("bar-top")',
         '',

@@ -2,7 +2,7 @@ import { indent, } from '../../indent.js';
 import { parsePythonTestName, } from '../../parse-python-test-name.js';
 import type { Language, } from '../../types.js';
 import type { Configuration, } from '../parse-as-configuration/index.js';
-import { Block, } from '../parse-as-configuration/types.js';
+import { Block, Variable, } from '../parse-as-configuration/types.js';
 import { hydrateVariables, } from './hydrate-variables.js';
 
 const getDescribeBlock = (title: string, language: Language, contents: string[]): string[] => {
@@ -19,26 +19,24 @@ const getDescribeBlock = (title: string, language: Language, contents: string[])
   ];
 };
 
-export const parseDescribeBlock = (
+export const parseDescribeBlock = async (
   title: string,
   code: Block['code'],
-  variables: Record<string, unknown>,
+  variables: Record<string, Variable>,
   blocks: Configuration['blocks'],
   language: Language,
   indentation = 0,
-): string => {
+): Promise<string> => {
   const origCode = flatten(code[language] || []).join('\n');
-  const otherCode = indent(blocks.map((block) => parseDescribeBlock(block.title, block.code, {
+  const otherCode = indent(await Promise.all(blocks.map((block) => parseDescribeBlock(block.title, block.code, {
     ...variables,
     ...block.variables,
-  }, block.blocks, language, indentation + 1)), 0).join('\n');
-  // console.log("otherCode", `"${otherCode}"`)
+  }, block.blocks, language, indentation + 1))), 0).join('\n');
   const describeBlock = getDescribeBlock(title, language, flatten([
     origCode,
     otherCode,
   ]));
-  // console.log('describeBlock', `"${describeBlock.join('\n')}"`);
-  return hydrateVariables(describeBlock, variables).join('\n');
+  return (await hydrateVariables(describeBlock, variables, language)).join('\n');
 };
 
 const flatten = (chunks: (string | undefined)[], includeEmpty = true): string[] => {

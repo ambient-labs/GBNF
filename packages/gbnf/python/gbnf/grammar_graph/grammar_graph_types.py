@@ -30,6 +30,12 @@ class Rule:
     def __hash__(self):
         return id(self)
 
+    @property
+    def __dict__(self):
+        return {
+            "type": self.__class__.__name__,
+        }
+
 
 @dataclass
 class RuleWithValue(Rule):
@@ -40,6 +46,13 @@ class RuleWithValue(Rule):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(value={self.value})"
+
+    @property
+    def __dict__(self):
+        return {
+            **super().__dict__,
+            "value": self.value,
+        }
 
 
 @dataclass

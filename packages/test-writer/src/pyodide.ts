@@ -2,6 +2,7 @@ import { loadPyodide, } from 'pyodide';
 import path from 'path';
 import * as url from 'url';
 
+type Pyodide = Awaited<ReturnType<typeof loadPyodide>>;
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const NODE_MODULES_DIR = path.resolve(__dirname, '../node_modules');
 const _pyodide = loadPyodide({
@@ -18,25 +19,11 @@ const parseResult = (result: unknown): unknown => {
   }
   if (hasToJs(result)) {
     return result.toJs();
-    // console.log('3');
-
-    //   const jsResult: unknown = result.toJs();
-    // try {
-    //   console.log('4');
-    //   if (typeof jsResult === 'string') {
-    //     console.log('5');
-    //     return jsResult;
-    //   }
-    //   console.log('6', typeof jsResult, jsResult);
-    // } catch (err) {
-    //   console.log('5');
-    //   throw new Error(`Error when calling .toJS() for result ${JSON.stringify(result)}: ${JSON.stringify(err)}`);
-    // }
   }
   throw new Error(`Result from Pyodide is not a string: ${JSON.stringify(result)}`);
 };
 
-export const runPython = async (
+export const runPythonAsync = async (
   code: string,
   dependencies: string[] = [],
 ): Promise<unknown> => {
@@ -45,9 +32,27 @@ export const runPython = async (
   return parseResult(result);
 };
 
+export const getRunPython = async () => {
+  const pyodide = await _pyodide;
+  return (
+    code: string,
+  ): unknown => {
+    const result: unknown = pyodide.runPython(code);
+    return parseResult(result);
+  };
+};
+
 const getPyodide = async (dependencies: string[]) => {
   const pyodide = await _pyodide;
-  await pyodide.loadPackage("micropip", { messageCallback: () => { }, errorCallback: () => { }, });
+  await pyodide.loadPackage("micropip", {
+    messageCallback: () => {
+      // Silence the message callback
+    },
+    errorCallback: (error: unknown) => {
+      // Handle errors, if needed
+      console.error(error);
+    },
+  });
   const micropip = pyodide.pyimport("micropip") as Micropip;
   await micropip.install(dependencies);
   return pyodide;

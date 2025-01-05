@@ -17,7 +17,10 @@ export const parseAsConfiguration = async (contents: BaseBlock): Promise<Configu
     if (isCodeBlock(block)) {
       if (block.definitions) {
         const parsed = await parseCodeBlockContents(block);
-        configuration.variables[block.definitions] = parsed;
+        configuration.variables[block.definitions] = {
+          parsed,
+          block,
+        };
       } else {
         if (!configuration.code[block.language]) {
           configuration.code[block.language] = [];

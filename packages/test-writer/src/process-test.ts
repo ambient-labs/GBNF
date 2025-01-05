@@ -4,6 +4,7 @@ import { getTestFilePath, } from './get-test-file-path.js';
 import type { Language, } from './types.js';
 import { parseMarkdown, } from './parse-markdown/parse-markdown.js';
 import { formatTest, } from './format-test.js';
+import { log, } from './log.js';
 
 const getTestFileName = (testFile: string, sourceDir: string): [string, string] => {
   const fullFilePath = testFile.split(`${sourceDir}`).pop();
@@ -17,20 +18,12 @@ const getTestFileName = (testFile: string, sourceDir: string): [string, string] 
 };
 
 export const processTest = async (testFile: string, sourceDir: string, targetDir: string, language: Language): Promise<string[]> => {
-  try {
-    const testContents = await parseMarkdown(testFile, language);
-    const [originalTestFileName, folderPath,] = getTestFileName(testFile, sourceDir);
-    const formattedTest = await formatTest(language, testContents, testFile);
-    const testName = getTestFilePath(originalTestFileName, language);
-    const targetTestFilePath = path.join(targetDir, folderPath, testName);
-    await writeFile(targetTestFilePath, formattedTest);
-    return [targetTestFilePath,];
-  } catch (err: unknown) {
-    console.error([
-      `[processTest] Error processing test "${testFile}".`,
-      err instanceof Error ? err.message : JSON.stringify(err),
-    ].join('\n\n'));
-    return [];
-  }
+  const testContents = await parseMarkdown(testFile, language);
+  const [originalTestFileName, folderPath,] = getTestFileName(testFile, sourceDir);
+  const formattedTest = await formatTest(language, testContents, testFile);
+  const testName = getTestFilePath(originalTestFileName, language);
+  const targetTestFilePath = path.join(targetDir, folderPath, testName);
+  await writeFile(targetTestFilePath, formattedTest);
+  return [targetTestFilePath,];
 };
 
