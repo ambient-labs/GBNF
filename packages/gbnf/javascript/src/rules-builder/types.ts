@@ -22,7 +22,7 @@ export interface InternalRuleDefCharNot {
   type: InternalRuleType.CHAR_NOT;
   value: number[];
 }
-export interface InternalRuleDefAltChar {
+export interface InternalRuleDefCharAlt {
   type: InternalRuleType.CHAR_ALT;
   value: number;
 }
@@ -37,4 +37,4 @@ export interface InternalRuleDefWithoutValue {
   type: InternalRuleType.ALT | InternalRuleType.END;
 }
 export type InternalRuleDef = InternalRuleDefChar | InternalRuleDefCharNot | InternalRuleDefWithNumericValue | InternalRuleDefWithoutValue;
-export type InternalRuleDefCharOrAltChar = InternalRuleDefChar | InternalRuleDefAltChar;
+export type InternalRuleDefCharOrAltChar = InternalRuleDefChar | InternalRuleDefCharAlt;

@@ -14,24 +14,25 @@ from .rules_builder_types import (
     InternalRuleDefCharRngUpper,
     InternalRuleDefEnd,
     InternalRuleDefReference,
-    InternalRuleType,
 )
+from .symbol_ids import SymbolIds
 
 
 def get_out_elements(
-    type_of_rule: InternalRuleType, startchar_value: int,
+    type_of_rule: type[InternalRuleDef],
+    startchar_value: int,
 ) -> InternalRuleDef:
-    if type_of_rule == InternalRuleType.CHAR:
+    if type_of_rule == InternalRuleDefChar:
         return InternalRuleDefChar(value=[startchar_value])
-    if type_of_rule == InternalRuleType.CHAR_NOT:
+    if type_of_rule == InternalRuleDefCharNot:
         return InternalRuleDefCharNot(value=[startchar_value])
-    if type_of_rule == InternalRuleType.CHAR_RNG_UPPER:
+    if type_of_rule == InternalRuleDefCharRngUpper:
         return InternalRuleDefCharRngUpper(value=startchar_value)
-    if type_of_rule == InternalRuleType.ALT:
+    if type_of_rule == InternalRuleDefAlt:
         return InternalRuleDefAlt()
-    if type_of_rule == InternalRuleType.END:
+    if type_of_rule == InternalRuleDefEnd:
         return InternalRuleDefEnd()
-    if type_of_rule == InternalRuleType.CHAR_ALT:
+    if type_of_rule == InternalRuleDefCharAlt:
         return InternalRuleDefCharAlt(value=startchar_value)
 
     raise ValueError(f"Invalid type: {type_of_rule}")
@@ -39,7 +40,7 @@ def get_out_elements(
 
 class RulesBuilder:
     pos: int
-    symbol_ids: dict[str, int]
+    symbol_ids: SymbolIds
     rules: list[list[InternalRuleDef]]
     src: str
     start: float
@@ -47,7 +48,7 @@ class RulesBuilder:
 
     def __init__(self, src: str, limit: int = 1000):
         self.pos = 0
-        self.symbol_ids = {}
+        self.symbol_ids = SymbolIds()
         self.rules = []
         self.src = src
         self.start = perf_counter()
@@ -63,14 +64,26 @@ class RulesBuilder:
         for rule in self.rules:
             for elem in rule:
                 if isinstance(elem, InternalRuleDefReference):
-                    if elem.value >= len(self.rules) or not self.rules[elem.value]:
-                        for key, value in self.symbol_ids.items():
-                            if value == elem.value:
-                                raise GrammarParseError(
-                                    src,
-                                    self.pos,
-                                    f"Undefined rule identifier '{key}'",
-                                )
+                    rule_exists = (
+                        elem.value < len(self.rules) and len(self.rules[elem.value]) > 0
+                    )
+                    if not rule_exists:
+                        missing_rule_name = self.symbol_ids.reverse_get(elem.value)
+                        missing_rule_pos = self.symbol_ids.get_pos(missing_rule_name)
+
+                        # Skip over the ::= and any whitespace
+                        while missing_rule_pos < len(src) and (
+                            src[missing_rule_pos] == ":"
+                            or src[missing_rule_pos] == "="
+                            or src[missing_rule_pos].isspace()
+                        ):
+                            missing_rule_pos += 1
+
+                        raise GrammarParseError(
+                            src,
+                            missing_rule_pos,
+                            f'Undefined rule identifier "{missing_rule_name}"',
+                        )
 
     def parse_rule(self, src: str) -> None:
         name = parse_name(src, self.pos)
@@ -104,15 +117,15 @@ class RulesBuilder:
         self.pos = parse_space(src, self.pos, True)
 
     def get_symbol_id(self, src: str, length: int) -> int:
+        next_id = len(self.symbol_ids)
         key = src[:length]
         if key not in self.symbol_ids:
-            self.symbol_ids[key] = len(self.symbol_ids)
+            self.symbol_ids.set(key, next_id, self.pos)
         return self.symbol_ids[key]
 
     def generate_symbol_id(self, base_name: str) -> int:
         next_id = len(self.symbol_ids)
-        new_name = f"{base_name}_{next_id}"
-        self.symbol_ids[new_name] = next_id
+        self.symbol_ids.set(f"{base_name}_{next_id}", next_id, self.pos)
         return next_id
 
     def add_rule(self, rule_id: int, rule: list[InternalRuleDef]) -> None:
@@ -154,15 +167,15 @@ class RulesBuilder:
                 self.pos = parse_space(src, self.pos + 1, is_nested)
             elif src[self.pos] == "[":
                 self.pos += 1
-                start_type = InternalRuleType.CHAR
+                start_type: type[InternalRuleDef] = InternalRuleDefChar
                 if src[self.pos] == "^":
                     self.pos += 1
-                    start_type = InternalRuleType.CHAR_NOT
+                    start_type = InternalRuleDefCharNot
                 last_sym_start = len(out_elements)
                 while src[self.pos] != "]":
                     self.check_duration()
-                    type_ = (
-                        InternalRuleType.CHAR_ALT
+                    type_: type[InternalRuleDef] = (
+                        InternalRuleDefCharAlt
                         if last_sym_start < len(out_elements)
                         else start_type
                     )

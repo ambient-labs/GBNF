@@ -1,21 +1,11 @@
-from dataclasses import dataclass
-from enum import Enum
+from dataclasses import dataclass, field
 from typing import Any
 
-
-class InternalRuleType(Enum):
-    CHAR = "CHAR"
-    CHAR_RNG_UPPER = "CHAR_RNG_UPPER"
-    RULE_REF = "RULE_REF"
-    ALT = "ALT"
-    END = "END"
-    CHAR_NOT = "CHAR_NOT"
-    CHAR_ALT = "CHAR_ALT"
+from ..utils.validate_non_empty import validate_non_empty
 
 
 @dataclass
 class InternalRuleDefWithNumericValue:
-    type: InternalRuleType
     value: int
 
 
@@ -40,7 +30,12 @@ class InternalBaseWithInt(InternalBaseWithValue):
 
 @dataclass
 class InternalBaseWithListOfInts(InternalBaseWithValue):
-    value: list[int]
+    value: list[int] = field(
+        default_factory=list, metadata={"validate": validate_non_empty},
+    )
+
+    def __post_init__(self):
+        self.value = self.value.copy()
 
 
 @dataclass
@@ -59,11 +54,6 @@ class InternalRuleDefAlt(InternalBase):
 
 @dataclass
 class InternalRuleDefCharNot(InternalBaseWithListOfInts):
-    pass
-
-
-@dataclass
-class InternalRuleDefAltChar(InternalBaseWithInt):
     pass
 
 
@@ -97,21 +87,12 @@ InternalRuleDef = (
     | InternalRuleDefAlt
     | InternalRuleDefCharRngUpper
     | InternalRuleDefCharAlt
-    | InternalRuleDefAltChar
+    | InternalRuleDefCharAlt
 )
 
-InternalRuleDefCharOrAltChar = InternalRuleDefChar | InternalRuleDefAltChar
+InternalRuleDefCharOrAltChar = InternalRuleDefChar | InternalRuleDefCharAlt
 
 SymbolIds = dict[str, int]
-
-
-# Type Guards (Python version)
-def is_rule_def_type(type_):
-    return isinstance(type_, InternalRuleType)
-
-
-def is_rule_def(rule):
-    return hasattr(rule, "type") and is_rule_def_type(rule.type)
 
 
 def is_rule_def_alt(rule):
@@ -135,7 +116,7 @@ def is_rule_def_char_not(rule):
 
 
 def is_rule_def_char_alt(rule):
-    return isinstance(rule, InternalRuleDefAltChar)
+    return isinstance(rule, InternalRuleDefCharAlt)
 
 
 def is_rule_def_char_rng_upper(rule):

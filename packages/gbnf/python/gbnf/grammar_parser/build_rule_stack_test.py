@@ -12,8 +12,8 @@ from ..grammar_graph.rule_ref import RuleRef
 from ..rules_builder.rules_builder_types import (
     InternalRuleDef,
     InternalRuleDefAlt,
-    InternalRuleDefAltChar,
     InternalRuleDefChar,
+    InternalRuleDefCharAlt,
     InternalRuleDefCharNot,
     InternalRuleDefCharRngUpper,
     InternalRuleDefEnd,
@@ -26,8 +26,8 @@ def ichar(value: list[int]) -> InternalRuleDefChar:
     return InternalRuleDefChar(value=value)
 
 
-def ichar_alt(value: int) -> InternalRuleDefAltChar:
-    return InternalRuleDefAltChar(value=value)
+def ichar_alt(value: int) -> InternalRuleDefCharAlt:
+    return InternalRuleDefCharAlt(value=value)
 
 
 def ichar_rng_upper(value: int) -> InternalRuleDefCharRngUpper:

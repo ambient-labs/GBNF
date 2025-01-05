@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
-from .grammar_graph_types import Rule, RuleType
+from .grammar_graph_types import Rule
 
 if TYPE_CHECKING:
     from .grammar_graph_types import Pointers, ResolvedRule
@@ -14,8 +14,6 @@ import json
 
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, o):
-        if isinstance(o, RuleType):
-            return o.value
         if isinstance(o, Rule):
             return o
         return super().default(o)

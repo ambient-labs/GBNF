@@ -1,7 +1,7 @@
 import {
   InternalRuleDef,
   InternalRuleType,
-  type InternalRuleDefAltChar,
+  type InternalRuleDefCharAlt,
   type InternalRuleDefChar,
   type InternalRuleDefCharNot,
   type InternalRuleDefEnd,
@@ -15,5 +15,5 @@ export const isRuleDefRef = (rule?: InternalRuleDef): rule is InternalRuleDefRef
 export const isRuleDefEnd = (rule?: InternalRuleDef): rule is InternalRuleDefEnd => rule !== undefined && rule.type === InternalRuleType.END;
 export const isRuleDefChar = (rule?: InternalRuleDef): rule is InternalRuleDefChar => rule !== undefined && rule.type === InternalRuleType.CHAR;
 export const isRuleDefCharNot = (rule?: InternalRuleDef): rule is InternalRuleDefCharNot => rule !== undefined && rule.type === InternalRuleType.CHAR_NOT;
-export const isRuleDefCharAlt = (rule?: InternalRuleDef): rule is InternalRuleDefAltChar => rule !== undefined && rule.type === InternalRuleType.CHAR_ALT;
+export const isRuleDefCharAlt = (rule?: InternalRuleDef): rule is InternalRuleDefCharAlt => rule !== undefined && rule.type === InternalRuleType.CHAR_ALT;
 export const isRuleDefCharRngUpper = (rule?: InternalRuleDef): rule is { type: InternalRuleType.CHAR_RNG_UPPER, value: number } => rule !== undefined && rule.type === InternalRuleType.CHAR_RNG_UPPER;

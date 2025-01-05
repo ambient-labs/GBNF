@@ -47,8 +47,8 @@ class Graph:
     def __init__(
         self,
         grammar: str,
-        stackedRules: list[list[list[UnresolvedRule]]],
-        rootId: int,
+        stacked_rules: list[list[list[UnresolvedRule]]],
+        root_id: int,
     ):
         self.roots = {}
         self.grammar = grammar
@@ -56,15 +56,15 @@ class Graph:
         rule_refs: list[RuleRef] = []
         unique_rules: dict[str, UnresolvedRule] = {}
 
-        for stackId in range(len(stackedRules)):
-            stack = stackedRules[stackId]
+        for stack_id in range(len(stacked_rules)):
+            stack = stacked_rules[stack_id]
             nodes: dict[int, GraphNode] = {}
-            for pathId in range(len(stack)):
-                path = stack[pathId]
+            for path_id in range(len(stack)):
+                path = stack[path_id]
                 node: GraphNode | None = None
-                for stepId in range(len(path) - 1, -1, -1):
+                for step_id in range(len(path) - 1, -1, -1):
                     next_node: GraphNode | None = node
-                    rule = stack[pathId][stepId]
+                    rule = stack[path_id][step_id]
                     unique_rules[get_serialized_rule_key(rule)] = rule
                     if is_rule_ref(rule):
                         rule_refs.append(rule)
@@ -77,19 +77,19 @@ class Graph:
                     node = GraphNode(
                         unique_rule,
                         {
-                            "stackId": stackId,
-                            "pathId": pathId,
-                            "stepId": stepId,
+                            "stackId": stack_id,
+                            "pathId": path_id,
+                            "stepId": step_id,
                         },
                         next_node,
                     )
 
                 if node is None:
                     raise ValueError("Could not get node")
-                nodes[pathId] = node
-            self.roots[stackId] = nodes
+                nodes[path_id] = node
+            self.roots[stack_id] = nodes
 
-        self.root_node = self.roots.get(rootId)
+        self.root_node = self.roots.get(root_id)
 
         for rule_ref in rule_refs:
             referenced_nodes = set()
@@ -189,8 +189,8 @@ class Graph:
                 )
             yield resolved_pointer
 
-    def add(self, src: ValidInput, _pointers: Pointers | None = None) -> Pointers:
-        pointers = _pointers or self.get_initial_pointers()
+    def add(self, src: ValidInput, pointers: Pointers | None = None) -> Pointers:
+        pointers = pointers or self.get_initial_pointers()
 
         code_points = get_input_as_code_points(src)
 

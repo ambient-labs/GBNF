@@ -12,7 +12,7 @@ wheels = [
 
 [[package]]
 name = "gbnf"
-version = "0.0.21"
+version = "0.0.26"
 source = { editable = "." }
 
 [package.dev-dependencies]
