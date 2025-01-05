@@ -28,9 +28,9 @@ type RootNode = Map<number, GraphNode>;
 const makePointers = () => new GenericSet<ResolvedGraphPointer, string>(p => p.id);
 export class Graph {
   private roots = new Map<number, RootNode>();
-  // rootId: number;
   #rootNode?: RootNode;
   grammar: string;
+  private previousCodePoints: number[] = [];
 
   constructor(grammar: string, stackedRules: UnresolvedRule[][][], rootId: number) {
     this.grammar = grammar;
@@ -66,7 +66,11 @@ export class Graph {
 
       this.roots.set(stackId, nodes);
     }
-    this.rootNode = this.roots.get(rootId);
+    const __rootNode = this.roots.get(rootId);
+    if (!__rootNode) {
+      throw new Error(`Root node not found for value: ${rootId}`);
+    }
+    this.#rootNode = __rootNode;
 
     for (const ruleRef of ruleRefs) {
       const referencedNodes = new Set<GraphNode>();
@@ -85,24 +89,16 @@ export class Graph {
     return rootNode;
   };
 
-  // TODO: Make this private
-  get rootNode(): RootNode {
-    if (!this.#rootNode) {
-      throw new Error('Root node is not defined');
-    }
-    return this.#rootNode;
-  }
-  set rootNode(rootNode: undefined | RootNode) {
-    if (!rootNode) {
-      throw new Error('Root node is not defined');
-    }
-    this.#rootNode = rootNode;
-  }
 
   private getInitialPointers = (): Pointers => {
     const pointers = makePointers();
 
-    for (const { node, parent, } of this.fetchNodesForRootNode(this.rootNode)) {
+    const rootNode = this.#rootNode;
+    if (!rootNode) {
+      throw new Error('Root node is not defined');
+    }
+
+    for (const { node, parent, } of this.fetchNodesForRootNode(rootNode)) {
       const pointer = new GraphPointer(node, parent);
       for (const resolvedPointer of this.resolvePointer(pointer)) {
         pointers.add(resolvedPointer);
@@ -174,8 +170,6 @@ export class Graph {
       yield resolvedPointer;
     }
   }
-
-  private previousCodePoints: number[] = [];
 
   public add = (src: ValidInput, _pointers?: Pointers,): Pointers => {
     console.log('add!', src, typeof src);

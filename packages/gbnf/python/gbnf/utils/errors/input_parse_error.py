@@ -6,13 +6,15 @@ INPUT_PARSER_ERROR_HEADER_MESSAGE = "Failed to parse input string:"
 
 
 class InputParseError(Exception):
-    name = "InputParseError"
     most_recent_input: ValidInput
     pos: int
     previous_input: ValidInput
 
     def __init__(
-        self, most_recent_input: ValidInput, pos: int, previous_input: ValidInput = "",
+        self,
+        most_recent_input: ValidInput,
+        pos: int,
+        previous_input: ValidInput = "",
     ):
         super().__init__(
             "\n".join(
@@ -41,7 +43,23 @@ class InputParseError(Exception):
                 INPUT_PARSER_ERROR_HEADER_MESSAGE,
                 "",
                 *build_error_position(
-                    get_input_as_string(self.most_recent_input), self.pos,
+                    get_input_as_string(self.most_recent_input),
+                    self.pos,
                 ),
             ],
         )
+
+    def __str__(self):
+        return "\n".join(
+            [
+                INPUT_PARSER_ERROR_HEADER_MESSAGE,
+                "",
+                *build_error_position(
+                    f"{get_input_as_string(self.previous_input)}{get_input_as_string(self.most_recent_input)}",
+                    self.pos + len(get_input_as_string(self.previous_input)),
+                ),
+            ],
+        )
+
+    def __eq__(self, other):
+        return str(self) == str(other)

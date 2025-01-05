@@ -259,12 +259,13 @@ test.for($cases_negative as [string, string, number][])('It reports an error for
 
 
 ```python
-@pytest.mark.parametrize(("grammar", "error_pos", "error_reason"), $cases_negative)
-def test_it_reports_an_error_for_an_invalid_grammar(grammar, error_pos, error_reason):
+@pytest.mark.parametrize(("grammar", "input_text", "error_pos"), $cases_negative)
+def test_it_reports_an_error_for_an_invalid_input(grammar, input_text, error_pos):
   graph = GBNF(grammar)
+  expected = InputParseError(input_text, error_pos)
   with pytest.raises(InputParseError) as e:
-    graph.add(input)
+    graph.add(input_text)
 
-  assert e.input == input
-  assert e.error_pos == error_pos
+  e = e.value
+  assert e == expected
 ```

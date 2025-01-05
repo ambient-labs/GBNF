@@ -1,7 +1,19 @@
 from __future__ import annotations
 
-from .grammar_graph_types import RuleChar, UnresolvedRule
+from unittest.mock import MagicMock
+
+import pytest
+
+from .grammar_graph_types import (
+    RuleChar,
+    RuleCharExclude,
+    RuleEnd,
+    RuleRef,
+    UnresolvedRule,
+)
 from .graph import Graph
+from .graph_node import GraphNode
+from .graph_pointer import GraphPointer
 
 
 def describe_graph():
@@ -25,13 +37,13 @@ def describe_graph():
 
     def test_should_get_the_root_node():
         graph = Graph(grammar, stackedRules, root_id)
-        root_node = graph.get_root_node(root_id)
+        root_node = graph.__get_root_node__(root_id)
         assert isinstance(root_node, dict)
         assert len(root_node) == 2
 
     def test_should_get_the_initial_pointers():
         graph = Graph(grammar, stackedRules, root_id)
-        root_node = graph.get_root_node(root_id)
+        root_node = graph.__get_root_node__(root_id)
         assert isinstance(root_node, dict)
         assert len(root_node) == 2
 
@@ -40,3 +52,43 @@ def describe_graph():
         printed_graph = graph.print(colors=True)
         assert isinstance(printed_graph, str)
         assert len(printed_graph) > 0
+
+    def test_should_iterate_over_pointers():
+        graph = Graph(grammar, stackedRules, root_id)
+        mock_pointers = [
+            GraphPointer(
+                node=GraphNode(rule=r, meta=MagicMock()),
+            )
+            for r in [
+                RuleChar(value=[65, 66, 67]),
+                RuleChar(value=[68, 69, 70]),
+                RuleChar(value=[71, 72, 73]),
+                RuleChar(value=[74, 75, 76]),
+                RuleCharExclude(value=[1]),
+                RuleEnd(),
+            ]
+        ]
+
+        result = list(graph.__iterate_over_pointers__(mock_pointers))
+        assert len(result) == 6
+        for rule, pointers in result:
+            assert isinstance(rule, UnresolvedRule)
+            assert isinstance(pointers, set)
+            assert len(pointers) >= 1
+            for pointer in pointers:
+                assert pointer in mock_pointers
+
+    def test_should_raise_error_on_reference_rule():
+        graph = Graph(grammar, stackedRules, root_id)
+        mock_pointers = [
+            GraphPointer(
+                node=GraphNode(
+                    rule=RuleRef(value=0),
+                    meta=MagicMock(),
+                ),
+            )
+        ]
+
+        with pytest.raises(ValueError) as exc_info:
+            list(graph.__iterate_over_pointers__(mock_pointers))
+        assert "Encountered a reference rule in the graph" in str(exc_info.value)

@@ -181,3 +181,10 @@ test.for($cases as [string, { "type": string; "value": number[] }[]][])('It retu
   expect([...state]).toEqual(expected);
 });
 ```
+
+```python
+@pytest.mark.parametrize(("grammar", "expected"), $cases)
+def test_it_returns_parse_state_for_grammar(grammar, expected):
+  state = GBNF(grammar);
+  assert state == expected
+```

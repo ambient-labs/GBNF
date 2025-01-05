@@ -39,7 +39,7 @@ def make_pointers() -> Pointers:
 
 
 class Graph:
-    roots: dict[int, RootNode]
+    __roots__: dict[int, RootNode]
     grammar: str
     __rootNode__: RootNode | None
     previous_code_points: list[int]
@@ -50,7 +50,7 @@ class Graph:
         stacked_rules: list[list[list[UnresolvedRule]]],
         root_id: int,
     ):
-        self.roots = {}
+        self.__roots__ = {}
         self.grammar = grammar
         self.previous_code_points = []
         rule_refs: list[RuleRef] = []
@@ -87,76 +87,73 @@ class Graph:
                 if node is None:
                     raise ValueError("Could not get node")
                 nodes[path_id] = node
-            self.roots[stack_id] = nodes
+            self.__roots__[stack_id] = nodes
 
-        self.root_node = self.roots.get(root_id)
+        root_node = self.__roots__.get(root_id)
+        if root_node is None:
+            raise ValueError(f"Root node not found for value: {root_id}")
+        self.__rootNode__ = root_node
 
         for rule_ref in rule_refs:
             referenced_nodes = set()
-            referenced_nodes.update(self.get_root_node(rule_ref.value).values())
+            referenced_nodes.update(self.__get_root_node__(rule_ref.value).values())
             rule_ref.nodes = referenced_nodes
 
-    def get_root_node(self, value: int) -> RootNode:
-        root_node = self.roots.get(value)
+    def __get_root_node__(self, value: int) -> RootNode:
+        root_node = self.__roots__.get(value)
         if root_node is None:
             raise ValueError(f"Root node not found for value: {value}")
         return root_node
 
-    @property
-    def root_node(self) -> RootNode:
-        if self.__rootNode__ is None:
-            raise ValueError("Root node is not defined")
-        return self.__rootNode__
-
-    @root_node.setter
-    def root_node(self, rootNode: RootNode | None):
-        if rootNode is None:
-            raise ValueError("Root node is not defined")
-        self.__rootNode__ = rootNode
-
-    def get_initial_pointers(self) -> Pointers:
+    def __get_initial_pointers__(self) -> Pointers:
         pointers = make_pointers()
 
-        for node, parent in self.fetch_nodes_for_root_node(self.root_node):
+        root_node = self.__rootNode__
+        if root_node is None:
+            raise ValueError("Root node is not defined")
+
+        for node, parent in self.__fetch_nodes_for_root_node__(root_node):
             pointer = GraphPointer(node, parent)
-            for resolvedPointer in self.resolve_pointer(pointer):
+            for resolvedPointer in self.__resolve_pointer__(pointer):
                 pointers.add(resolvedPointer)
         return pointers
 
-    def set_valid(self, pointers: Pointers, valid: bool):
+    def __set_valid__(self, pointers: Pointers, valid: bool):
         for pointer in pointers:
             pointer.valid = valid
 
-    def parse(self, current_pointers: Pointers, codePoint: int) -> Pointers:
-        for rule, rule_pointers in self.iterate_over_pointers(current_pointers):
+    def __parse__(self, current_pointers: Pointers, code_point: int) -> Pointers:
+        print("code_point", code_point)
+        for rule, rule_pointers in self.__iterate_over_pointers__(current_pointers):
             if is_rule_char(rule):
+                print("rule char")
                 valid = False
                 for possible_code_point in rule.value:
                     if valid is True:
                         pass
                     elif is_range(possible_code_point):
-                        if is_point_in_range(codePoint, possible_code_point):
+                        if is_point_in_range(code_point, possible_code_point):
                             valid = True
-                        else:
-                            valid = False
-                    elif codePoint == possible_code_point:
+                    elif code_point == possible_code_point:
                         valid = True
-                self.set_valid(rule_pointers, valid)
+                self.__set_valid__(rule_pointers, valid)
 
             elif is_rule_char_exclude(rule):
+                print("rule char exclude")
                 valid = True
                 for possible_code_point in rule.value:
                     if valid is False:
                         pass
                     elif is_range(possible_code_point):
-                        if is_point_in_range(codePoint, possible_code_point):
+                        if is_point_in_range(code_point, possible_code_point):
                             valid = False
-                        else:
-                            valid = True
-
-                self.set_valid(rule_pointers, valid)
+                    else:
+                        if code_point == possible_code_point:
+                            valid = False
+                self.__set_valid__(rule_pointers, valid)
 
             elif not is_rule_end(rule):
+                print("rule end")
                 raise ValueError(f"Unsupported rule: {rule}")
 
         # a pointer's id is the sum of its node's id and its parent's id chain.
@@ -165,13 +162,13 @@ class Graph:
         next_pointers = make_pointers()
         for current_pointer in current_pointers:
             for unresolved_next_pointer in current_pointer.fetch_next():
-                for resolved_next_pointer in self.resolve_pointer(
+                for resolved_next_pointer in self.__resolve_pointer__(
                     unresolved_next_pointer,
                 ):
                     next_pointers.add(resolved_next_pointer)
         return next_pointers
 
-    def resolve_pointer(
+    def __resolve_pointer__(
         self,
         unresolved_pointer: GraphPointer,
     ) -> Iterable[ResolvedGraphPointer]:
@@ -190,13 +187,18 @@ class Graph:
             yield resolved_pointer
 
     def add(self, src: ValidInput, pointers: Pointers | None = None) -> Pointers:
-        pointers = pointers or self.get_initial_pointers()
+        if not isinstance(src, str):
+            raise ValueError("src must be a string in graph.add")
+        pointers = pointers or self.__get_initial_pointers__()
 
         code_points = get_input_as_code_points(src)
+        for code_point in code_points:
+            if type(code_point) is not int:
+                raise ValueError("code_point must be an integer!")
 
         for code_point_pos in range(len(code_points)):
             code_point = code_points[code_point_pos]
-            pointers = self.parse(pointers, code_point)
+            pointers = self.__parse__(pointers, code_point)
             if len(pointers) == 0:
                 raise InputParseError(
                     code_points,
@@ -209,15 +211,15 @@ class Graph:
     #   // generator that yields either the node, or if a reference rule, the referenced node
     #   // we need these function, as distinct from leveraging the logic in GraphPointer,
     #   // because that needs a rule ref with already defined nodes; this function is used to _set_ those nodes
-    def fetch_nodes_for_root_node(
+    def __fetch_nodes_for_root_node__(
         self,
         root_nodes: dict[int, GraphNode],
         parent: GraphPointer | None = None,
     ) -> Iterable[tuple[GraphNode, GraphPointer | None]]:
         for node in root_nodes.values():
             if is_rule_ref(node.rule):
-                yield from self.fetch_nodes_for_root_node(
-                    self.get_root_node(node.rule.value),
+                yield from self.__fetch_nodes_for_root_node__(
+                    self.__get_root_node__(node.rule.value),
                     GraphPointer(node, parent),
                 )
             else:
@@ -225,7 +227,7 @@ class Graph:
 
     def print(self, pointers: Pointers | None = None, colors: bool = False) -> str:
         nodes: list[list[GraphNode]] = [
-            list(root_node.values()) for root_node in self.roots.values()
+            list(root_node.values()) for root_node in self.__roots__.values()
         ]
         graph_view: list[str] = []
         for root_node in nodes:
@@ -244,7 +246,7 @@ class Graph:
 
         return "\n".join(graph_view)
 
-    def iterate_over_pointers(
+    def __iterate_over_pointers__(
         self,
         pointers: Pointers,
     ) -> Iterable[tuple[UnresolvedRule, Pointers]]:

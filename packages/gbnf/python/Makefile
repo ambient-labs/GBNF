@@ -25,7 +25,7 @@ write_integration_tests:
 	make build_test_writer \
 	&& rm -rf ./tests/generated \
 	&& ../../test-writer/dist/test-writer.mjs \
-		validation/validate-grammar.md \
+		validation \
 		--testDir ../test \
 		--targetDir ./tests/generated \
 		--language python
