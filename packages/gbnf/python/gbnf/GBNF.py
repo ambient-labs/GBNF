@@ -7,6 +7,12 @@ from .rules_builder import GrammarParseError, RulesBuilder
 
 
 def GBNF(grammar: str, initial_string: str = ""):
+    if not isinstance(grammar, str):
+        raise ValueError("grammar must be a string")
+
+    if not isinstance(initial_string, str):
+        raise ValueError("input must be a string")
+
     #   const grammar = typeof input === 'string' ? input : input.toString();
 
     rules_builder = RulesBuilder(grammar)

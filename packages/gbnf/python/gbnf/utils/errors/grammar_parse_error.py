@@ -23,3 +23,15 @@ class GrammarParseError(Exception):
         self.grammar = grammar
         self.pos = pos
         self.reason = reason
+
+    def __str__(self):
+        return "\n".join(
+            [
+                GRAMMAR_PARSER_ERROR_HEADER_MESSAGE(self.reason),
+                "",
+                *build_error_position(self.grammar, self.pos),
+            ],
+        )
+
+    def __eq__(self, other):
+        return str(self) == str(other)

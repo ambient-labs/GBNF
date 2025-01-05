@@ -43,6 +43,8 @@ class ParseState:
                 yield rule
 
     def add(self, text: str) -> ParseState:
+        if not isinstance(text, str):
+            raise ValueError("input text must be of type string")
         pointers = self.__graph__.add(text, self.__pointers__)
         return ParseState(self.__graph__, pointers)
 

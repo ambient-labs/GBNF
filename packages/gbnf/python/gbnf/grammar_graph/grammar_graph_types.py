@@ -24,6 +24,9 @@ class Rule:
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
 
+    def __hash__(self):
+        return id(self)
+
 
 @dataclass
 class RuleWithValue(Rule):
@@ -39,7 +42,8 @@ class RuleWithValue(Rule):
 @dataclass
 class RuleWithListOfIntsOrRanges(RuleWithValue):
     value: list[int | Range] = field(
-        default_factory=list, metadata={"validate": validate_non_empty},
+        default_factory=list,
+        metadata={"validate": validate_non_empty},
     )
 
     def __post_init__(self):
@@ -48,15 +52,18 @@ class RuleWithListOfIntsOrRanges(RuleWithValue):
 
 @dataclass
 class RuleChar(RuleWithListOfIntsOrRanges):
-    pass
+    def __hash__(self):
+        return id(self)
 
 
 class RuleCharExclude(RuleWithListOfIntsOrRanges):
-    pass
+    def __hash__(self):
+        return id(self)
 
 
 class RuleEnd(Rule):
-    pass
+    def __hash__(self):
+        return id(self)
 
 
 UnresolvedRule = RuleChar | RuleCharExclude | RuleRef | RuleEnd

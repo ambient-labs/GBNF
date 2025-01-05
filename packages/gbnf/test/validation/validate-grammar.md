@@ -84,9 +84,9 @@ test.for($cases_negative as [string, number, string][])('It reports an error for
 ```python
 @pytest.mark.parametrize(("grammar", "error_pos", "error_reason"), $cases_negative)
 def test_it_reports_an_error_for_an_invalid_grammar(grammar, error_pos, error_reason):
+  expected = GrammarParseError(grammar, error_pos, error_reason)
   with pytest.raises(GrammarParseError) as e:
     graph = GBNF(grammar)
   e = e.value
-  assert e.pos == error_pos
-  assert e.reason == error_reason
+  assert e == expected
 ```
