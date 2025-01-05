@@ -3,9 +3,10 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
+from .pointers import Pointers
+
 if TYPE_CHECKING:
     from .grammar_graph_types import (
-        Pointers,
         ResolvedGraphPointer,
         UnresolvedRule,
         ValidInput,
@@ -29,13 +30,6 @@ from .type_guards import (
 )
 
 RootNode = dict[int, GraphNode]
-
-
-def make_pointers() -> Pointers:
-    """
-    Create a set of pointers with a custom comparison based on pointer ID.
-    """
-    return set()
 
 
 class Graph:
@@ -106,7 +100,7 @@ class Graph:
         return root_node
 
     def __get_initial_pointers__(self) -> Pointers:
-        pointers = make_pointers()
+        pointers = Pointers()
 
         root_node = self.__rootNode__
         if root_node is None:
@@ -155,7 +149,7 @@ class Graph:
         # a pointer's id is the sum of its node's id and its parent's id chain.
         # if two pointers share the same id, it means they point to the same node and have identical parent chains.
         # for the purposes of walking the graph, we only need to keep one of them.
-        next_pointers = make_pointers()
+        next_pointers = Pointers()
         for current_pointer in current_pointers:
             for unresolved_next_pointer in current_pointer.fetch_next():
                 for resolved_next_pointer in self.__resolve_pointer__(
@@ -225,6 +219,8 @@ class Graph:
         nodes: list[list[GraphNode]] = [
             list(root_node.values()) for root_node in self.__roots__.values()
         ]
+        if pointers is None:
+            pointers = Pointers()
         graph_view: list[str] = []
         for root_node in nodes:
             for node in root_node:
@@ -232,7 +228,7 @@ class Graph:
                     [
                         node.print(
                             {
-                                "pointers": pointers or set(),
+                                "pointers": pointers,
                                 "show_position": True,
                                 "colorize": colorize if colors else lambda s, _: str(s),
                             },
@@ -253,7 +249,7 @@ class Graph:
                 raise ValueError("Encountered a reference rule in the graph")
             seen_rule = seen_rules.get(rule)
             if seen_rule is None:
-                seen_rule = set([pointer])
+                seen_rule = Pointers(pointer)
                 seen_rules[rule] = seen_rule
             else:
                 seen_rule.add(pointer)

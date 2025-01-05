@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import cast
 from unittest.mock import MagicMock
 
 from .grammar_graph_types import RuleChar
@@ -8,9 +8,8 @@ from .graph import Graph
 from .graph_node import GraphNode
 from .graph_pointer import GraphPointer
 
-# if TYPE_CHECKING:
-#     from .grammar_graph_types import Pointers
 from .parse_state import ParseState
+from .pointers import Pointers
 
 
 class MockGraph:
@@ -27,8 +26,7 @@ def make_mock_graph():
 
 
 mock_pointers = cast(
-    Any,
-    # Pointers,
+    Pointers,
     {
         GraphPointer(
             GraphNode(

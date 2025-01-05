@@ -3,7 +3,9 @@ name = "gbnf"
 version = "0.0.28"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pytest-watcher>=0.4.3",
+]
 description = "A library for parsing GBNF grammars"
 classifiers = [ "Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent",]
 [[project.authors]]

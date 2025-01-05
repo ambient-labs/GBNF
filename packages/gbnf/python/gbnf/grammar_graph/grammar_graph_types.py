@@ -7,9 +7,12 @@ from typing import TYPE_CHECKING, Any, TypedDict
 from ..utils.validate_non_empty import validate_non_empty
 from .rule_ref import RuleRef
 
+if TYPE_CHECKING:
+    from .pointers import Pointers
+
 
 class PrintOpts(TypedDict):
-    pointers: set[GraphPointer]
+    pointers: "Pointers"
     colorize: Callable[[str | int, str], str]
     show_position: bool
 
@@ -75,10 +78,10 @@ UnresolvedRule = RuleChar | RuleCharExclude | RuleRef | RuleEnd
 ValidInput = str | int | list[int]
 
 
+# RuleRefs should never be exposed to the end user.
+ResolvedRule = RuleCharExclude | RuleChar | RuleEnd
+
 if TYPE_CHECKING:
     from .graph_pointer import GraphPointer
 
-    # RuleRefs should never be exposed to the end user.
-    ResolvedRule = RuleCharExclude | RuleChar | RuleEnd
     ResolvedGraphPointer = GraphPointer[ResolvedRule]
-    Pointers = set[ResolvedGraphPointer]

@@ -100,3 +100,6 @@ class GraphPointer(Generic[T]):
                 raise ValueError(f"No next node: {self.node}")
             pointer = GraphPointer(self.node.next, self.parent)
             yield from pointer.resolve()
+
+    def __repr__(self):
+        return f"<GraphPointer {id(self)} {self.node}>"
