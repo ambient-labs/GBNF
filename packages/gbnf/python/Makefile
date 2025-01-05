@@ -30,8 +30,8 @@ write_integration_tests:
 		--targetDir ./tests/generated \
 		--language python
 
-test_integration_watch:
-	uv run ptw --now ./tests/generated
+# test_integration_watch:
+# 	uv run ptw --now ./tests/generated
 
 test_integration:
 	uv run pytest ./tests/generated

@@ -30,10 +30,13 @@ from ..rules_builder.rules_builder_types import (
 def make_char_rule(
     rule_def: InternalRuleDefChar | InternalRuleDefCharNot,
 ) -> RuleChar | RuleCharExclude:
+    value = cast(list[int | Range], rule_def.value)
     if is_rule_def_char_not(rule_def):
-        rule_def = cast(InternalRuleDefCharNot, rule_def)
-        return RuleCharExclude(value=cast(list[int | Range], rule_def.value))
-    return RuleChar(value=cast(list[int | Range], rule_def.value))
+        return RuleCharExclude(value=value)
+    elif is_rule_def_char(rule_def):
+        return RuleChar(value=value)
+
+    raise ValueError(f"Unsupported rule type for make_char_rule: {rule_def}")
 
 
 def build_rule_stack(linear_rules: list[InternalRuleDef]) -> list[list[UnresolvedRule]]:
@@ -57,7 +60,6 @@ def build_rule_stack(linear_rules: list[InternalRuleDef]) -> list[list[Unresolve
                 is_rule_def_char_rng_upper(rule) or is_rule_def_char_alt(rule)
             ):
                 if is_rule_def_char_rng_upper(rule):
-                    rule = cast(InternalRuleDefCharRngUpper, rule)
                     # previous rule value should be a number
                     prev_value = char_rule.value.pop()
                     if is_range(prev_value):
@@ -70,11 +72,8 @@ def build_rule_stack(linear_rules: list[InternalRuleDef]) -> list[list[Unresolve
                     char_rule.value.append(
                         cast(
                             Range,
-                            [
-                                prev_value,
-                                rule.value,
-                            ],
-                        ),
+                            [prev_value, cast(InternalRuleDefCharRngUpper, rule).value],
+                        )
                     )
                 if is_rule_def_char_alt(rule):
                     rule = cast(InternalRuleDefCharAlt, rule)
@@ -94,6 +93,10 @@ def build_rule_stack(linear_rules: list[InternalRuleDef]) -> list[list[Unresolve
             elif is_rule_def_ref(rule_def):
                 paths.append(
                     RuleRef(cast(int, cast(InternalRuleDefReference, rule_def).value)),
+                )
+            elif is_rule_def_char_alt(rule_def):
+                raise ValueError(
+                    f"Encountered char alt, should be handled by above block: {rule_def}",
                 )
             else:
                 raise ValueError(f"Unsupported rule type: {rule_def}")

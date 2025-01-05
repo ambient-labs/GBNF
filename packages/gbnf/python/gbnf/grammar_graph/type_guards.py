@@ -7,7 +7,6 @@ from .grammar_graph_types import (
     RuleChar,
     RuleCharExclude,
     RuleEnd,
-    RuleType,
     UnresolvedRule,
 )
 from .rule_ref import RuleRef
@@ -15,9 +14,6 @@ from .rule_ref import RuleRef
 if TYPE_CHECKING:
     from .graph_pointer import GraphPointer
 
-
-# def is_rule_type(type: Any) -> bool:
-#     return type is not None and type in RuleType.__members__
 
 T = TypeVar("T")
 
@@ -44,23 +40,19 @@ def is_rule_ref(rule: UnresolvedRule) -> bool:
 
 @type_guard
 def is_rule_end(rule: UnresolvedRule) -> bool:
-    return rule is not None and isinstance(rule, RuleEnd) and rule.type == RuleType.END
+    return rule is not None and isinstance(rule, RuleEnd) and isinstance(rule, RuleEnd)
 
 
 @type_guard
 def is_rule_char(rule: UnresolvedRule) -> bool:
     return (
-        rule is not None and isinstance(rule, RuleChar) and rule.type == RuleType.CHAR
+        rule is not None and isinstance(rule, RuleChar) and isinstance(rule, RuleChar)
     )
 
 
 @type_guard
 def is_rule_char_exclude(rule: UnresolvedRule) -> bool:
-    return (
-        rule is not None
-        and isinstance(rule, RuleCharExclude)
-        and rule.type == RuleType.CHAR_EXCLUDE
-    )
+    return rule is not None and isinstance(rule, RuleCharExclude)
 
 
 @type_guard

@@ -7,6 +7,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, TypedDict
 
 from .rule_ref import RuleRef
+from ..utils.validate_non_empty import validate_non_empty
 
 
 class PrintOpts(TypedDict):
@@ -15,70 +16,49 @@ class PrintOpts(TypedDict):
     show_position: bool
 
 
-class RuleType(Enum):
-    CHAR = "char"
-    CHAR_EXCLUDE = "char_exclude"
-    END = "end"
-
-
 Range = tuple[int, int]
 
 
 class Rule:
-    type: RuleType
-    value: Any | None
+    def __eq__(self, other):
+        return isinstance(other, self.__class__)
 
-    @property
-    def __dict__(self):
-        if self.value is None:
-            return {
-                "type": self.type,
-            }
-        return {"type": self.type, "value": self.value}
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
 
 
 @dataclass
-class RuleChar(Rule):
-    type: RuleType = RuleType.CHAR
-    value: list[int | Range] = field(default_factory=list)
+class RuleWithValue(Rule):
+    value: Any
 
-    def __init__(self, value: list[int | Range]):
-        self.value = value
-
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, RuleChar) and json.dumps(self.value) == json.dumps(
-            other.value,
-        )
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.value == other.value
 
     def __repr__(self) -> str:
-        return f"RuleChar(value={self.value})"
+        return f"{self.__class__.__name__}(value={self.value})"
 
 
-class RuleCharExclude(Rule):
-    type: RuleType = RuleType.CHAR_EXCLUDE
+@dataclass
+class RuleWithListOfIntsOrRanges(RuleWithValue):
+    value: list[int | Range] = field(
+        default_factory=lambda: [], metadata={"validate": validate_non_empty}
+    )
 
-    value: list[int | Range] = field(default_factory=list)
+    def __post_init__(self):
+        self.value = self.value.copy()
 
-    def __init__(self, value: list[int | Range]):
-        self.value = value
 
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, RuleCharExclude) and json.dumps(
-            self.value,
-        ) == json.dumps(other.value)
+@dataclass
+class RuleChar(RuleWithListOfIntsOrRanges):
+    pass
 
-    def __repr__(self) -> str:
-        return f"RuleCharExclude(value={self.value})"
+
+class RuleCharExclude(RuleWithListOfIntsOrRanges):
+    pass
 
 
 class RuleEnd(Rule):
-    type: RuleType = RuleType.END
-
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, RuleEnd)
-
-    def __repr__(self) -> str:
-        return "RuleEnd()"
+    pass
 
 
 UnresolvedRule = RuleChar | RuleCharExclude | RuleRef | RuleEnd

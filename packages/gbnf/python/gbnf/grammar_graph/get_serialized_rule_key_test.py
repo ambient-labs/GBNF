@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from .get_serialized_rule_key import KEY_TRANSLATION, get_serialized_rule_key
-from .grammar_graph_types import RuleChar, RuleCharExclude, RuleEnd, RuleRef, RuleType
+from .grammar_graph_types import RuleChar, RuleCharExclude, RuleEnd, RuleRef
 
 
 @pytest.fixture(autouse=True)
@@ -48,12 +48,12 @@ def describe_get_serialized_rule_key():
     def test_returns_type_for_end_rules(mock_is_rule_end):
         mock_is_rule_end.return_value = True
         rule = RuleEnd()
-        assert get_serialized_rule_key(rule) == f"{KEY_TRANSLATION[RuleType.END]}"
+        assert get_serialized_rule_key(rule) == f"{KEY_TRANSLATION[RuleEnd]}"
 
     def test_returns_type_and_value_for_character_rules(mock_is_rule_char):
         mock_is_rule_char.return_value = True
         rule = RuleChar(value=[97])
-        assert get_serialized_rule_key(rule) == f"{KEY_TRANSLATION[RuleType.CHAR]}-[97]"
+        assert get_serialized_rule_key(rule) == f"{KEY_TRANSLATION[RuleChar]}-[97]"
 
     def test_returns_type_and_value_for_character_exclude_rules(
         mock_is_rule_char_exclude,
@@ -61,8 +61,7 @@ def describe_get_serialized_rule_key():
         mock_is_rule_char_exclude.return_value = True
         rule = RuleCharExclude(value=[97])
         assert (
-            get_serialized_rule_key(rule)
-            == f"{KEY_TRANSLATION[RuleType.CHAR_EXCLUDE]}-[97]"
+            get_serialized_rule_key(rule) == f"{KEY_TRANSLATION[RuleCharExclude]}-[97]"
         )
 
     def test_returns_ref_type_with_value_for_reference_rules(mock_is_rule_ref):

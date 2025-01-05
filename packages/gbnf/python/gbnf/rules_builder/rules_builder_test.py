@@ -1457,11 +1457,5 @@ test_cases = [
 def test_grammar_parser(key, grammar, expected):
     symbol_ids_expected, rules_expected = expected
     parsed_grammar = RulesBuilder(grammar.replace("\\n", "\n"))
-    # for i, rules in enumerate(parsed_grammar.rules):
-    #     for j, rule in enumerate(rules):
-    #         # print(i, j, "expected", rules_expected[i][j], "received", rule)
-    #         assert rule == rules_expected[i][j]
-    print(parsed_grammar.rules)
-    print(rules_expected)
     assert parsed_grammar.rules == rules_expected
     assert list(parsed_grammar.symbol_ids.items()) == symbol_ids_expected

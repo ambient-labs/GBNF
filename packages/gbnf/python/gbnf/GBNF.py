@@ -13,7 +13,7 @@ def GBNF(grammar: str, initial_string: str = ""):
     rules, symbol_ids = rules_builder.rules, rules_builder.symbol_ids
     if len(rules) == 0:
         raise GrammarParseError(grammar, 0, "No rules were found")
-    if symbol_ids.get("root") is None:
+    if symbol_ids["root"] is None:
         raise GrammarParseError(grammar, 0, "Grammar does not contain a 'root' symbol")
     root_id: int = symbol_ids["root"]
 

@@ -5,12 +5,9 @@ from typing import TYPE_CHECKING
 import pytest
 
 from .grammar_graph_types import (
-    # Range,
-    # RuleType,
     RuleChar,
     RuleCharExclude,
     RuleEnd,
-    # UnresolvedRule,
 )
 from .graph_node import GraphNode
 from .graph_pointer import GraphPointer
@@ -30,7 +27,6 @@ from .type_guards import (
     is_rule_char,
     is_rule_char_exclude,
     is_rule_end,
-    # is_rule_type,
     is_rule_ref,
 )
 
@@ -61,7 +57,8 @@ def describe_rule_type_guards():
     def describe_is_graph_pointer_rule_char():
         def test_it_returns_true():
             node = GraphNode(
-                RuleChar(value=[97]), {"stackId": 1, "pathId": 2, "stepId": 3},
+                RuleChar(value=[97]),
+                {"stackId": 1, "pathId": 2, "stepId": 3},
             )
             pointer = GraphPointer(node)
             assert is_graph_pointer_rule_char(pointer)
@@ -98,14 +95,6 @@ def describe_rule_type_guards():
         def test_it_returns_true_for_valid_rule_objects():
             ruleChar: RuleChar = RuleChar(value=[65, (66, 67)])
             assert is_rule(ruleChar)
-
-    # def describe_is_rule_type():
-    #     def test_it_returns_true_for_valid_rule_types():
-    #         assert is_rule_type(RuleType.CHAR)
-    #         assert is_rule_type(RuleType.END)
-
-    #     def test_it_returns_false_for_invalid_rule_types():
-    #         assert is_rule_type("not_a_rule_type")
 
     def describe_is_rule_ref():
         def test_it_returns_true_for_valid_rule_refs():

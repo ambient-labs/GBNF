@@ -81,6 +81,8 @@ export const buildRuleStack = (linearRules: InternalRuleDef[]): UnresolvedRule[]
         });
       } else if (isRuleDefRef(ruleDef)) {
         paths.push(new RuleRef(ruleDef.value));
+      } else if (isRuleDefCharAlt(ruleDef)) {
+        throw new Error(`Encountered char alt, should be handled by above block: ${ruleDef.type}`);
       } else {
         throw new Error(`Unsupported rule type: ${ruleDef.type}`);
       }
