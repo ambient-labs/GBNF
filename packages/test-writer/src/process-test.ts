@@ -4,7 +4,6 @@ import { getTestFilePath, } from './get-test-file-path.js';
 import type { Language, } from './types.js';
 import { parseMarkdown, } from './parse-markdown/parse-markdown.js';
 import { formatTest, } from './format-test.js';
-import { log, } from './log.js';
 
 const getTestFileName = (testFile: string, sourceDir: string): [string, string] => {
   const fullFilePath = testFile.split(`${sourceDir}`).pop();

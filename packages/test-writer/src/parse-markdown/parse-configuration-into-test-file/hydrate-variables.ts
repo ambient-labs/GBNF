@@ -1,28 +1,11 @@
-import { log, } from '../../log.js';
-import { getRunPython, } from '../../pyodide.js';
 import type { Language, } from '../../types.js';
 import { Variable, } from '../parse-as-configuration/types.js';
 
-// const r = JSON.stringify(variables[variable]);
-// // log(r);
-// // r = r.replace('\\\\\"', '\"');
-// // log(r);
-// // log('[["root ::= \\"\\\"\\""]]');
-// // return '[["root ::= \\"\\\"\\""]]';
-// return r;
-const stringify = (value: unknown, targetLanguage: Language): string => {
-  return {
-    javascript: JSON.stringify(value),
-    python: JSON.stringify(value).replace('\\\\\"', '\"'),
-  }[targetLanguage];
-};
-
-export const hydrateVariables = async (
+export const hydrateVariables = (
   lines: string | string[],
   variables: Record<string, Variable>,
   targetLanguage: Language = 'javascript',
-): Promise<string[]> => {
-  const runPython = await getRunPython();
+): string[] => {
   return ([] as string[]).concat(lines).map((line) => {
     const regex = /\$(\w+)/g;
     return line.replace(regex, (match, variable) => {

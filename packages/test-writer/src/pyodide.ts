@@ -5,7 +5,7 @@ import * as url from 'url';
 type Pyodide = Awaited<ReturnType<typeof loadPyodide>>;
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const NODE_MODULES_DIR = path.resolve(__dirname, '../node_modules');
-const _pyodide = loadPyodide({
+const _pyodide: Promise<Pyodide> = loadPyodide({
   indexURL: path.resolve(NODE_MODULES_DIR, 'pyodide'),
 });
 
