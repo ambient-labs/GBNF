@@ -14,7 +14,7 @@ export const parseConfigurationIntoTestFile = async (configuration: Configuratio
       language
     )));
     const pieces = [
-      code.length > 0 ? (await hydrateVariables(code, configuration.variables, language)).join('\n') : undefined,
+      code.length > 0 ? (hydrateVariables(code, configuration.variables, language)).join('\n') : undefined,
       promises.join('\n\n'),
     ];
     const filteredPieces = pieces.filter(chunk => chunk !== undefined);

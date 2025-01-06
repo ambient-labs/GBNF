@@ -36,7 +36,7 @@ export const parseDescribeBlock = async (
     origCode,
     otherCode,
   ]));
-  return (await hydrateVariables(describeBlock, variables, language)).join('\n');
+  return hydrateVariables(describeBlock, variables, language).join('\n');
 };
 
 const flatten = (chunks: (string | undefined)[], includeEmpty = true): string[] => {
