@@ -18,8 +18,7 @@ class Pointers:
         self.__pointers__[pointer.id] = pointer
 
     def __iter__(self):
-        for pointer in self.__pointers__.values():
-            yield pointer
+        yield from self.__pointers__.values()
 
     def __len__(self):
         return len(self.__pointers__)

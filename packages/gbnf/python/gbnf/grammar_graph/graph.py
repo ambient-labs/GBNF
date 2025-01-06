@@ -13,6 +13,8 @@ if TYPE_CHECKING:
     )
 
 
+from collections import OrderedDict
+
 from ..utils.errors import InputParseError
 from ..utils.is_point_in_range import is_point_in_range
 from .colorize import colorize
@@ -21,8 +23,6 @@ from .get_serialized_rule_key import get_serialized_rule_key
 from .graph_node import GraphNode
 from .graph_pointer import GraphPointer
 from .rule_ref import RuleRef
-from collections import OrderedDict
-
 from .type_guards import (
     is_range,
     is_rule_char,
@@ -256,5 +256,4 @@ class Graph:
                 seen_rules[rule] = seen_rule
             seen_rule.append(pointer)
 
-        for rule, graph_pointers in seen_rules.items():
-            yield rule, graph_pointers
+        yield from seen_rules.items()
