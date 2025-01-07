@@ -1,6 +1,6 @@
 [project]
 name = "gbnf"
-version = "0.0.29"
+version = "0.0.30"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [ "pytest-watcher>=0.4.3",]
