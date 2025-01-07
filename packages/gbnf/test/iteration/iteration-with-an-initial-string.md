@@ -684,14 +684,10 @@ def test_it_returns_parse_state_for_grammar_and_initial_string(grammar, input_st
     else:
       raise Exception(f'Unknown type found in expectation array: {type}')
   state = GBNF(grammar)
-  print('--')
   state = state + input_string
-  print('--')
   state = [*state]
   expected = [transformed_expected_dict(e) for e in expected]
   state = sorted(state, key=lambda r: json.dumps(r.__dict__))
   expected = sorted(expected, key=lambda r: json.dumps(r.__dict__))
-  print('state', state)
-  print('expected', expected)
   assert state == expected
 ```
