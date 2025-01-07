@@ -41,7 +41,7 @@ describe('parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test.only('it should parse the configuration into a test file for python', () => {
+    test('it should parse the configuration into a test file for python', () => {
       expect(parseConfigurationIntoTestFile(singleDescribeBlock, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
