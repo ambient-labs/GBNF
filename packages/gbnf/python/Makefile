@@ -25,8 +25,6 @@ write_integration_tests:
 	@echo "Writing integration tests..."
 	@$(MAKE) -s build_test_writer
 	@node --no-warnings ../../test-writer/dist/test-writer.mjs \
-		validation \
-		iteration/iteration \
 		--testDir ../test \
 		--targetDir ./tests/generated \
 		--language python

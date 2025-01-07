@@ -1,6 +1,9 @@
 ```python
 import pytest
 from gbnf import GBNF
+
+def unescape(str: str):
+  return str.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
 ```
 
 ```javascript
@@ -12,7 +15,7 @@ const unescape = (str: string) => str.replace(/\\n/g, '\n').replace(/\\t/g, '\t'
 
 # Grammars 
 
-```javascript cases_three
+```javascript cases
 Promise.all([
   'node:fs/promises',
   'path',
@@ -83,7 +86,7 @@ Promise.all([
 ```
 
 ```javascript
-test.for($cases_three as [
+test.for($cases as [
   string,
   string,
   string,
@@ -98,3 +101,13 @@ test.for($cases_three as [
 });
 ```
 
+```python
+@pytest.mark.parametrize(("_", "_test_case", "grammar"), $cases)
+def test_it_raises_a_particular_error(_, _test_case, grammar):
+  test_case = unescape(_test_case)
+
+  state = GBNF(unescape(grammar))
+
+  for char in test_case:
+    state = state.add(char)
+```
