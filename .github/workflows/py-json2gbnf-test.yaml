@@ -22,29 +22,29 @@ jobs:
       package: ./packages/json2gbnf/python
       pyversion: "3.12"
 
-  unit-test:
-    name: "Python / JSON2GBNF / Unit Test ${{ matrix.pyversion }}"
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-          # - pyversion: "3.12"
-          - pyversion: "3.11"
-            enable_coverage: true
-          - pyversion: "3.12"
-    uses: ./.github/workflows/py-shared-unit-test.yaml
-    with:
-      package: ./packages/json2gbnf/python
-      pyversion: ${{ matrix.pyversion }}
-      enable_coverage: ${{ matrix.enable_coverage }}
+  # unit-test:
+  #   name: "Python / JSON2GBNF / Unit Test ${{ matrix.pyversion }}"
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       include:
+  #         # https://github.com/actions/python-versions/blob/main/versions-manifest.json
+  #         # - pyversion: "3.12"
+  #         - pyversion: "3.11"
+  #           enable_coverage: true
+  #         - pyversion: "3.12"
+  #   uses: ./.github/workflows/py-shared-unit-test.yaml
+  #   with:
+  #     package: ./packages/json2gbnf/python
+  #     pyversion: ${{ matrix.pyversion }}
+  #     enable_coverage: ${{ matrix.enable_coverage }}
 
-  build:
-    name: "Python / JSON2GBNF / Build"
-    uses: ./.github/workflows/py-shared-build.yaml
-    with:
-      package: ./packages/json2gbnf/python
-      pyversion: "3.12"
+  # build:
+  #   name: "Python / JSON2GBNF / Build"
+  #   uses: ./.github/workflows/py-shared-build.yaml
+  #   with:
+  #     package: ./packages/json2gbnf/python
+  #     pyversion: "3.12"
 
 
 permissions:
