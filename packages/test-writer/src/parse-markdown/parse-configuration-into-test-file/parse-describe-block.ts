@@ -19,19 +19,19 @@ const getDescribeBlock = (title: string, language: Language, contents: string[])
   ];
 };
 
-export const parseDescribeBlock = async (
+export const parseDescribeBlock = (
   title: string,
   code: Block['code'],
   variables: Record<string, Variable>,
   blocks: Configuration['blocks'],
   language: Language,
   indentation = 0,
-): Promise<string> => {
+): string => {
   const origCode = flatten(code[language] || []).join('\n');
-  const otherCode = indent(await Promise.all(blocks.map((block) => parseDescribeBlock(block.title, block.code, {
+  const otherCode = indent(blocks.map((block) => parseDescribeBlock(block.title, block.code, {
     ...variables,
     ...block.variables,
-  }, block.blocks, language, indentation + 1))), 0).join('\n');
+  }, block.blocks, language, indentation + 1)), 0).join('\n');
   const describeBlock = getDescribeBlock(title, language, flatten([
     origCode,
     otherCode,

@@ -9,5 +9,5 @@ export const parseMarkdown = async (filePath: string, language: Language): Promi
   const contents = await readFile(filePath, 'utf-8');
   const tokens = marked.lexer(contents);
   const configuration = await parseAsConfiguration(getContents(tokens));
-  return await parseConfigurationIntoTestFile(configuration, language);
+  return parseConfigurationIntoTestFile(configuration, language);
 };
