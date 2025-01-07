@@ -24,6 +24,7 @@ jobs:
     uses: ./.github/workflows/py-shared-lint.yaml
     with:
       package: ./packages/gbnf/python
+      pyversion: "3.12"
 
   integration-test:
     name: "Integration Test ${{ matrix.pyversion }}"

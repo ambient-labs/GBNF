@@ -13,7 +13,7 @@ build_all:
 	make copy_assets && make build_package
 
 build_package:
-	uv run --with build -m build
+	uvx --with build -m build
 
 upgrade_dev_dependencies:
 	./upgrade_dev_dependencies.sh

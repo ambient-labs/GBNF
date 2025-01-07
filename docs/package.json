@@ -12,7 +12,7 @@
   },
   "wireit": {
     "build:py": {
-      "command": "cd ../packages/gbnf/python && make build_package",
+      "command": "cd ../packages/gbnf/python && make build_all",
       "files": [
         "../packages/gbnf/python/**/*.py",
         "!../packages/gbnf/python/**/*_test.py",
