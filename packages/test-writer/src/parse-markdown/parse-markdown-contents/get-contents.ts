@@ -3,7 +3,6 @@ import { BaseBlock, } from "./types.js";
 import { getLastBlock, } from "./get-last-block.js";
 
 export const getContents = (tokens: TokensList): BaseBlock => {
-  // console.log(tokens);
   const contents: BaseBlock = {
     contents: [],
   };

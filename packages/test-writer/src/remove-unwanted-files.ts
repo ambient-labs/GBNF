@@ -2,6 +2,7 @@ import path from 'path';
 import { rimraf, } from 'rimraf';
 import { glob, } from './glob.js';
 import { stat, } from 'fs/promises';
+import { log, } from './log.js';
 
 export const removeUnwantedFiles = async (targetDir: string, keepFiles: string[]) => {
   const allFiles: string[] = await glob(path.join(targetDir, '**/*'));
@@ -9,7 +10,7 @@ export const removeUnwantedFiles = async (targetDir: string, keepFiles: string[]
     return !keepFiles.includes(file) && (await stat(file)).isFile() ? file : null;
   }))).filter(Boolean) as string[];
   if (unwantedFiles.length > 0) {
-    console.log('removing:', unwantedFiles);
+    log('removing:', unwantedFiles);
     await rimraf(unwantedFiles);
   }
 };

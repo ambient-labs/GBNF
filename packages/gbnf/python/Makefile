@@ -22,9 +22,9 @@ build_test_writer:
 	cd ../../test-writer && pnpm build
 
 write_integration_tests:
-	make build_test_writer \
-	&& rm -rf ./tests/generated \
-	&& ../../test-writer/dist/test-writer.mjs \
+	@echo "Writing integration tests..."
+	@$(MAKE) -s build_test_writer
+	@node --no-warnings ../../test-writer/dist/test-writer.mjs \
 		validation \
 		iteration/iteration \
 		--testDir ../test \
@@ -32,6 +32,11 @@ write_integration_tests:
 		--language python
 
 test_integration:
+	@$(MAKE) -s write_integration_tests
+	@$(MAKE) -s test_integration_only
+
+
+test_integration_only:
 	uv run pytest ./tests/generated
 
 # test_integration_watch:

@@ -8,7 +8,10 @@ export const processTests = async (
   targetDir: string,
   language: Language,
   includedTests: string[],
-): Promise<string[]> => {
+): Promise<{
+  tests: string[];
+  errors: string[];
+}> => {
   // const foundTests = await glob(path.join(testDirectoryPath, `**/*.md`));
   const testFiles: string[] = (await glob(path.join(testDirectoryPath, `**/*.md`))).filter(testFile => {
     if (includedTests.length === 0) {
@@ -19,12 +22,26 @@ export const processTests = async (
   if (testFiles.length === 0) {
     throw new Error(`No test files found for ${includedTests.join(', ')}`);
   }
-  const nestedTestFiles: string[] = (await Promise.all(testFiles.map(testFile => processTest(
-    testFile,
-    testDirectoryPath,
-    targetDir,
-    language,
-  )))).flat();
-  console.log('wrote:', nestedTestFiles);
-  return nestedTestFiles;
+  const errors: string[] = [];
+  const promises = testFiles.map(testFile => {
+    try {
+      return processTest(
+        testFile,
+        testDirectoryPath,
+        targetDir,
+        language,
+      );
+    } catch (err: unknown) {
+      errors.push([
+        `[processTest] Error processing test "${testFile}".`,
+        err instanceof Error ? err.message : JSON.stringify(err),
+      ].join('\n\n'));
+      return [];
+    }
+  });
+  const nestedTestFiles: string[] = (await Promise.all(promises)).flat();
+  return {
+    tests: nestedTestFiles,
+    errors,
+  };
 };

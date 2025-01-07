@@ -7,6 +7,8 @@ import {
 } from 'vitest';
 import { hydrateVariables } from './hydrate-variables';
 
+const makeVariable = (value: unknown) => ({ parsed: value, block: { language: 'javascript', type: 'code', contents: '', definitions: '' } });
+
 describe('hydrateVariables', () => {
   test('it throws if encountering a variable without a definition', () => {
     expect(() => hydrateVariables('$foo', {})).toThrow();
@@ -18,8 +20,8 @@ describe('hydrateVariables', () => {
       ` expect($bar).toBe($baz);`,
       `});`,
     ], {
-      bar: JSON.stringify('bar'),
-      baz: JSON.stringify('baz'),
+      bar: makeVariable(JSON.stringify('bar')),
+      baz: makeVariable(JSON.stringify('baz')),
     })).toEqual([
       `test('foo', () => {`,
       ` expect("bar").toBe("baz");`,
@@ -33,8 +35,8 @@ describe('hydrateVariables', () => {
       ` expect($bar).toBe($bar);`,
       `});`,
     ], {
-      bar: JSON.stringify('bar'),
-      baz: JSON.stringify('baz'),
+      bar: makeVariable(JSON.stringify('bar')),
+      baz: makeVariable(JSON.stringify('baz')),
     })).toEqual([
       `test('foo', () => {`,
       ` expect("bar").toBe("bar");`,
@@ -55,14 +57,14 @@ describe('hydrateVariables', () => {
       ` console.log($object);`,
       `});`,
     ], {
-      str: JSON.stringify('str'),
-      int: 1,
-      float: 1.23,
-      bool: true,
-      null: null,
-      undefined: undefined,
-      array: [1, 2, 3],
-      object: { foo: 'bar' },
+      str: makeVariable(JSON.stringify('str')),
+      int: makeVariable(1),
+      float: makeVariable(1.23),
+      bool: makeVariable(true),
+      null: makeVariable(null),
+      undefined: makeVariable(undefined),
+      array: makeVariable([1, 2, 3]),
+      object: makeVariable({ foo: 'bar' }),
     })).toEqual([
       `test('foo', () => {`,
       ` console.log("str");`,

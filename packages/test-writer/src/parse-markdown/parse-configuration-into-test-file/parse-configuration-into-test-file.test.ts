@@ -8,6 +8,8 @@ import {
 import { parseConfigurationIntoTestFile } from './parse-configuration-into-test-file.js';
 import { Configuration } from '../parse-as-configuration/index.js';
 
+const makeVariable = (value: unknown, stringify = true) => ({ parsed: stringify ? JSON.stringify(value) : value, block: { language: 'javascript', type: 'code', contents: '', definitions: '' } });
+
 describe('parseConfigurationIntoTestFile', () => {
   describe('single describe block', () => {
     const singleDescribeBlock: Configuration = {
@@ -43,7 +45,7 @@ describe('parseConfigurationIntoTestFile', () => {
       expect(parseConfigurationIntoTestFile(singleDescribeBlock, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
-        'def describe_foo(self):',
+        'def describe_foo():',
         '  def test_foo(self):',
         '    self.assertTrue(True)',
       ].join('\n'));
@@ -97,11 +99,11 @@ describe('parseConfigurationIntoTestFile', () => {
       expect(parseConfigurationIntoTestFile(multipleDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
-        'def describe_foo(self):',
+        'def describe_foo():',
         '  def test_foo(self):',
         '    self.assertTrue(True)',
         '',
-        'def describe_bar(self):',
+        'def describe_bar():',
         '  def test_bar(self):',
         '    self.assertTrue(True)',
       ].join('\n'));
@@ -157,11 +159,11 @@ describe('parseConfigurationIntoTestFile', () => {
       expect(parseConfigurationIntoTestFile(nestedDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
-        'def describe_foo(self):',
+        'def describe_foo():',
         '  def test_foo(self):',
         '    self.assertTrue(True)',
         '',
-        '  def describe_bar(self):',
+        '  def describe_bar():',
         '    def test_bar(self):',
         '      self.assertTrue(True)',
       ].join('\n'));
@@ -179,7 +181,7 @@ describe('parseConfigurationIntoTestFile', () => {
               python: ['def test_some_test(self):\n  self.assertTrue($bar)'],
             },
             variables: {
-              bar: JSON.stringify('bar'),
+              bar: makeVariable('bar'),
             },
             blocks: [],
           },
@@ -189,7 +191,7 @@ describe('parseConfigurationIntoTestFile', () => {
           python: ['from foo import TestCase, main, expectedFailure'],
         },
         variables: {
-          foo: 'foo',
+          foo: makeVariable('foo',),
         },
       };
 
@@ -207,7 +209,7 @@ describe('parseConfigurationIntoTestFile', () => {
         expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
           'from foo import TestCase, main, expectedFailure',
           '',
-          'def describe_header(self):',
+          'def describe_header():',
           '  def test_some_test(self):',
           '    self.assertTrue("bar")',
         ].join('\n'));
@@ -222,7 +224,7 @@ describe('parseConfigurationIntoTestFile', () => {
           title: 'Header',
           code: {},
           variables: {
-            bar: JSON.stringify('bar'),
+            bar: makeVariable('bar'),
           },
           blocks: [
             {
@@ -232,7 +234,7 @@ describe('parseConfigurationIntoTestFile', () => {
                 python: ['def test_nested(self):\n  print($foo)\n  print($bar)\n  print($baz)'],
               },
               variables: {
-                baz: JSON.stringify('baz'),
+                baz: makeVariable('baz'),
               },
               blocks: [],
             },
@@ -241,7 +243,7 @@ describe('parseConfigurationIntoTestFile', () => {
       ],
       code: {},
       variables: {
-        foo: JSON.stringify('foo'),
+        foo: makeVariable('foo'),
       },
     };
 
@@ -257,8 +259,8 @@ describe('parseConfigurationIntoTestFile', () => {
 
     test('it should parse the configuration into a test file for python', () => {
       expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
-        'def describe_header(self):',
-        '  def describe_nested(self):',
+        'def describe_header():',
+        '  def describe_nested():',
         '    def test_nested(self):',
         '      print("foo")',
         '      print("bar")',
@@ -277,7 +279,7 @@ describe('parseConfigurationIntoTestFile', () => {
             python: ['print($foo)'],
           },
           variables: {
-            foo: JSON.stringify('bar'),
+            foo: makeVariable('bar'),
           },
           blocks: [
             {
@@ -287,7 +289,7 @@ describe('parseConfigurationIntoTestFile', () => {
                 python: ['print($foo)'],
               },
               variables: {
-                foo: JSON.stringify('baz'),
+                foo: makeVariable('baz'),
               },
               blocks: [],
             },
@@ -299,7 +301,7 @@ describe('parseConfigurationIntoTestFile', () => {
         python: ['print($foo)'],
       },
       variables: {
-        foo: JSON.stringify('foo'),
+        foo: makeVariable('foo'),
       },
     };
 
@@ -321,10 +323,10 @@ describe('parseConfigurationIntoTestFile', () => {
       expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'print("foo")',
         '',
-        'def describe_header(self):',
+        'def describe_header():',
         '  print("bar")',
         '',
-        '  def describe_nested(self):',
+        '  def describe_nested():',
         '    print("baz")',
       ].join('\n'));
     });
@@ -337,9 +339,9 @@ describe('parseConfigurationIntoTestFile', () => {
         python: ['print($foo)', 'print($bar)'],
       },
       variables: {
-        foo: JSON.stringify('foo'),
-        bar: JSON.stringify('bar-top'),
-        baz: JSON.stringify('baz'),
+        foo: makeVariable('foo'),
+        bar: makeVariable('bar-top'),
+        baz: makeVariable('baz'),
       },
       blocks: [
         {
@@ -349,7 +351,7 @@ describe('parseConfigurationIntoTestFile', () => {
             python: ['print($foo)\nprint($bar)'],
           },
           variables: {
-            foo: JSON.stringify('foo2'),
+            foo: makeVariable('foo2'),
           },
           blocks: [
             {
@@ -359,7 +361,7 @@ describe('parseConfigurationIntoTestFile', () => {
                 python: ['print($foo)', 'print($bar)', 'print($baz)'],
               },
               variables: {
-                foo: JSON.stringify('foo3'),
+                foo: makeVariable('foo3'),
               },
               blocks: [],
             },
@@ -393,11 +395,11 @@ describe('parseConfigurationIntoTestFile', () => {
         'print("foo")',
         'print("bar-top")',
         '',
-        'def describe_header(self):',
+        'def describe_header():',
         '  print("foo2")',
         '  print("bar-top")',
         '',
-        '  def describe_nested(self):',
+        '  def describe_nested():',
         '    print("foo3")',
         '',
         '    print("bar-top")',

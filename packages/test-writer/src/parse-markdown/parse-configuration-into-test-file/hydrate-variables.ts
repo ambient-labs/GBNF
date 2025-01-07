@@ -1,4 +1,11 @@
-export const hydrateVariables = (lines: string | string[], variables: Record<string, unknown>): string[] => {
+import type { Language, } from '../../types.js';
+import { Variable, } from '../parse-as-configuration/types.js';
+
+export const hydrateVariables = (
+  lines: string | string[],
+  variables: Record<string, Variable>,
+  targetLanguage: Language = 'javascript',
+): string[] => {
   return ([] as string[]).concat(lines).map((line) => {
     const regex = /\$(\w+)/g;
     return line.replace(regex, (match, variable) => {
@@ -8,26 +15,38 @@ export const hydrateVariables = (lines: string | string[], variables: Record<str
       if (typeof variable !== 'string') {
         throw new Error(`Variable ${variable} is not a string`);
       }
-      if (typeof variables[variable] === 'string') {
-        return variables[variable];
+      const value = variables[variable].parsed;
+      if (typeof value === 'string') {
+        return value;
       }
-      if (typeof variables[variable] === 'boolean') {
-        return variables[variable] ? 'true' : 'false';
+      if (typeof value === 'boolean') {
+        return value ? 'true' : 'false';
       }
-      if (variables[variable] === null) {
+      if (value === null) {
         return 'null';
       }
-      if (variables[variable] === undefined) {
+      if (value === undefined) {
         return 'undefined';
       }
-      if (typeof variables[variable] === 'number') {
-        return variables[variable].toString();
+      if (typeof value === 'number') {
+        return value.toString();
       }
-      if (Array.isArray(variables[variable])) {
-        return JSON.stringify(variables[variable]);
-      }
-      if (typeof variables[variable] === 'object') {
-        return JSON.stringify(variables[variable]);
+      if (Array.isArray(value) || typeof value === 'object') {
+        if (targetLanguage === 'python') {
+          const contents = variables[variable].block.contents;
+          // log('contents before', contents);
+          const transformedContents = contents;
+          // const transformedContents = runPython([
+          //   `import json`,
+          //   `json.dumps(${contents})`,
+          // ].join('\n'));
+          // log('contents after', transformedContents);
+          if (typeof transformedContents !== 'string') {
+            throw new Error('Contents is not a string');
+          }
+          return transformedContents;
+        }
+        return JSON.stringify(value);
       }
       throw new Error(`Variable ${variable} is not a string, it is ${typeof variables[variable]}`);
     });

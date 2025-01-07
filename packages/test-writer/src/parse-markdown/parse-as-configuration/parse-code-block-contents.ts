@@ -1,4 +1,4 @@
-import { runPython, } from '../../pyodide.js';
+import { runPythonAsync, } from '../../pyodide.js';
 import { runJavascript, } from '../../run-javascript.js';
 import {
   type CodeBlock,
@@ -12,7 +12,7 @@ export const parseCodeBlockContents = async ({
     return JSON.parse(contents) as unknown;
   }
   if (language === 'python') {
-    return await runPython(contents);
+    return await runPythonAsync(contents);
   }
 
   return await runJavascript(contents);
