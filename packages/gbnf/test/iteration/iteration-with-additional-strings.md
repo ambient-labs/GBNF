@@ -1,6 +1,7 @@
 ```python
+import json
 import pytest
-from gbnf import GBNF
+from gbnf import GBNF, InputParseError, RuleChar, RuleCharExclude, RuleEnd
 ```
 
 ```javascript
@@ -168,12 +169,20 @@ test.for($cases_one as [
   string, 
   string, 
   string,
-][])('(%#) It throws if encountering a grammar `%s` with starting `%s` and additional `%s`', ([grammar, input, additional]) => {
+][])('(%#) It throws if encountering a grammar `%s` with starting `%s` and additional `%s`', ([grammar, starting, additional]) => {
+  const graph = GBNF(grammar, starting);
   expect(() => {
-    const graph = GBNF(grammar, starting);
     graph.add(additional);
   }).toThrow();
 });
+```
+
+```python
+@pytest.mark.parametrize(("grammar", "starting", "additional"), $cases_one)
+def test_it_raises_if_encountering_grammar_with_starting_s_and_additional_s(grammar, starting, additional):
+  state = GBNF(grammar, starting)
+  with pytest.raises(InputParseError) as e:
+    state + additional
 ```
 
 ```python cases_two
@@ -513,10 +522,30 @@ test.for($cases_two as [
 });
 ```
 
-```json cases_three
+```python
+@pytest.mark.parametrize(("grammar", "starting", "additional", "expected"), $cases_two)
+def test_it_parses_a_grammar_with_starting_and_additional(grammar, starting, additional, expected):
+  def transformed_expected_dict(e: dict):
+    if e['type'] == 'char':
+      return RuleChar(e['value'])
+    elif e['type'] == 'char_exclude':
+      return RuleCharExclude(e['value'])
+    elif e['type'] == 'end':
+      return RuleEnd()
+    else:
+      raise Exception(f'Unknown type found in expectation array: {type}')
+  state = GBNF(grammar, starting)
+  state = state + additional
+  expected = [transformed_expected_dict(e) for e in expected]
+  state = sorted(state, key=lambda r: json.dumps(r.__dict__))
+  expected = sorted(expected, key=lambda r: json.dumps(r.__dict__))
+  assert state == expected
+```
+
+```python cases_three
 [
-  false,
-  true
+  False,
+  True
 ]
 ```
 
@@ -537,8 +566,25 @@ test.for($cases_three as boolean[])('(%#) It throws a particular error', async (
     if (errorForMostRecentInput) {
       expect(err.errorForMostRecentInput).toEqual(expectedErr.errorForMostRecentInput);
     } else {
-      expect(err.message).toEqual(err.message);
+      expect(err.message).toEqual(expectedErr.message);
     }
   }
 });
+```
+
+```python
+@pytest.mark.parametrize(("error_for_most_recent_input"), $cases_three)
+def test_it_raises_a_particular_error(error_for_most_recent_input):
+  grammar = 'root ::= "bar"'
+  state = GBNF(grammar)
+  state = state.add('b')
+  state = state.add('a')
+  with pytest.raises(InputParseError) as e:
+    state.add('z')
+  err = e.value
+  expected_error = InputParseError('z', 0, 'ba')
+  if error_for_most_recent_input:
+    assert err.error_for_most_recent_input == expected_error.error_for_most_recent_input
+  else:
+    assert str(err) == str(expected_error)
 ```
