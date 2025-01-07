@@ -64,7 +64,7 @@ jobs:
         working-directory: ${{ inputs.package }}
         run: make write_integration_tests
 
-      - run: make test_integration_only
+      - run: make test_integration
         working-directory: ${{ inputs.package }}
 
       - name: Setup tmate session
