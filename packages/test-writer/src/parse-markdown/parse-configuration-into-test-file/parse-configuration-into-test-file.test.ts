@@ -99,11 +99,11 @@ describe('parseConfigurationIntoTestFile', () => {
       expect(parseConfigurationIntoTestFile(multipleDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
-        'def describe_foo(self):',
+        'def describe_foo():',
         '  def test_foo(self):',
         '    self.assertTrue(True)',
         '',
-        'def describe_bar(self):',
+        'def describe_bar():',
         '  def test_bar(self):',
         '    self.assertTrue(True)',
       ].join('\n'));
@@ -159,11 +159,11 @@ describe('parseConfigurationIntoTestFile', () => {
       expect(parseConfigurationIntoTestFile(nestedDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
-        'def describe_foo(self):',
+        'def describe_foo():',
         '  def test_foo(self):',
         '    self.assertTrue(True)',
         '',
-        '  def describe_bar(self):',
+        '  def describe_bar():',
         '    def test_bar(self):',
         '      self.assertTrue(True)',
       ].join('\n'));
@@ -209,7 +209,7 @@ describe('parseConfigurationIntoTestFile', () => {
         expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
           'from foo import TestCase, main, expectedFailure',
           '',
-          'def describe_header(self):',
+          'def describe_header():',
           '  def test_some_test(self):',
           '    self.assertTrue("bar")',
         ].join('\n'));
@@ -259,8 +259,8 @@ describe('parseConfigurationIntoTestFile', () => {
 
     test('it should parse the configuration into a test file for python', () => {
       expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
-        'def describe_header(self):',
-        '  def describe_nested(self):',
+        'def describe_header():',
+        '  def describe_nested():',
         '    def test_nested(self):',
         '      print("foo")',
         '      print("bar")',
@@ -323,10 +323,10 @@ describe('parseConfigurationIntoTestFile', () => {
       expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'print("foo")',
         '',
-        'def describe_header(self):',
+        'def describe_header():',
         '  print("bar")',
         '',
-        '  def describe_nested(self):',
+        '  def describe_nested():',
         '    print("baz")',
       ].join('\n'));
     });
@@ -395,11 +395,11 @@ describe('parseConfigurationIntoTestFile', () => {
         'print("foo")',
         'print("bar-top")',
         '',
-        'def describe_header(self):',
+        'def describe_header():',
         '  print("foo2")',
         '  print("bar-top")',
         '',
-        '  def describe_nested(self):',
+        '  def describe_nested():',
         '    print("foo3")',
         '',
         '    print("bar-top")',
