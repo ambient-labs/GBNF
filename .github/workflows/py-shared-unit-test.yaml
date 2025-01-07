@@ -33,12 +33,7 @@ jobs:
           enable-cache: true
           cache-suffix: "optional-suffix"
 
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ inputs.pyversion }}
-
-      - run: 	uv venv --python ${{ inputs.pyversion }} && source .venv/bin/activate && uv pip install -r pyproject.toml
+      - run: uv sync
         working-directory: ${{ inputs.package }}
 
       - uses: actions/setup-node@v4

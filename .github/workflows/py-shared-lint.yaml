@@ -1,6 +1,10 @@
 on:
   workflow_call:
     inputs:
+      pyversion:
+        required: true
+        description: "Python version"
+        type: string
       package:
         required: true
         description: "Path to package"
@@ -19,16 +23,9 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
-        # with:
-        #   enable-cache: true
-        #   cache-suffix: "optional-suffix"
-
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
         with:
-          # python-version-file: ".python-version"
-          # python-version-file: "pyproject.toml"
-          python-version: 3.11
+          enable-cache: true
+          cache-suffix: "optional-suffix"
 
       - name: Lint
         run: make lint

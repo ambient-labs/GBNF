@@ -20,6 +20,7 @@ jobs:
     uses: ./.github/workflows/js-shared-lint.yaml
     with:
       package: "./packages/sql2gbnf/javascript"
+      pyversion: "3.12"
 
   unit-test:
     name: "Javascript / sql2gbnf / Unit Test"
