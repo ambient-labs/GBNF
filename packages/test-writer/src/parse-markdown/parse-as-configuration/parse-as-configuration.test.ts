@@ -17,6 +17,8 @@ vi.mock('./parse-code-block-contents.js', async () => {
   };
 });
 
+const makeVariable = (value: unknown) => ({ parsed: value, block: { language: 'json', type: 'code', contents: [], definitions: 'foo' } });
+
 describe('parseAsConfiguration', () => {
   afterEach(() => {
     // vi.restoreAllMocks();
@@ -89,9 +91,9 @@ describe('parseAsConfiguration', () => {
         javascript: ['foo = "bar"'],
       },
       variables: {
-        foo: [],
-        bar: 'bar123',
-        baz: 'baz123',
+        foo: { parsed: [], block: { language: 'json', type: 'code', contents: '[]', definitions: 'foo' } },
+        bar: { parsed: 'bar123', block: { language: 'python', type: 'code', contents: '"bar123"', definitions: 'bar' } },
+        baz: { parsed: 'baz123', block: { language: 'javascript', type: 'code', contents: '"baz123"', definitions: 'baz' } },
       },
       blocks: [],
     });
@@ -194,7 +196,7 @@ describe('parseAsConfiguration', () => {
       code: {},
       variables: {},
       blocks: [
-        { title: 'foo', code: { python: ['foo = "bar"'], }, variables: { foo: [] }, blocks: [] },
+        { title: 'foo', code: { python: ['foo = "bar"'], }, variables: { foo: { parsed: [], block: { language: 'json', type: 'code', contents: '[]', definitions: 'foo' } } }, blocks: [] },
       ],
     });
   });

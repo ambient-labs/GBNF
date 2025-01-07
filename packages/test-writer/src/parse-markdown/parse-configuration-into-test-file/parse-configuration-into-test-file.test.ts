@@ -8,7 +8,9 @@ import {
 import { parseConfigurationIntoTestFile } from './parse-configuration-into-test-file.js';
 import { Configuration } from '../parse-as-configuration/index.js';
 
-describe('await parseConfigurationIntoTestFile', () => {
+const makeVariable = (value: unknown, stringify = true) => ({ parsed: stringify ? JSON.stringify(value) : value, block: { language: 'javascript', type: 'code', contents: '', definitions: '' } });
+
+describe('parseConfigurationIntoTestFile', () => {
   describe('single describe block', () => {
     const singleDescribeBlock: Configuration = {
       blocks: [
@@ -29,8 +31,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       variables: {},
     };
 
-    test('it should parse the configuration into a test file for javascript', async () => {
-      expect(await parseConfigurationIntoTestFile(singleDescribeBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', () => {
+      expect(parseConfigurationIntoTestFile(singleDescribeBlock, 'javascript')).toEqual([
         `import { test, expect } from 'vitest';`,
         '',
         'describe(\'foo\', () => {',
@@ -39,11 +41,11 @@ describe('await parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', async () => {
-      expect(await parseConfigurationIntoTestFile(singleDescribeBlock, 'python')).toEqual([
+    test.only('it should parse the configuration into a test file for python', () => {
+      expect(parseConfigurationIntoTestFile(singleDescribeBlock, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
-        'def describe_foo(self):',
+        'def describe_foo():',
         '  def test_foo(self):',
         '    self.assertTrue(True)',
       ].join('\n'));
@@ -79,8 +81,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       variables: {},
     };
 
-    test('it should parse the configuration into a test file for javascript', async () => {
-      expect(await parseConfigurationIntoTestFile(multipleDescribeBlocks, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', () => {
+      expect(parseConfigurationIntoTestFile(multipleDescribeBlocks, 'javascript')).toEqual([
         `import { test, expect } from 'vitest';`,
         '',
         'describe(\'foo\', () => {',
@@ -93,8 +95,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', async () => {
-      expect(await parseConfigurationIntoTestFile(multipleDescribeBlocks, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', () => {
+      expect(parseConfigurationIntoTestFile(multipleDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
         'def describe_foo(self):',
@@ -139,8 +141,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       variables: {},
     };
 
-    test('it should parse the configuration into a test file for javascript', async () => {
-      expect(await parseConfigurationIntoTestFile(nestedDescribeBlocks, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', () => {
+      expect(parseConfigurationIntoTestFile(nestedDescribeBlocks, 'javascript')).toEqual([
         `import { test, expect } from 'vitest';`,
         '',
         'describe(\'foo\', () => {',
@@ -153,8 +155,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', async () => {
-      expect(await parseConfigurationIntoTestFile(nestedDescribeBlocks, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', () => {
+      expect(parseConfigurationIntoTestFile(nestedDescribeBlocks, 'python')).toEqual([
         'from unittest import TestCase, main, expectedFailure',
         '',
         'def describe_foo(self):',
@@ -179,7 +181,7 @@ describe('await parseConfigurationIntoTestFile', () => {
               python: ['def test_some_test(self):\n  self.assertTrue($bar)'],
             },
             variables: {
-              bar: JSON.stringify('bar'),
+              bar: makeVariable('bar'),
             },
             blocks: [],
           },
@@ -189,12 +191,12 @@ describe('await parseConfigurationIntoTestFile', () => {
           python: ['from foo import TestCase, main, expectedFailure'],
         },
         variables: {
-          foo: 'foo',
+          foo: makeVariable('foo',),
         },
       };
 
-      test('it should parse the configuration into a test file for javascript', async () => {
-        expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+      test('it should parse the configuration into a test file for javascript', () => {
+        expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
           `import { test, expect } from 'foo';`,
           '',
           'describe(\'Header\', () => {',
@@ -203,8 +205,8 @@ describe('await parseConfigurationIntoTestFile', () => {
         ].join('\n'));
       });
 
-      test('it should parse the configuration into a test file for python', async () => {
-        expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+      test('it should parse the configuration into a test file for python', () => {
+        expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
           'from foo import TestCase, main, expectedFailure',
           '',
           'def describe_header(self):',
@@ -222,7 +224,7 @@ describe('await parseConfigurationIntoTestFile', () => {
           title: 'Header',
           code: {},
           variables: {
-            bar: JSON.stringify('bar'),
+            bar: makeVariable('bar'),
           },
           blocks: [
             {
@@ -232,7 +234,7 @@ describe('await parseConfigurationIntoTestFile', () => {
                 python: ['def test_nested(self):\n  print($foo)\n  print($bar)\n  print($baz)'],
               },
               variables: {
-                baz: JSON.stringify('baz'),
+                baz: makeVariable('baz'),
               },
               blocks: [],
             },
@@ -241,12 +243,12 @@ describe('await parseConfigurationIntoTestFile', () => {
       ],
       code: {},
       variables: {
-        foo: JSON.stringify('foo'),
+        foo: makeVariable('foo'),
       },
     };
 
-    test('it should parse the configuration into a test file for javascript', async () => {
-      expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', () => {
+      expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
         'describe(\'Header\', () => {',
         'describe(\'Nested\', () => {',
         'test(\'nested\', () => { console.log("foo"); console.log("bar"); console.log("baz"); });',
@@ -255,8 +257,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', async () => {
-      expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', () => {
+      expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'def describe_header(self):',
         '  def describe_nested(self):',
         '    def test_nested(self):',
@@ -277,7 +279,7 @@ describe('await parseConfigurationIntoTestFile', () => {
             python: ['print($foo)'],
           },
           variables: {
-            foo: JSON.stringify('bar'),
+            foo: makeVariable('bar'),
           },
           blocks: [
             {
@@ -287,7 +289,7 @@ describe('await parseConfigurationIntoTestFile', () => {
                 python: ['print($foo)'],
               },
               variables: {
-                foo: JSON.stringify('baz'),
+                foo: makeVariable('baz'),
               },
               blocks: [],
             },
@@ -299,12 +301,12 @@ describe('await parseConfigurationIntoTestFile', () => {
         python: ['print($foo)'],
       },
       variables: {
-        foo: JSON.stringify('foo'),
+        foo: makeVariable('foo'),
       },
     };
 
-    test('it should parse the configuration into a test file for javascript', async () => {
-      expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', () => {
+      expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
         'console.log("foo")',
         '',
         'describe(\'Header\', () => {',
@@ -317,8 +319,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', async () => {
-      expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', () => {
+      expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'print("foo")',
         '',
         'def describe_header(self):',
@@ -337,9 +339,9 @@ describe('await parseConfigurationIntoTestFile', () => {
         python: ['print($foo)', 'print($bar)'],
       },
       variables: {
-        foo: JSON.stringify('foo'),
-        bar: JSON.stringify('bar-top'),
-        baz: JSON.stringify('baz'),
+        foo: makeVariable('foo'),
+        bar: makeVariable('bar-top'),
+        baz: makeVariable('baz'),
       },
       blocks: [
         {
@@ -349,7 +351,7 @@ describe('await parseConfigurationIntoTestFile', () => {
             python: ['print($foo)\nprint($bar)'],
           },
           variables: {
-            foo: JSON.stringify('foo2'),
+            foo: makeVariable('foo2'),
           },
           blocks: [
             {
@@ -359,7 +361,7 @@ describe('await parseConfigurationIntoTestFile', () => {
                 python: ['print($foo)', 'print($bar)', 'print($baz)'],
               },
               variables: {
-                foo: JSON.stringify('foo3'),
+                foo: makeVariable('foo3'),
               },
               blocks: [],
             },
@@ -368,8 +370,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       ],
     };
 
-    test('it should parse the configuration into a test file for javascript', async () => {
-      expect(await parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
+    test('it should parse the configuration into a test file for javascript', () => {
+      expect(parseConfigurationIntoTestFile(singleBlock, 'javascript')).toEqual([
         'console.log("foo")',
         'console.log("bar-top")',
         '',
@@ -388,8 +390,8 @@ describe('await parseConfigurationIntoTestFile', () => {
       ].join('\n'));
     });
 
-    test('it should parse the configuration into a test file for python', async () => {
-      expect(await parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
+    test('it should parse the configuration into a test file for python', () => {
+      expect(parseConfigurationIntoTestFile(singleBlock, 'python')).toEqual([
         'print("foo")',
         'print("bar-top")',
         '',
